@@ -1,0 +1,55 @@
+
+<ion-header>
+  <ion-toolbar>
+ 
+    <ion-title>
+      Description
+    </ion-title>
+ 
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  
+      
+  <ion-list>     
+
+   
+
+  <ion-item>
+    <ion-icon [name]="selectedCategory.icon" item-left></ion-icon>  
+    <ion-label>Category</ion-label>
+
+    <ion-select [(ngModel)]="selectedCategory">
+      <ion-option *ngFor="let category of categories; let i=index" [value]="category">{{category.title}}</ion-option>      
+    </ion-select>
+  </ion-item> 
+ 
+   <ion-item>
+    <ion-label>Price</ion-label> 
+
+      <ion-label> {{selectedCategory.price}} </ion-label> 
+    
+  </ion-item>  
+</ion-list>
+ 
+<ion-list>
+  <ion-item>
+
+ <button ion-button round item-right icon-left color="danger" (click)="dismiss()">
+   <ion-icon name="ios-close-circle-outline"></ion-icon>Cancel   
+  </button>
+ 
+ <button ion-button round item-right icon-left color="secondary" (click)="add()">
+   <ion-icon name="ios-checkmark-circle-outline"></ion-icon>Save   
+  </button>
+ 
+  
+  </ion-item>  
+</ion-list>
+
+</ion-content>
+
+
+
