@@ -9,74 +9,98 @@ import { Modal } from './../../modules/modal/modal';
 })
 export class Page2 {
   selectedItem: any;
-  icons: string[];
-  items: Array<{title: string, price: number, icon: string}>;
+  items: Array<any>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+
+   var self = this; 
     // If we navigated to this page, we will have an item available as a nav param
-    this.selectedItem = navParams.get('item');
+    self.selectedItem = navParams.get('item');
 
-    this.icons = ['people', 'lock', 'pulse', 'sad'];    // TODO: Delete it after adding proper logic
-
-    this.items = this.getList();
-
+    if(typeof self.selectedItem === 'undefined') {
+        self.items = self.getList();
+    }else{ 
+      self.items = self.selectedItem.subItems;
+    }  
+    console.log(2);
+    
   }
 
-  /**
-   * @desc Function to load the list as per the item clicked.
-   * @param event
-   * @param item
-   */
-  loadList(event, item) {
-
-    if(typeof this.selectedItem !== 'undefined') {
-      return;
-    }
-    this.navCtrl.push(Page2, {
-      item: item
-    });
-  }
-
+ 
 
   /**
-   * @desc Function to get the list of items
+   * @description Function to get the list of items
+   * TODO: Get it from JSON or Web service
    */
   getList() {
-    let items = [];
-    /*for (let i = 0; i < 5; i++) {
-      items.push({
-        title: 'Item ' + i,
-        price: 500 * i,
-        icon: this.icons[Math.floor(Math.random() * this.icons.length)]  // TODO: Delete it after adding proper logic
-      });
-    }*/
+    let items =   [{
+       categoryId: 'people',
+       title: 'Friends and Relatives',       
+       icon: 'people',
+       price: 0,       
+       subItems: []
+     },
+     {
+       categoryId: 'fd',
+       title: 'FD',       
+       icon: 'lock',
+       price: 0,       
+       subItems: []
+     },
+     {
+       categoryId: 'gold',
+       title: 'Gold',       
+       icon: 'flask',
+       price: 0,       
+       subItems: []
+     }];    
+
+    
+
     return items;
   }
 
   /**
-   * @desc Function to compose new asset
+   * @description Function to compose new asset
    */
   compose() {
     let modal = this.modalCtrl.create(Modal);
     let self = this;
+  
+    /**
+     * Modal Dismiss Callback
+     */
     modal.onDidDismiss ( data => {
+
       if(typeof data !== 'undefined') {
-        self.addItem(data);
-      }      
+        for(let i=0; i< self.items.length; i++ ) {
+          if(self.items[i].categoryId === data.categoryId) {
+            self.items[i].subItems.push(data);
+            data.price = parseInt(data.price);
+            self.items[i].price += data.price;
+          }
+        }        
+      }    
     });
     modal.present();
+  } 
+
+
+ /**
+   * @description Function to load the list as per the item clicked.
+   * @param event
+   * @param item
+   */
+  loadList(event, clickedItem) {
+
+    if(typeof this.selectedItem !== 'undefined' || clickedItem.subItems.length === 0) {
+      return;
+    }
+    this.navCtrl.push(Page2, {
+      item: clickedItem
+    });
   }
 
 
-  /**
- * @description Function to log the current values 
- */
-  addItem(item) {
-    this.items.push(item);   
-  }
+
 }
-
-
-
-
-

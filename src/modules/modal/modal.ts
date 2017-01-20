@@ -14,34 +14,27 @@ export class Modal {
 
 
     this.categories = [{
-       title: 'Friends and Relatives',
-       price: 500  ,
-       icon: 'people'
+       categoryId: 'people',
+       categoryTitle: 'Friends and Relatives',       
+       title: '',       
+       icon: 'people',
+       price: 0       
      },
      {
-       title: 'Locked',
-       price: 100  ,
-       icon: 'lock'
+       categoryId: 'fd',
+       categoryTitle: 'FD',       
+       title: '',       
+       icon: 'lock',
+       price: 0
      },
      {
-       title: 'Liquid',
-       price: 8000  ,
-       icon: 'flask'
+       categoryId: 'gold',
+       categoryTitle: 'Gold',       
+       title: '',       
+       icon: 'flask',
+       price: 0
      }];    
-
-     this.properties = [{
-        name: 'category',
-        title: 'Category'
-     },
-     {
-        name: 'title',
-        title: 'Title'
-     },
-     {
-        name: 'price',
-        title: 'Price'
-     }];
-
+    
      this.selectedCategory = this.categories[0];
 
   }
