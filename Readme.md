@@ -8,6 +8,7 @@ It is a product to analyse our assests. Features provided by this product are as
 # Prerequisite
 
 - NodeJS ( version 5+ )
+- [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) - For Android Studio 
 - [Android Studio](https://developer.android.com/studio/index.html) - for making Android build 
 - Updated Android SDK tools - Make sure your Android SDK is updated. You can check it in "Android Studio".
 
