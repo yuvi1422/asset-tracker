@@ -13,6 +13,7 @@ It is a product to analyse our assests. Features provided by this product are as
 - Setup ANDROID_HOME. In Linux, use following commands:
   ```sh
     $   export ANDROID_HOME=/home/yuvraj/Android/Sdk
+    
     $   export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
     ```
 - Updated Android SDK tools - Make sure your Android SDK is updated. You can check it in "Android Studio".
