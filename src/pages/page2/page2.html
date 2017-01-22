@@ -3,14 +3,14 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Assets </ion-title>
+    <ion-title>{{title}} </ion-title>
 
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="loadList($event, item)">
+ <ion-list>
+  <button ion-item *ngFor="let item of items" (click)="loadList($event, item)">
 
       <ion-icon [name]="item.icon" item-left></ion-icon>
           {{item.title}}
@@ -19,9 +19,8 @@
         {{item.price}}
       </div>
 
-
     </button>
-  </ion-list>
+</ion-list>
 
 
  <div *ngIf="selectedItem" padding>

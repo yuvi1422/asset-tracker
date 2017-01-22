@@ -1,64 +1,55 @@
 <ion-header>
   <ion-toolbar>
-
     <ion-title>
       Description
     </ion-title>
-
   </ion-toolbar>
 </ion-header>
-
 <ion-content overflow-scroll="true">
 
-
-
   <ion-list>
-
- 
     <ion-item>
-     <!--  <ion-icon [name]="selectedCategory.icon" item-left></ion-icon> -->
+      <!--  <ion-icon [name]="selectedCategory.icon" item-left></ion-icon> -->
       <ion-label>Category</ion-label>
-
       <ion-select [(ngModel)]="selectedCategory">
-        <ion-option *ngFor="let category of categories;" 
-                    [value]="category">{{category.categoryTitle}}</ion-option>
+        <ion-option *ngFor="let category of categories;" [value]="category">{{category.categoryTitle}}</ion-option>
       </ion-select>
     </ion-item>
- 
-
-    <ion-item>          
-       <ion-label  fixed>Price</ion-label>
-      <ion-input type="number" 
-                  placeholder="{{selectedCategory.price}}"
-                  [(ngModel)]="selectedCategory.price"></ion-input>
+    <ion-item>
+      <ion-label fixed>Price</ion-label>
+      <ion-input type="number" placeholder="{{selectedCategory.price}}" [(ngModel)]="selectedCategory.price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Description</ion-label>
+      <ion-input type="text" placeholder="{{selectedCategory.title}}" [(ngModel)]="selectedCategory.title"></ion-input>
     </ion-item>
 
-    <ion-item>          
-       <ion-label  fixed>Description</ion-label>
-      <ion-input type="text" 
-                  placeholder="{{selectedCategory.title}}"
-                  [(ngModel)]="selectedCategory.title"></ion-input>
+   <ion-item>
+      <ion-label>{{safetyTitle}}</ion-label>
+      <ion-select [(ngModel)]="selectedCategory.safefyLevel">
+        <ion-option *ngFor="let safefyLevel of safefyLevels;"
+             [value]="safefyLevel">{{safefyLevel}}</ion-option>
+      </ion-select>
     </ion-item>
-    
   </ion-list>
-
-
-
-
 
   <ion-list>
     <ion-item>
-
       <button ion-button round item-right icon-left color="danger" (click)="dismiss()">
    <ion-icon name="ios-close-circle-outline"></ion-icon>Cancel   
   </button>
-
       <button ion-button round item-right icon-left color="secondary" (click)="add()">
    <ion-icon name="ios-checkmark-circle-outline"></ion-icon>Save   
   </button>
-
-
+  
     </ion-item>
   </ion-list>
+
+
+ 
+      <button ion-button full color="secondary" (click)="log()">
+  Log   
+  </button>
+
 
 </ion-content>

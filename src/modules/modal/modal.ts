@@ -10,30 +10,41 @@ export class Modal {
   properties;
 
   selectedCategory;
+  safefyLevels;
+  safetyTitle = 'Safety';
+
   constructor( public params: NavParams, public viewCtrl: ViewController ) {
 
+   // TODO: get these from JSON or web service 
+    this.safefyLevels = ['Fixed', 'Variable', 'Drowning', 'Drowned']
 
+  // TODO: get these from JSON or web service
     this.categories = [{
        categoryId: 'people',
        categoryTitle: 'Friends and Relatives',       
        title: '',       
        icon: 'people',
-       price: 0       
+       price: 0,
+       safefyLevel: this.safefyLevels[0]
      },
      {
        categoryId: 'fd',
        categoryTitle: 'FD',       
        title: '',       
        icon: 'lock',
-       price: 0
+       price: 0,
+       safefyLevel: this.safefyLevels[0]
      },
      {
        categoryId: 'gold',
        categoryTitle: 'Gold',       
        title: '',       
        icon: 'flask',
-       price: 0
+       price: 0,
+       safefyLevel: this.safefyLevels[0]
      }];    
+
+     
     
      this.selectedCategory = this.categories[0];
 

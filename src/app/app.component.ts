@@ -13,8 +13,11 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = Page2;
+  title: string = 'Filters';
 
-  pages: Array<{title: string, component: any}>;
+  items: Array<any>;
+
+  pages: Array<{ title: string, component: any }>;
 
   constructor(public platform: Platform) {
     this.initializeApp();
@@ -25,6 +28,38 @@ export class MyApp {
       { title: 'Page Two', component: Page2 }
     ];
 
+    this.items = this.getList();
+
+  }
+
+
+  /**
+     * @description Function to get the list of items
+     * TODO: Get it from JSON or Web service
+     */
+  getList() {
+    let items = [{
+      title: 'Fixed',
+      icon: 'lock',
+      isActive: true
+    },
+    {
+      title: 'Variable',
+      icon: 'pulse',
+      isActive: false
+    },
+    {
+      title: 'Drowning',
+      icon: 'ios-warning',
+      isActive: false
+    },
+    {
+      title: 'Drowned',
+      icon: 'logo-freebsd-devil',
+      isActive: false
+    }];
+
+    return items;
   }
 
   initializeApp() {

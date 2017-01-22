@@ -11,6 +11,8 @@ export class Page2 {
   selectedItem: any;
   items: Array<any>;
 
+  title:string = 'Assets';
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
 
    var self = this; 
@@ -100,7 +102,4 @@ export class Page2 {
       item: clickedItem
     });
   }
-
-
-
 }
