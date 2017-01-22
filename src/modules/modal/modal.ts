@@ -42,9 +42,7 @@ export class Modal {
        icon: 'flask',
        price: 0,
        safefyLevel: this.safefyLevels[0]
-     }];    
-
-     
+     }];       
     
      this.selectedCategory = this.categories[0];
 
