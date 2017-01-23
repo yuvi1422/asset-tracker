@@ -19,10 +19,11 @@ export class Page2 {
     // If we navigated to this page, we will have an item available as a nav param
     self.selectedItem = navParams.get('item');
 
-    if(typeof self.selectedItem === 'undefined') {
+    if(typeof self.selectedItem === 'undefined') {  //  When there is no sub list
         self.items = self.getList();
     }else{ 
       self.items = self.selectedItem.subItems;
+      self.title = self.selectedItem.title;
     }  
     console.log(2);
     

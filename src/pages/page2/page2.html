@@ -9,8 +9,8 @@
 </ion-header>
 
 <ion-content>
- <ion-list>
-  <button ion-item *ngFor="let item of items" (click)="loadList($event, item)">
+  <ion-list>
+    <button ion-item *ngFor="let item of items" (click)="loadList($event, item)">
 
       <ion-icon [name]="item.icon" item-left></ion-icon>
           {{item.title}}
@@ -20,12 +20,7 @@
       </div>
 
     </button>
-</ion-list>
-
-
- <div *ngIf="selectedItem" padding>
-    <b>{{selectedItem.title}}</b>
-  </div>
+  </ion-list>
 
   <ion-fab center bottom>
     <button ion-fab color="secondary" (click)="compose()">
