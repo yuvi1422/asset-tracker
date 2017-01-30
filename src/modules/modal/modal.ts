@@ -25,7 +25,8 @@ export class Modal {
        title: '',       
        icon: 'people',
        price: 0,
-       safefyLevel: this.safefyLevels[0]
+       safefyLevel: this.safefyLevels[0],
+       type: 'categorySubItem'
      },
      {
        categoryId: 'fd',
@@ -33,7 +34,8 @@ export class Modal {
        title: '',       
        icon: 'lock',
        price: 0,
-       safefyLevel: this.safefyLevels[0]
+       safefyLevel: this.safefyLevels[0],
+       type: 'categorySubItem'
      },
      {
        categoryId: 'gold',
@@ -41,7 +43,8 @@ export class Modal {
        title: '',       
        icon: 'flask',
        price: 0,
-       safefyLevel: this.safefyLevels[0]
+       safefyLevel: this.safefyLevels[0],
+       type: 'categorySubItem'
      }];       
     
      this.selectedCategory = this.categories[0];

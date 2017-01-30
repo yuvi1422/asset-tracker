@@ -10,16 +10,24 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of items" (click)="loadList($event, item)">
 
-      <ion-icon [name]="item.icon" item-left></ion-icon>
-          {{item.title}}
+    <ng-container *ngFor="let item of items">
+ 
+      <button *ngIf="(item.type === 'categorySubItem' && riskLevels[item.safefyLevel].isActive) ||
+                      (item.type === 'categoryItem' && item.subItems.length > 0)"
+            ion-item  (click)="loadList($event, item)">
 
-      <div class="item-note" item-right>
-        {{item.price}}
-      </div>
+        <ion-icon [name]="item.icon" item-left></ion-icon>
+            {{item.title}}
 
-    </button>
+        <div class="item-note" item-right>
+          {{item.price}} 
+        </div>    
+
+      </button>
+
+    </ng-container>
+  
   </ion-list>
 
   <ion-fab center bottom>

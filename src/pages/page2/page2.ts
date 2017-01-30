@@ -12,7 +12,8 @@ export class Page2 {
   items: Array<any>;
 
   title:string = 'Assets';
-
+  riskLevels;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
 
    var self = this; 
@@ -25,8 +26,29 @@ export class Page2 {
       self.items = self.selectedItem.subItems;
       self.title = self.selectedItem.title;
     }  
-    console.log(2);
     
+
+     self.riskLevels = {
+      Fixed: {
+        title: 'Fixed',
+        icon: 'lock',
+        isActive: true
+      },
+      Variable: {
+        title: 'Variable',
+        icon: 'pulse',
+        isActive: false
+     },
+      Drowning: {
+        title: 'Drowning',
+        icon: 'ios-warning',
+        isActive: false
+      },
+      Drowned: {
+        title: 'Drowned',
+        icon: 'logo-freebsd-devil',
+        isActive: false
+     }};      
   }
 
  
@@ -41,21 +63,24 @@ export class Page2 {
        title: 'Friends and Relatives',       
        icon: 'people',
        price: 0,       
-       subItems: []
+       subItems: [],
+       type: 'categoryItem'
      },
      {
        categoryId: 'fd',
        title: 'FD',       
        icon: 'lock',
        price: 0,       
-       subItems: []
+       subItems: [],
+       type: 'categoryItem'
      },
      {
        categoryId: 'gold',
        title: 'Gold',       
        icon: 'flask',
        price: 0,       
-       subItems: []
+       subItems: [],
+       type: 'categoryItem'
      }];    
 
     
