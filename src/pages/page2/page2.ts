@@ -66,6 +66,7 @@ export class Page2 {
       context.deserialize(context.storeId).then((store) => {
          if(store === null || typeof store ==='undefined') {  //  True: when no value is stored in storage
            context.serialize(context.storeId, JSON.stringify(items));
+           context.items = items;
          }else{
             context.items = JSON.parse(store);
          }
