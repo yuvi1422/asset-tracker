@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
-
+import { Storage } from '@ionic/storage';
 import { Modal } from './../../modules/modal/modal';
 
 @Component({
@@ -8,56 +8,34 @@ import { Modal } from './../../modules/modal/modal';
   templateUrl: 'page2.html'
 })
 export class Page2 {
+  
   selectedItem: any;
   items: Array<any>;
 
   title:string = 'Assets';
   riskLevels;
+  storeId:string = 'asset-tracker-store';
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public modalCtrl: ModalController,
+              private storage: Storage) {
 
-   var self = this; 
+   var context = this; 
     // If we navigated to this page, we will have an item available as a nav param
-    self.selectedItem = navParams.get('item');
+    context.selectedItem = navParams.get('item');
 
-    if(typeof self.selectedItem === 'undefined') {  //  When there is no sub list
-        self.items = self.getList();
-    }else{ 
-      self.items = self.selectedItem.subItems;
-      self.title = self.selectedItem.title;
-    }  
-    
+    storage.ready().then(() => {
+        context.loadItems();
+     });
 
-     self.riskLevels = {
-      Fixed: {
-        title: 'Fixed',
-        icon: 'lock',
-        isActive: true
-      },
-      Variable: {
-        title: 'Variable',
-        icon: 'pulse',
-        isActive: false
-     },
-      Drowning: {
-        title: 'Drowning',
-        icon: 'ios-warning',
-        isActive: false
-      },
-      Drowned: {
-        title: 'Drowned',
-        icon: 'logo-freebsd-devil',
-        isActive: false
-     }};      
   }
 
- 
-
   /**
-   * @description Function to get the list of items
-   * TODO: Get it from JSON or Web service
+   * @description Function to load the list of items
    */
-  getList() {
+  loadItems() {
+    var context = this;
     let items =   [{
        categoryId: 'people',
        title: 'Friends and Relatives',       
@@ -81,11 +59,45 @@ export class Page2 {
        price: 0,       
        subItems: [],
        type: 'categoryItem'
-     }];    
+     }]; 
 
-    
+    if (typeof context.selectedItem === 'undefined') {  //  True: when there is no sub list
 
-    return items;
+      context.deserialize(context.storeId).then((store) => {
+         if(store === null || typeof store ==='undefined') {  //  True: when no value is stored in storage
+           context.serialize(context.storeId, JSON.stringify(items));
+         }else{
+            context.items = JSON.parse(store);
+         }
+       });
+       
+    } else {
+      context.items = context.selectedItem.subItems;
+      context.title = context.selectedItem.title;
+    }
+
+    context.riskLevels = {
+      Fixed: {
+        title: 'Fixed',
+        icon: 'lock',
+        isActive: true
+      },
+      Variable: {
+        title: 'Variable',
+        icon: 'pulse',
+        isActive: true
+      },
+      Drowning: {
+        title: 'Drowning',
+        icon: 'ios-warning',
+        isActive: true
+      },
+      Drowned: {
+        title: 'Drowned',
+        icon: 'logo-freebsd-devil',
+        isActive: true
+      }
+    };
   }
 
   /**
@@ -93,7 +105,7 @@ export class Page2 {
    */
   compose() {
     let modal = this.modalCtrl.create(Modal);
-    let self = this;
+    let context = this;
   
     /**
      * Modal Dismiss Callback
@@ -101,11 +113,12 @@ export class Page2 {
     modal.onDidDismiss ( data => {
 
       if(typeof data !== 'undefined') {
-        for(let i=0; i< self.items.length; i++ ) {
-          if(self.items[i].categoryId === data.categoryId) {
-            self.items[i].subItems.push(data);
+        for(let i=0; i< context.items.length; i++ ) {
+          if(context.items[i].categoryId === data.categoryId) {
+            context.items[i].subItems.push(data);
             data.price = parseInt(data.price);
-            self.items[i].price += data.price;
+            context.items[i].price += data.price;
+            context.saveItems();
           }
         }        
       }    
@@ -128,4 +141,32 @@ export class Page2 {
       item: clickedItem
     });
   }
+
+ 
+ /**
+   * @description Function to save current list 
+   */
+  saveItems() {
+      this.serialize(this.storeId, JSON.stringify(this.items));
+  }
+
+/**
+ * @description Function to serialize the passed value with corresnds to key specified.
+ * @param {string} key 
+ * @param {string} value
+ */
+  serialize(key: string, value: string) {
+      this.storage.set(key, value);
+  }
+
+/**
+ * @description Function to deserialize the passed value with corresnds to key specified.
+ * @param {string} key 
+ * @returns Promise that resolves with the value
+ * 
+ */
+  deserialize(key: string) {
+      return this.storage.get(key);
+  }
+
 }
