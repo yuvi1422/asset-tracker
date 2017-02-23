@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { Modal } from './../../modules/modal/modal';
+import { Modal } from '../../modules/modal/modal';
 
 @Component({
   selector: 'page-page2',
@@ -14,14 +14,15 @@ export class Page2 {
 
   title:string = 'Assets';
   riskLevels;
-  storeId:string = 'asset-tracker-store';
-  
-  constructor(public navCtrl: NavController, 
-              public navParams: NavParams, 
+  STORE_ID:string = 'asset-tracker-store';
+  ITEMS_ID: string = this.STORE_ID + 'items';
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               public modalCtrl: ModalController,
               private storage: Storage) {
 
-   var context = this; 
+   var context = this;
     // If we navigated to this page, we will have an item available as a nav param
     context.selectedItem = navParams.get('item');
 
@@ -38,34 +39,18 @@ export class Page2 {
     var context = this;
     let items =   [{
        categoryId: 'people',
-       title: 'Friends and Relatives',       
+       title: 'Friends and Relatives',
        icon: 'people',
-       price: 0,       
-       subItems: [],
-       type: 'categoryItem'
-     },
-     {
-       categoryId: 'fd',
-       title: 'FD',       
-       icon: 'lock',
-       price: 0,       
-       subItems: [],
-       type: 'categoryItem'
-     },
-     {
-       categoryId: 'gold',
-       title: 'Gold',       
-       icon: 'flask',
-       price: 0,       
+       price: 0,
        subItems: [],
        type: 'categoryItem'
      }]; 
 
     if (typeof context.selectedItem === 'undefined') {  //  True: when there is no sub list
 
-      context.deserialize(context.storeId).then((store) => {
+      context.deserialize(context.ITEMS_ID).then((store) => {
          if(store === null || typeof store ==='undefined') {  //  True: when no value is stored in storage
-           context.serialize(context.storeId, JSON.stringify(items));
+           context.serialize(context.ITEMS_ID, JSON.stringify(items));
            context.items = items;
          }else{
             context.items = JSON.parse(store);
@@ -148,7 +133,7 @@ export class Page2 {
    * @description Function to save current list 
    */
   saveItems() {
-      this.serialize(this.storeId, JSON.stringify(this.items));
+      this.serialize(this.ITEMS_ID, JSON.stringify(this.items));
   }
 
 /**
@@ -169,5 +154,4 @@ export class Page2 {
   deserialize(key: string) {
       return this.storage.get(key);
   }
-
 }

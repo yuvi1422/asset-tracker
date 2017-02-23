@@ -7,7 +7,7 @@
 </ion-header>
 <ion-content overflow-scroll="true">
 
-  <ion-list>
+  <ion-list  *ngIf="selectedCategory">
     <ion-item>
       <!--  <ion-icon [name]="selectedCategory.icon" item-left></ion-icon> -->
       <ion-label>Category</ion-label>
@@ -24,11 +24,10 @@
       <ion-input type="text" placeholder="{{selectedCategory.title}}" [(ngModel)]="selectedCategory.title"></ion-input>
     </ion-item>
 
-   <ion-item>
+    <ion-item>
       <ion-label>{{safetyTitle}}</ion-label>
       <ion-select [(ngModel)]="selectedCategory.safefyLevel">
-        <ion-option *ngFor="let safefyLevel of safefyLevels;"
-             [value]="safefyLevel">{{safefyLevel}}</ion-option>
+        <ion-option *ngFor="let safefyLevel of safefyLevels;" [value]="safefyLevel">{{safefyLevel}}</ion-option>
       </ion-select>
     </ion-item>
   </ion-list>
@@ -41,8 +40,8 @@
       <button ion-button round item-right icon-left color="secondary" (click)="add()">
    <ion-icon name="ios-checkmark-circle-outline"></ion-icon>Save   
   </button>
-  
+
     </ion-item>
   </ion-list>
- 
-  </ion-content>
+
+</ion-content>

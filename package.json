@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "AssetTracker",
+  "author": "Yuvraj Patil",
+  "homepage": "http://yuvrajpatil.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -25,10 +25,11 @@
     "ionicons": "3.0.0",
     "rxjs": "5.0.0-beta.12",
     "zone.js": "0.6.26",
-	  "sw-toolbox": "3.4.0"
+    "sw-toolbox": "3.4.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "^1.0.0",
+    "json-loader": "^0.5.4",
     "typescript": "2.0.9"
   },
   "cordovaPlugins": [
@@ -40,5 +41,5 @@
     "cordova-plugin-whitelist"
   ],
   "cordovaPlatforms": [],
-  "description": "AssetTracker: An Ionic project"
+  "description": "AssetTracker: A product to analyse your assests"
 }

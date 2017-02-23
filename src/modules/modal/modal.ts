@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 
 import { NavParams, ViewController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+
+import { CategoryService } from '../category/category.service';
 
 @Component({
   templateUrl: 'modal.html'
@@ -13,64 +16,72 @@ export class Modal {
   safefyLevels;
   safetyTitle = 'Safety';
 
-  constructor( public params: NavParams, public viewCtrl: ViewController ) {
+  STORE_ID: string = 'asset-tracker-store';
+  CATEGORIES_ID: string = this.STORE_ID + 'categories';
 
-   // TODO: get these from JSON or web service 
+
+  constructor(public params: NavParams,
+    public viewCtrl: ViewController,
+    private storage: Storage,
+    private categoryService: CategoryService) {
+    var context = this;
+    // TODO: get these from JSON or web service 
     this.safefyLevels = ['Fixed', 'Variable', 'Drowning', 'Drowned']
 
-  // TODO: get these from JSON or web service
-    this.categories = [{
-       categoryId: 'people',
-       categoryTitle: 'Friends and Relatives',       
-       title: '',       
-       icon: 'people',
-       price: 0,
-       safefyLevel: this.safefyLevels[0],
-       type: 'categorySubItem'
-     },
-     {
-       categoryId: 'fd',
-       categoryTitle: 'FD',       
-       title: '',       
-       icon: 'lock',
-       price: 0,
-       safefyLevel: this.safefyLevels[0],
-       type: 'categorySubItem'
-     },
-     {
-       categoryId: 'gold',
-       categoryTitle: 'Gold',       
-       title: '',       
-       icon: 'flask',
-       price: 0,
-       safefyLevel: this.safefyLevels[0],
-       type: 'categorySubItem'
-     }];       
-    
-     this.selectedCategory = this.categories[0];
+    storage.ready().then(() => {
+      context.categoryService.getCategories().subscribe(data => {
+        context.categories = data.categories;
+        context.selectedCategory = context.categories[0];
+      });
+    });
 
   }
 
-
-/**
- * @description Function to add item
- */
+  /**
+   * @description Function to add item
+   */
   add() {
-     this.viewCtrl.dismiss(this.selectedCategory);
+    this.viewCtrl.dismiss(this.selectedCategory);
   }
 
 
-/**
- * @description Function to dismiss the modal
- */
+  /**
+   * @description Function to dismiss the modal
+   */
   dismiss() {
     this.viewCtrl.dismiss();
   }
 
-/**
- * @description Function to log the current values 
- */
+  /**
+   * @description Function to log the current values 
+   */
   log() {
     console.log('selectedCategory: ', JSON.stringify(this.selectedCategory));
+  }
+
+  /**
+   * @description Function to save current category list 
+   */
+  saveCategories() {
+    this.serialize(this.CATEGORIES_ID, JSON.stringify(this.categories));
+  }
+
+  /**
+   * @description Function to serialize the passed value with corresnds to key specified.
+   * @param {string} key 
+   * @param {string} value
+   */
+  serialize(key: string, value: string) {
+    this.storage.set(key, value);
+  }
+
+  /**
+   * @description Function to deserialize the passed value with corresnds to key specified.
+   * @param {string} key 
+   * @returns Promise that resolves with the value
+   * 
+   */
+  deserialize(key: string) {
+    return this.storage.get(key);
   }
 }
