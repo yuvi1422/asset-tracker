@@ -12,7 +12,7 @@
       <!--  <ion-icon [name]="selectedCategory.icon" item-left></ion-icon> -->
       <ion-label>Category</ion-label>
       <ion-select [(ngModel)]="selectedCategory">
-        <ion-option *ngFor="let category of categories;" [value]="category">{{category.categoryTitle}}</ion-option>
+        <ion-option *ngFor="let category of categories;" [value]="category">{{category.title}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
@@ -21,7 +21,7 @@
     </ion-item>
     <ion-item>
       <ion-label fixed>Description</ion-label>
-      <ion-input type="text" placeholder="{{selectedCategory.title}}" [(ngModel)]="selectedCategory.title"></ion-input>
+      <ion-input type="text" placeholder="{{selectedCategory.description}}" [(ngModel)]="selectedCategory.description"></ion-input>
     </ion-item>
 
     <ion-item>

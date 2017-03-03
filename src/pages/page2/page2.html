@@ -16,12 +16,12 @@
 
     <ng-container *ngFor="let item of items">
  
-      <button *ngIf="(item.type === 'categorySubItem' && riskLevels[item.safefyLevel].isActive) ||
-                      (item.type === 'categoryItem' && item.subItems.length > 0)"
+      <button *ngIf="selectedItem || (item.subItems && item.subItems.length > 0)"
             ion-item  (click)="loadList($event, item)">
 
         <ion-icon [name]="item.icon" item-left></ion-icon>
-            {{item.title}}
+           
+            {{(!selectedItem)?item.title:item.description}}
 
         <div class="item-note" item-right>
           {{item.price}} 
