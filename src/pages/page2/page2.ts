@@ -14,6 +14,7 @@ export class Page2 {
 
   selectedItem: any;
   items: Array<any>;
+  totalAmount: number = 0;
 
   title: string = 'Assets';
   riskLevels;
@@ -41,15 +42,7 @@ export class Page2 {
    */
   loadItems() {
     var context = this;
-    let items = [{
-      categoryId: 'people',
-      title: 'Friends and Relatives',
-      icon: 'people',
-      price: 0,
-      subItems: [],
-      type: 'categoryItem'
-    }];
-
+     
     if (typeof context.selectedItem === 'undefined') {  //  True: when there is no sub list
 
       context.deserialize(context.ITEMS_ID).then((store) => {
@@ -58,16 +51,24 @@ export class Page2 {
           context.categoryService.getCategories().subscribe(data => {
 
             context.items = data.categories;
+
             context.serialize(context.ITEMS_ID, JSON.stringify(context.items));
           });
         } else {
           context.items = JSON.parse(store);
+        }
+
+        if( typeof context.items !== 'undefined') {  // Load the total amount
+            console.log('context.items.reduce is not undefined')
+            context.totalAmount = context.items.reduce((a, b) => ({price: a.price + b.price})).price;                
         }
       });
 
     } else {
       context.items = context.selectedItem.subItems;
       context.title = context.selectedItem.title;
+     
+     context.totalAmount = context.items.reduce((a, b) => ({price: a.price + b.price})).price;
     }
 
     context.riskLevels = {
@@ -111,7 +112,8 @@ export class Page2 {
           if (context.items[i].categoryId === data.categoryId) {
             context.items[i].subItems.push(data);
             data.price = parseInt(data.price);
-            context.items[i].price += data.price;            
+            context.items[i].price += data.price;
+            context.totalAmount += data.price;
             context.saveItems();
           }
         }
