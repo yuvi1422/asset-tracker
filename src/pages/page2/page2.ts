@@ -59,7 +59,6 @@ export class Page2 {
         }
 
         if( typeof context.items !== 'undefined') {  // Load the total amount
-            console.log('context.items.reduce is not undefined')
             context.totalAmount = context.items.reduce((a, b) => ({price: a.price + b.price})).price;                
         }
       });

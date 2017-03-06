@@ -7,7 +7,7 @@
 </ion-header>
 <ion-content overflow-scroll="true">
 
-  <ion-list  *ngIf="selectedCategory">
+  <ion-list *ngIf="selectedCategory">
     <ion-item>
       <!--  <ion-icon [name]="selectedCategory.icon" item-left></ion-icon> -->
       <ion-label>Category</ion-label>
@@ -35,11 +35,13 @@
   <ion-list>
     <ion-item>
       <button ion-button round item-right icon-left color="danger" (click)="dismiss()">
-   <ion-icon name="ios-close-circle-outline"></ion-icon>Cancel   
-  </button>
-      <button ion-button round item-right icon-left color="secondary" (click)="add()">
-   <ion-icon name="ios-checkmark-circle-outline"></ion-icon>Save   
-  </button>
+          <ion-icon name="ios-close-circle-outline"></ion-icon>Cancel   
+      </button>
+      <button ion-button round  
+              [disabled]="selectedCategory && (selectedCategory.price == 0 || selectedCategory.description == '')" 
+              item-right icon-left color="secondary" (click)="add()">
+          <ion-icon name="ios-checkmark-circle-outline"></ion-icon>Save   
+      </button>
 
     </ion-item>
   </ion-list>
