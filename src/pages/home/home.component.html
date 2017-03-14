@@ -11,6 +11,10 @@
 
  <button id="accountabilityBtn" (click)="loadAccountibiltyPage();"> Open Accountability Page </button>
 
- <button class="loadBtn" (click)="loadTransactionPage();"> Open Transaction Details </button>
+ <ion-fab center bottom>
+    <button ion-fab color="secondary" (click)="loadTransactionPage()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 
 </ion-content>

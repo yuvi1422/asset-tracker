@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { HomeComponent } from '../home/home.component';
 
@@ -10,9 +10,9 @@ import { HomeComponent } from '../home/home.component';
 })
 export class TransactionComponent {
 
-  private parentData:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.parentData = navParams.get('item').prop1;
+  private title:string = 'Transaction Details';
+  private transactionDate = new Date();
+  constructor(public navCtrl: NavController) {
   }
 
 /**

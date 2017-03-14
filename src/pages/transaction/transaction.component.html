@@ -1,16 +1,27 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Asset Tracker
+      {{ title }}
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
- Transaction Details
 
-<br><br><br> Parent Data <br><br>{{ parentData }}
+  <ion-list>
+    
+    <ion-item>
+      <ion-avatar item-left><img src="assets/avatar/yuvraj-patil.jpg"></ion-avatar>
+      <ion-note item-right> Yuvraj Patil </ion-note>
+    </ion-item>
 
- <button id="accountabilityBtn" (click)="save();"> Save </button>
+    <ion-item>
+      <ion-label>Date</ion-label>
+      <ion-datetime displayFormat="DD/MMM/YYYY" [(ngModel)]="transactionDate"></ion-datetime>
+    </ion-item>
+
+  </ion-list>
+
+  <button id="accountabilityBtn" (click)="save();"> Save </button>
 
 </ion-content>

@@ -30,11 +30,7 @@ export class HomeComponent {
    * @description Function to load the Transaction Details Page
    */
   loadTransactionPage() {
-    this.navCtrl.push(TransactionComponent, {
-      item: {
-          prop1: 'HomeComponent Data'
-        }
-    });
+    this.navCtrl.push(TransactionComponent);
   }
   
 }
