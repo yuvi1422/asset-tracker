@@ -34,7 +34,7 @@ export class AccountabilityComponent {
     var context = this;
     
     if(!context.parentData || !context.parentData.id ) {
-      context.logger.error('Error in retriving parent data');
+      context.logger.error('Error in retriving parent data from Home Page');
       return;
     }
      context.accountabilityService.getData(context.parentData.id).subscribe(data => {
@@ -45,12 +45,11 @@ export class AccountabilityComponent {
 
   /**
    * @description Function to load the Transaction List Page
+   * @param item {Accountability Object} Selected object from Accountability List
    */
-  loadTransactionListPage() {
+  loadTransactionListPage(item) {
     this.navCtrl.push(TransactionListComponent, {
-      item: {
-        prop1: 'AccountabilityComponent Data'
-      }
+      parentData: item
     });
   }
 }

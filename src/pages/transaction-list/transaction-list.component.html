@@ -7,9 +7,26 @@
 </ion-header>
 
 <ion-content padding>
- Transaction List
-<br><br><br> Parent Data <br><br>{{ parentData }}
 
- <button id="accountabilityBtn" (click)="loadTransactionPage();"> Open Transaction Details </button>
+
+<ion-list>
+
+    <ng-container *ngFor="let item of items;">
+ 
+      <button ion-item *ngIf="item.isActive" (click)="loadTransactionPage(item)">
+
+        <ion-icon [name]="item.icon" item-left></ion-icon>
+           
+            {{ item.title }}
+
+        <div class="item-note" item-right>
+          {{item.price}} 
+        </div>
+
+      </button>
+
+    </ng-container>
+  
+  </ion-list>
 
 </ion-content>

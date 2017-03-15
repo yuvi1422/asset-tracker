@@ -6,7 +6,30 @@
             "title": "Ganu",
             "icon": "people",
             "price": 0,
-            "isActive": true
+            "isActive": true,
+            "transactions": [
+                {
+                    "id": "",
+                    "title": "Farm",
+                    "icon": "people",
+                    "price": 50000,
+                    "isActive": true
+                },
+                {
+                    "id": "",
+                    "title": "Room Rent",
+                    "icon": "people",
+                    "price": 2500,
+                    "isActive": true
+                },
+                {
+                    "id": "",
+                    "title": "Pizza",
+                    "icon": "people",
+                    "price": 600,
+                    "isActive":false
+                }
+            ]
         },
         {
             "id": "teju",
