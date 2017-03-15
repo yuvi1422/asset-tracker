@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 
@@ -7,6 +8,8 @@ import { HomeComponent } from '../pages/home/home.component';
 import { AccountabilityComponent } from '../pages/accountability/accountability.component';
 import { TransactionListComponent } from '../pages/transaction-list/transaction-list.component';
 import { TransactionComponent } from '../pages/transaction/transaction.component';
+
+import { HomeService } from '../pages/home/home.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +20,8 @@ import { TransactionComponent } from '../pages/transaction/transaction.component
     TransactionComponent
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -27,6 +31,7 @@ import { TransactionComponent } from '../pages/transaction/transaction.component
     TransactionListComponent,
     TransactionComponent
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+             HomeService]
 })
 export class AppModule {}

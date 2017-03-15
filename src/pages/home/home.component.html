@@ -7,7 +7,27 @@
 </ion-header>
 
 <ion-content padding>
- Home Page
+
+ <ion-list>
+
+    <ng-container *ngFor="let item of items;">
+ 
+      <button ion-item  (click)="loadAccountibiltyPage()">
+
+        <ion-icon [name]="item.icon" item-left></ion-icon>
+           
+            {{ item.title }}
+
+        <div class="item-note" item-right>
+          {{item.price}} 
+        </div>    
+
+      </button>
+
+    </ng-container>
+  
+  </ion-list>
+
 
  <button id="accountabilityBtn" (click)="loadAccountibiltyPage();"> Open Accountability Page </button>
 

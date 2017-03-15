@@ -1,0 +1,41 @@
+{
+    "categories": [
+        {
+            "categoryId": "people",
+            "title": "Friends and Relatives",
+            "description": "",
+            "icon": "people",
+            "price": 0,
+            "safefyLevel": "Fixed",
+            "subItems": []
+             
+        },
+        {
+            "categoryId": "fd",
+            "title": "FD",
+            "description": "",
+            "icon": "lock",
+            "price": 0,
+            "safefyLevel": "Fixed",
+            "subItems": []
+        },
+        {
+            "categoryId": "gold",
+            "title": "Gold",
+            "description": "",
+            "icon": "flask",
+            "price": 0,
+            "safefyLevel": "Fixed",
+            "subItems": []
+        },
+        {
+            "categoryId": "mf",
+            "title": "Mutual Fund",
+            "description": "",
+            "icon": "pulse",
+            "price": 0,
+            "safefyLevel": "Fixed",
+            "subItems": []
+        }
+    ]
+}
