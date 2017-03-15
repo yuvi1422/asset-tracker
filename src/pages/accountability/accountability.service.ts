@@ -5,17 +5,18 @@ import 'rxjs/add/operator/map';
 import { Platform } from 'ionic-angular';
 
 @Injectable()
-export class HomeService {
+export class AccountabilityService {
 
   constructor(private http: Http, private platform: Platform ) { }
 
-  /**
-  * @description Function to get category data
-  * @return {Array} Promise with List of categories
+/**
+  * @description Function to get accountability data
+  * @param id 
+  * @return {Array} Promise with List of accountability
   */
-  getData() {
+  getData(id) {
 
-    var url = 'assets/data/home.json';
+    var url = 'assets/data/' + id + '.json';
 
     if (this.platform.is('cordova') && this.platform.is('android')) {
       url = "/android_asset/www/" + url;
@@ -28,3 +29,4 @@ export class HomeService {
 
   }
 }
+

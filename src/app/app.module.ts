@@ -9,7 +9,9 @@ import { AccountabilityComponent } from '../pages/accountability/accountability.
 import { TransactionListComponent } from '../pages/transaction-list/transaction-list.component';
 import { TransactionComponent } from '../pages/transaction/transaction.component';
 
+import { LoggerService } from "../common/log/logger.service";
 import { HomeService } from '../pages/home/home.service';
+import { AccountabilityService } from '../pages/accountability/accountability.service';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,6 @@ import { HomeService } from '../pages/home/home.service';
     TransactionComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
-             HomeService]
+             LoggerService, HomeService, AccountabilityService]
 })
 export class AppModule {}

@@ -18,33 +18,16 @@ export class HomeComponent {
   private STORE_KEY: string = 'asset-tracker-store';
   private CATEGORIES_KEY: string = this.STORE_KEY + '-categories';
   private TITLE_KEY: string = this.STORE_KEY + '-title';
+
   constructor(public navCtrl: NavController,
     private storage: Storage,
     private homeService: HomeService) {
+
     var context = this;
     storage.ready().then(() => {
       context.loadData();
     });
   }
-
-/**
- * @description Function to load the Accountibilty Page
- */
-  loadAccountibiltyPage() {
-    this.navCtrl.push(AccountabilityComponent, {
-      item: {
-        prop1: 'HomeComponent Data'
-      }
-    });
-  }
-
-/**
- * @description Function to load the Transaction Details Page
- */
-  loadTransactionPage() {
-    this.navCtrl.push(TransactionComponent);
-  }
-
 
   /**
    * @description Function to load the list of items and other data related to this component
@@ -55,7 +38,7 @@ export class HomeComponent {
       context.deserialize(context.CATEGORIES_KEY).then((store) => {
         if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
 
-          context.homeService.getCategoriesData().subscribe(data => {
+          context.homeService.getData().subscribe(data => {
           context.items = data.categories;
           context.title = data.title;
           context.serialize(context.CATEGORIES_KEY, JSON.stringify(context.items));
@@ -67,10 +50,28 @@ export class HomeComponent {
             context.title = JSON.parse(title);
           });
         }
-
       });
-
     }
+
+
+/**
+ * @description Function to load the Accountibilty Page
+ */
+  loadAccountibiltyPage(selectedItemId) {
+    this.navCtrl.push(AccountabilityComponent, {
+      parentData: {
+        id: selectedItemId
+      }
+    });
+  }
+
+/**
+ * @description Function to load the Transaction Details Page
+ */
+  loadTransactionPage() {
+    this.navCtrl.push(TransactionComponent);
+  }
+
 
   /**
    * @description Function to serialize the passed value with corresnds to key specified.

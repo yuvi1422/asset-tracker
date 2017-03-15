@@ -2,28 +2,28 @@
     "title": "Dashboard",
     "categories": [
         {
-            "categoryId": "people",
+            "id": "people",
             "title": "Friends and Relatives",
             "icon": "people",
             "price": 0,
             "isActive": true
         },
         {
-            "categoryId": "fd",
+            "id": "fd",
             "title": "FD",
             "icon": "lock",
             "price": 0,
             "isActive": true
         },
         {
-            "categoryId": "gold",
+            "id": "gold",
             "title": "Gold",
             "icon": "flask",
             "price": 0,
             "isActive": false
         },
         {
-            "categoryId": "mf",
+            "id": "mf",
             "title": "Mutual Fund",
             "icon": "pulse",
             "price": 0,
