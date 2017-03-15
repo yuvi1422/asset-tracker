@@ -13,9 +13,9 @@ export class HomeService {
   * @description Function to get categories 
   * @return {Array} Promise with List of categories
   */
-  getCategories() {
+  getCategoriesData() {
 
-    var url = 'assets/data/categories.json';
+    var url = 'assets/data/home.json';
 
     if (this.platform.is('cordova') && this.platform.is('android')) {
       url = "/android_asset/www/" + url;

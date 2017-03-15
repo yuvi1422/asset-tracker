@@ -13,22 +13,23 @@ import { HomeService } from './home.service';
 })
 export class HomeComponent {
 
-  items: Array<any>;
-  STORE_ID: string = 'asset-tracker-store';
-  ITEMS_ID: string = this.STORE_ID + 'items';
-
+  private items: Array<any>;
+  private title:string;
+  private STORE_KEY: string = 'asset-tracker-store';
+  private CATEGORIES_KEY: string = this.STORE_KEY + '-categories';
+  private TITLE_KEY: string = this.STORE_KEY + '-title';
   constructor(public navCtrl: NavController,
     private storage: Storage,
     private homeService: HomeService) {
     var context = this;
     storage.ready().then(() => {
-      context.loadItems();
+      context.loadData();
     });
   }
 
-  /**
-   * @description Function to load the Accountibilty Page
-   */
+/**
+ * @description Function to load the Accountibilty Page
+ */
   loadAccountibiltyPage() {
     this.navCtrl.push(AccountabilityComponent, {
       item: {
@@ -37,37 +38,41 @@ export class HomeComponent {
     });
   }
 
-  /**
-     * @description Function to load the Transaction Details Page
-     */
+/**
+ * @description Function to load the Transaction Details Page
+ */
   loadTransactionPage() {
     this.navCtrl.push(TransactionComponent);
   }
 
 
-/**
-   * @description Function to load the list of items
+  /**
+   * @description Function to load the list of items and other data related to this component
    */
-  loadItems() {
+  loadData() {
     var context = this;
 
-      context.deserialize(context.ITEMS_ID).then((store) => {
+      context.deserialize(context.CATEGORIES_KEY).then((store) => {
         if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
-          
-          context.homeService.getCategories().subscribe(data => {
-          context.items = data.categories;
 
-          context.serialize(context.ITEMS_ID, JSON.stringify(context.items));
+          context.homeService.getCategoriesData().subscribe(data => {
+          context.items = data.categories;
+          context.title = data.title;
+          context.serialize(context.CATEGORIES_KEY, JSON.stringify(context.items));
+          context.serialize(context.TITLE_KEY, JSON.stringify(context.title));
           });
         } else {
           context.items = JSON.parse(store);
+          context.deserialize(context.TITLE_KEY).then((title) => {
+            context.title = JSON.parse(title);
+          });
         }
-        
+
       });
 
-    } 
+    }
 
-/**
+  /**
    * @description Function to serialize the passed value with corresnds to key specified.
    * @param {string} key 
    * @param {string} value
@@ -80,7 +85,6 @@ export class HomeComponent {
    * @description Function to deserialize the passed value with corresnds to key specified.
    * @param {string} key 
    * @returns Promise that resolves with the value
-   * 
    */
   deserialize(key: string) {
     return this.storage.get(key);

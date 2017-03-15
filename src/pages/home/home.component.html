@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Asset Tracker
+      {{ title }}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -12,7 +12,7 @@
 
     <ng-container *ngFor="let item of items;">
  
-      <button ion-item  (click)="loadAccountibiltyPage()">
+      <button ion-item *ngIf="item.isActive" (click)="loadAccountibiltyPage()">
 
         <ion-icon [name]="item.icon" item-left></ion-icon>
            
@@ -20,7 +20,7 @@
 
         <div class="item-note" item-right>
           {{item.price}} 
-        </div>    
+        </div>
 
       </button>
 
@@ -28,8 +28,6 @@
   
   </ion-list>
 
-
- <button id="accountabilityBtn" (click)="loadAccountibiltyPage();"> Open Accountability Page </button>
 
  <ion-fab center bottom>
     <button ion-fab color="secondary" (click)="loadTransactionPage()">
