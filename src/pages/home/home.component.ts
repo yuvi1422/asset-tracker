@@ -57,10 +57,10 @@ export class HomeComponent {
 /**
  * @description Function to load the Accountibilty Page
  */
-  loadAccountibiltyPage(selectedItemId) {
+  loadAccountibiltyPage(selectedItem) {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
-        id: selectedItemId
+        item: selectedItem
       }
     });
   }
@@ -69,7 +69,11 @@ export class HomeComponent {
  * @description Function to load the Transaction Details Page
  */
   loadTransactionPage() {
-    this.navCtrl.push(TransactionComponent);
+    this.navCtrl.push(TransactionComponent, {
+      parentData: {
+        title: 'Transaction Details'
+      }
+    });
   }
 
 

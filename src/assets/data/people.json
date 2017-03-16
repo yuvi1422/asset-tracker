@@ -11,7 +11,7 @@
                 {
                     "id": "",
                     "title": "Farm",
-                    "icon": "people",
+                    "icon": "assets/avatar/ganu.jpg",
                     "price": 50000,
                     "isActive": true
                 },

@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
-import { LoggerService } from "../../common/log/logger.service";
-
 import { TransactionListComponent } from '../transaction-list/transaction-list.component';
 
+import { LoggerService } from "../../common/log/logger.service";
 import { AccountabilityService } from './accountability.service';
 
 @Component({
@@ -33,11 +32,11 @@ export class AccountabilityComponent {
   loadData() {
     var context = this;
     
-    if(!context.parentData || !context.parentData.id ) {
-      context.logger.error('Error in retriving parent data from Home Page');
+    if(!context.parentData || !context.parentData.item ) {
+      context.logger.error('AccountabilityComponent --> Error in retrieving parent data');
       return;
     }
-     context.accountabilityService.getData(context.parentData.id).subscribe(data => {
+     context.accountabilityService.getData(context.parentData.item.id).subscribe(data => {
         context.items = data.categories;
         context.title = data.title;
      });
@@ -47,9 +46,11 @@ export class AccountabilityComponent {
    * @description Function to load the Transaction List Page
    * @param item {Accountability Object} Selected object from Accountability List
    */
-  loadTransactionListPage(item) {
+  loadTransactionListPage(selectedItem) {
     this.navCtrl.push(TransactionListComponent, {
-      parentData: item
+       parentData: {
+        item: selectedItem
+      }
     });
   }
 }

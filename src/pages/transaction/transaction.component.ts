@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { HomeComponent } from '../home/home.component';
+
+import { LoggerService } from "../../common/log/logger.service";
 
 @Component({
   selector: 'page-home',
@@ -10,16 +12,97 @@ import { HomeComponent } from '../home/home.component';
 })
 export class TransactionComponent {
 
+  /**
+   * @description Data received from parent
+   * @private 
+   */
+  private parentData: any = null;
+
+  /**
+   * @description Title of component
+   * @private 
+   */
   private title:string = 'Transaction Details';
+
+  /**
+   * @description Date of tranasction
+   * @private 
+   */
   private transactionDate;
-  constructor(public navCtrl: NavController) {
+
+  /**
+   * @description Data received from parent
+   * @private 
+   */
+  private transaction:any;
+
+  /**
+   * @description Data received from parent
+   * @private 
+   */
+  private categories:any[];
+
+  /**
+   * @description flat showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
+   * @private 
+   */
+  private isPristine:boolean; 
+
+  /**
+   * @constructor 
+   * @param navCtrl 
+   * @param navParams 
+   * @param logger 
+   */
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    private logger: LoggerService) {
+
+    this.parentData = navParams.get('parentData');
+    this.loadData();
   }
 
-/**
+  /**
+   * @description Function to load data related to this component
+   */  
+  loadData() {
+
+    var context = this;
+    
+    if (!context.parentData || !context.parentData.title ) {
+      context.logger.error('TransactionComponent --> Error in retrieving parent data');
+      return;
+    }
+
+    context.isPristine = (!context.parentData.item)? true:false;
+
+    if (context.isPristine) {
+      context.transaction = context.getBean();
+    } else {
+      context.transaction = context.parentData.item;
+    }
+    context.title = context.parentData.title;
+  }
+
+  /**
    * @description Function to save the Transaction
    */
   save() {
     alert('Transaction Saved');
     this.navCtrl.setRoot(HomeComponent);
+  }
+
+
+  /**
+   * @description Function to get the Transaction bean
+   * @returns {object} transaction object
+   */
+  getBean() {
+    return {
+      id: '',
+      title: '',
+      icon: 'assets/avatar/person.ico',
+      price: 0
+    }
   }
 }

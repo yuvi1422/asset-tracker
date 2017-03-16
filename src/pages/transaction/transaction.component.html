@@ -8,11 +8,24 @@
 
 <ion-content padding>
 
-  <ion-list>
-    
+  <ion-list *ngIf="transaction">
+
     <ion-item>
-      <ion-avatar item-left><img src="assets/avatar/yuvraj-patil.jpg"></ion-avatar>
-      <ion-note item-right> Yuvraj Patil </ion-note>
+      <ion-label>Category</ion-label>
+      <ion-select [(ngModel)]="transaction">
+        <ion-option *ngFor="let category of categories;" [value]="category">{{category.title}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-avatar item-left><img [src]="transaction.icon"></ion-avatar>
+      <ion-note item-right>  {{ transaction.title }} </ion-note>
+    </ion-item>
+
+    <ion-item>
+        <ion-label fixed>Price</ion-label>
+        <ion-input type="number" placeholder="{{transaction.price}}" [(ngModel)]="transaction.price"></ion-input>
     </ion-item>
 
     <ion-item>

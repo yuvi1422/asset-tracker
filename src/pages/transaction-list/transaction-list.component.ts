@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
-import { LoggerService } from "../../common/log/logger.service";
-
 import { TransactionComponent } from '../transaction/transaction.component';
+
+import { LoggerService } from "../../common/log/logger.service";
 
 @Component({
   selector: 'page-home',
@@ -25,25 +25,30 @@ export class TransactionListComponent {
   }
 
   /**
-   * @description Function to load the list of items and other data related to this component
+   * @description Function to load data related to this component
    */  
   loadData() {
     var context = this;
 
-    if (!context.parentData || !context.parentData.title || !context.parentData.transactions) {
-      context.logger.error('Error in retriving parent data from Accountability Page');
+    if (!context.parentData || !context.parentData.item.title || !context.parentData.item.transactions) {
+      context.logger.error('TransactionListComponent --> Error in retrieving parent data');
       return;
     }
-    context.items = context.parentData.transactions;
-    context.title = context.parentData.title;
+    context.items = context.parentData.item.transactions;
+    context.title = context.parentData.item.title;
   }
 
 /**
  * @description Function to load the Transaction Page
  */
-  loadTransactionPage(item) {
-    this.navCtrl.push(TransactionComponent, {
-      parentData: item
+  loadTransactionPage(selectedItem) {
+    var context = this;
+    context.navCtrl.push(TransactionComponent, {
+      parentData: {
+        title: 'From List Transaction Details',
+        item: selectedItem,
+        accountability: context.parentData.item
+      }
     });
   }
 }
