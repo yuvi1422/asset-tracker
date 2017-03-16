@@ -4,7 +4,7 @@
         {
             "id": "ganu",
             "title": "Ganu",
-            "icon": "people",
+            "icon": "assets/avatar/ganu.jpg",
             "price": 0,
             "isActive": true,
             "transactions": [
@@ -34,28 +34,28 @@
         {
             "id": "teju",
             "title": "Teju",
-            "icon": "lock",
+            "icon": "assets/avatar/teju.jpg",
             "price": 0,
             "isActive": true
         },
         {
             "id": "prashu",
             "title": "Prashu",
-            "icon": "flask",
+            "icon": "assets/avatar/prashu.jpg",
             "price": 0,
             "isActive": true
         },
         {
             "id": "sagarjadhav",
             "title": "Sagar Jadhav",
-            "icon": "pulse",
+            "icon": "assets/avatar/person.ico",
             "price": 0,
             "isActive": true
         },
         {
             "id": "janu",
             "title": "Janu",
-            "icon": "pulse",
+            "icon": "assets/avatar/janu.jpg",
             "price": 0,
             "isActive": false
         }

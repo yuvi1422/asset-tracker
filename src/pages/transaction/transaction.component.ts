@@ -11,7 +11,7 @@ import { HomeComponent } from '../home/home.component';
 export class TransactionComponent {
 
   private title:string = 'Transaction Details';
-  private transactionDate = new Date();
+  private transactionDate;
   constructor(public navCtrl: NavController) {
   }
 
