@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "AssetTracker",
+  "author": "Yuvraj Patil",
+  "homepage": "http://yuvrajpatil.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
@@ -40,5 +40,5 @@
     "cordova-plugin-console"
   ],
   "cordovaPlatforms": [],
-  "description": "asset-tracker: An Ionic project"
+  "description": "AssetTracker: A product to analyse your assests"
 }
