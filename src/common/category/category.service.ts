@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import { Platform } from 'ionic-angular';
 
 @Injectable()
-export class HomeService {
+export class CategoryService {
 
   /**
    * @description flag to know app is working on device or not
@@ -41,16 +41,16 @@ export class HomeService {
   }
 
   /**
-  * @description Function to load all data
-  * @return {Array} Promise with all data
+  * @description Function to load all categories
+  * @return {Array} Promise with all categories
   */
-  getData() {
+  getCategories() {
     
     var context = this;
 
     return context.http.get(context.DEVICE_DATA_URL + context.DATA_URL)
       .map((res) => {
-        return res.json()
+        return res.json().categories;
       });
 
   }

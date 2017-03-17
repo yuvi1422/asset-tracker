@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
+import { Storage } from '@ionic/storage';
+
 import { HomeComponent } from '../home/home.component';
 
 import { LoggerService } from "../../common/log/logger.service";
@@ -17,6 +19,12 @@ export class TransactionComponent {
    * @private 
    */
   private parentData: any = null;
+
+  /**
+   * @description categories key 
+   * @private 
+   */
+  private CATEGORIES_KEY: string = 'asset-tracker-store-categories';
 
   /**
    * @description Title of component
@@ -43,7 +51,7 @@ export class TransactionComponent {
   private categories:any[];
 
   /**
-   * @description flat showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
+   * @description flag showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
    * @private 
    */
   private isPristine:boolean; 
@@ -56,10 +64,14 @@ export class TransactionComponent {
    */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    private storage: Storage,
     private logger: LoggerService) {
 
-    this.parentData = navParams.get('parentData');
-    this.loadData();
+    var context = this;
+    context.parentData = navParams.get('parentData');
+    storage.ready().then(() => {
+      context.loadData();
+    });
   }
 
   /**
@@ -73,6 +85,15 @@ export class TransactionComponent {
       context.logger.error('TransactionComponent --> Error in retrieving parent data');
       return;
     }
+
+     context.storage.get(context.CATEGORIES_KEY).then((storeData) => {
+        if (storeData === null || typeof storeData === 'undefined') {  //  True: when no value is stored in storage
+          context.logger.error('TransactionComponent --> Error in retrieving storage data');
+          return;
+        } else {
+          context.categories = JSON.parse(storeData);
+        }
+      });
 
     context.isPristine = (!context.parentData.item)? true:false;
 
@@ -105,4 +126,5 @@ export class TransactionComponent {
       price: 0
     }
   }
+
 }
