@@ -10,7 +10,7 @@
 
   <ion-list *ngIf="transaction">
 
-    <ion-item>
+    <ion-item *ngIf="isPristine">
       <ion-label>Category</ion-label>
       <ion-select [(ngModel)]="transaction">
         <ion-option *ngFor="let category of categories;" [value]="category">{{category.title}}</ion-option>
