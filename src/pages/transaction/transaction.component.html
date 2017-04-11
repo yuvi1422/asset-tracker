@@ -10,27 +10,32 @@
 
   <ion-list *ngIf="transaction">
 
-    <ion-item *ngIf="isPristine">
-      <ion-label>Category</ion-label>
-      <ion-select [(ngModel)]="transaction">
-        <ion-option *ngFor="let category of categories;" [value]="category">{{category.title}}</ion-option>
+    <ion-item *ngIf="isPristine && transaction.category">
+      <ion-icon [name]="transaction.category.icon" item-left></ion-icon>
+      <ion-select [(ngModel)]="transaction.category" item-right>
+        <ion-option *ngFor="let category of categories; let i = index;"
+                    [selected]="i == 0"
+                    [value]="category">{{category.title}}</ion-option>
       </ion-select>
     </ion-item>
 
-
-    <ion-item>
-      <ion-avatar item-left><img [src]="transaction.icon"></ion-avatar>
-      <ion-note item-right>  {{ transaction.title }} </ion-note>
+ 
+    <ion-item  *ngIf="transaction.accountability">
+      <ion-avatar item-left><img [src]="transaction.accountability.icon"></ion-avatar>
+      <ion-note item-right>  {{ transaction.accountability.title }} </ion-note>
     </ion-item>
 
     <ion-item>
+        <ion-icon name="logo-usd" item-left></ion-icon>
         <ion-label fixed>Price</ion-label>
-        <ion-input type="number" placeholder="{{transaction.price}}" [(ngModel)]="transaction.price"></ion-input>
+        <ion-input type="number" placeholder="{{transaction.price}}" 
+                   [(ngModel)]="transaction.price"></ion-input>
     </ion-item>
 
     <ion-item>
+      <ion-icon name="md-calendar" item-left></ion-icon>
       <ion-label>Date</ion-label>
-      <ion-datetime displayFormat="DD/MMM/YYYY" [(ngModel)]="transactionDate"></ion-datetime>
+      <ion-datetime displayFormat="DD/MMM/YYYY" [(ngModel)]="transaction.date"></ion-datetime>
     </ion-item>
 
   </ion-list>

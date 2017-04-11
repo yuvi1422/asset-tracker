@@ -33,12 +33,6 @@ export class TransactionComponent {
   private title:string = 'Transaction Details';
 
   /**
-   * @description Date of tranasction
-   * @private 
-   */
-  private transactionDate;
-
-  /**
    * @description Data received from parent
    * @private 
    */
@@ -68,6 +62,7 @@ export class TransactionComponent {
     private logger: LoggerService) {
 
     var context = this;
+
     context.parentData = navParams.get('parentData');
     storage.ready().then(() => {
       context.loadData();
@@ -93,16 +88,20 @@ export class TransactionComponent {
         } else {
           context.categories = JSON.parse(storeData);
         }
+
+        context.isPristine = (!context.parentData.item)? true:false;
+
+        if (context.isPristine) {                 // Add new transaction
+          context.transaction = context.getBean();
+          context.transaction.category = context.categories[0];  // Set first category as default
+        } else {                                 // update/delete existing transaction
+          context.transaction = context.parentData.item;
+        }
+        context.title = context.parentData.title;
+
       });
 
-    context.isPristine = (!context.parentData.item)? true:false;
-
-    if (context.isPristine) {
-      context.transaction = context.getBean();
-    } else {
-      context.transaction = context.parentData.item;
-    }
-    context.title = context.parentData.title;
+    
   }
 
   /**
@@ -121,9 +120,13 @@ export class TransactionComponent {
   getBean() {
     return {
       id: '',
-      title: '',
-      icon: 'assets/avatar/person.ico',
-      price: 0
+      category: null,
+      accountability: {
+        icon: 'assets/avatar/person.ico',
+        title:'Default Account'
+      },
+      price: 0,
+      date: new Date()
     }
   }
 
