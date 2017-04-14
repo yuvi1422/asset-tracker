@@ -21,7 +21,7 @@ export class TransactionComponent {
   private parentData: any = null;
 
   /**
-   * @description categories key 
+   * @description Categories key. It is used to store and retrieve data from storage
    * @private 
    */
   private CATEGORIES_KEY: string = 'asset-tracker-store-categories';
@@ -33,13 +33,13 @@ export class TransactionComponent {
   private title:string = 'Transaction Details';
 
   /**
-   * @description Data received from parent
+   * @description Transaction object
    * @private 
    */
   private transaction:any;
 
   /**
-   * @description Data received from parent
+   * @description list of categories
    * @private 
    */
   private categories:any[];
@@ -50,12 +50,15 @@ export class TransactionComponent {
    */
   private isPristine:boolean; 
 
+
   /**
    * @constructor 
-   * @param navCtrl 
-   * @param navParams 
-   * @param logger 
+   * @param navCtrl Navigation Controller
+   * @param navParams It is used to retrieve navigation parameters
+   * @param storage Storage Service provided by Ionic
+   * @param logger Logger Service
    */
+  
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,

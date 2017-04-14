@@ -5,7 +5,7 @@
             "id": "ganu",
             "title": "Ganu",
             "icon": "assets/avatar/ganu.jpg",
-            "price": 1200,
+            "price": 12000,
             "isActive": true,
             "transactions": [
                 {

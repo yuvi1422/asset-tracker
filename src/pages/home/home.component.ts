@@ -14,14 +14,51 @@ import { UtilService } from "../../common/util/util.service";
   templateUrl: 'home.component.html'
 })
 export class HomeComponent {
-
+  /**
+   * @description item list to be displayed
+   * @private 
+   */
   private items: Array<any>;
+
+   /**
+   * @description Title of component
+   * @private 
+   */
   private title:string;
+
+   /**
+   * @description Sum of all the item's price
+   * @private 
+   */
   private totalAmount:number;
+
+   /**
+   * @description Storage key. It is used to store and retrieve data from storage
+   * @private 
+   */
   private STORE_KEY: string = 'asset-tracker-store';
+
+   /**
+   * @description Categories key. It is used to store and retrieve data from storage
+   * @private 
+   */
   private CATEGORIES_KEY: string = this.STORE_KEY + '-categories';
+
+   /**
+   * @description Title key. It is used to store and retrieve data from storage
+   * @private 
+   */
   private TITLE_KEY: string = this.STORE_KEY + '-title';
 
+
+ /**
+  * @constructor 
+  * @param navCtrl Navigation Controller
+  * @param storage Storage Service provided by Ionic
+  * @param logger Logger Service
+  * @param utilService Utility Service
+  * @param homeService Home Page Service
+  */
   constructor(public navCtrl: NavController,
     private storage: Storage,
     private logger: LoggerService,
@@ -60,10 +97,10 @@ export class HomeComponent {
       });
     }
 
-
-/**
- * @description Function to load the Accountibilty Page
- */
+  /**
+   * @description Function to load the Accountibilty Page
+   * @param selectedItem {Object} category Item clicked
+   */  
   loadAccountibiltyPage(selectedItem) {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
