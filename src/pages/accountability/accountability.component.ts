@@ -37,7 +37,7 @@ export class AccountabilityComponent {
       return;
     }
      context.accountabilityService.getData(context.parentData.item.id).subscribe(data => {
-        context.items = data.categories;
+        context.items = data.accountabilities;
         context.title = data.title;
      });
     }

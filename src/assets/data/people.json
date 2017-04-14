@@ -1,32 +1,32 @@
 {
     "title": "Accountability List",
-    "categories": [
+    "accountabilities": [
         {
             "id": "ganu",
             "title": "Ganu",
             "icon": "assets/avatar/ganu.jpg",
-            "price": 0,
+            "price": 1200,
             "isActive": true,
             "transactions": [
                 {
                     "id": "",
                     "title": "Farm",
                     "icon": "assets/avatar/ganu.jpg",
-                    "price": 50000,
+                    "price": 10000,
                     "isActive": true
                 },
                 {
                     "id": "",
                     "title": "Room Rent",
                     "icon": "people",
-                    "price": 2500,
+                    "price": 1500,
                     "isActive": true
                 },
                 {
                     "id": "",
                     "title": "Pizza",
                     "icon": "people",
-                    "price": 600,
+                    "price": 500,
                     "isActive":false
                 }
             ]
@@ -35,21 +35,21 @@
             "id": "teju",
             "title": "Teju",
             "icon": "assets/avatar/teju.jpg",
-            "price": 0,
+            "price": 4000,
             "isActive": true
         },
         {
             "id": "prashu",
             "title": "Prashu",
             "icon": "assets/avatar/prashu.jpg",
-            "price": 0,
+            "price": 1500,
             "isActive": true
         },
         {
             "id": "sagarjadhav",
             "title": "Sagar Jadhav",
             "icon": "assets/avatar/person.ico",
-            "price": 0,
+            "price": 2500,
             "isActive": true
         },
         {

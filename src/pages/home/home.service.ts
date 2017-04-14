@@ -17,7 +17,7 @@ export class HomeService {
    * @description data url
    * @private 
    */
-  private DATA_URL:string = 'assets/data/data.json';
+  private DATA_URL:string = 'assets/data/home.json';
 
   /**
    * @description android data url

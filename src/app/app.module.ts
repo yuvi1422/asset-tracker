@@ -10,6 +10,8 @@ import { TransactionListComponent } from '../pages/transaction-list/transaction-
 import { TransactionComponent } from '../pages/transaction/transaction.component';
 
 import { LoggerService } from "../common/log/logger.service";
+import { UtilService } from "../common/util/util.service";
+
 import { HomeService } from '../pages/home/home.service';
 import { AccountabilityService } from '../pages/accountability/accountability.service';
 
@@ -34,6 +36,7 @@ import { AccountabilityService } from '../pages/accountability/accountability.se
     TransactionComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
-             LoggerService, HomeService, AccountabilityService]
+             LoggerService, UtilService,
+              HomeService, AccountabilityService]
 })
 export class AppModule {}

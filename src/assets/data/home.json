@@ -5,21 +5,21 @@
             "id": "people",
             "title": "Friends and Relatives",
             "icon": "people",
-            "price": 0,
+            "price": 20000,
             "isActive": true
         },
         {
             "id": "fd",
             "title": "FD",
             "icon": "lock",
-            "price": 0,
+            "price": 30000,
             "isActive": true
         },
         {
             "id": "gold",
             "title": "Gold",
             "icon": "flask",
-            "price": 0,
+            "price": 55,
             "isActive": false
         },
         {

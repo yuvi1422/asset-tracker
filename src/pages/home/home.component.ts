@@ -6,6 +6,8 @@ import { AccountabilityComponent } from '../accountability/accountability.compon
 import { TransactionComponent } from '../transaction/transaction.component';
 
 import { HomeService } from './home.service';
+import { LoggerService } from "../../common/log/logger.service";
+import { UtilService } from "../../common/util/util.service";
 
 @Component({
   selector: 'page-home',
@@ -15,12 +17,15 @@ export class HomeComponent {
 
   private items: Array<any>;
   private title:string;
+  private totalAmount:number;
   private STORE_KEY: string = 'asset-tracker-store';
   private CATEGORIES_KEY: string = this.STORE_KEY + '-categories';
   private TITLE_KEY: string = this.STORE_KEY + '-title';
 
   constructor(public navCtrl: NavController,
     private storage: Storage,
+    private logger: LoggerService,
+    private utilService: UtilService,
     private homeService: HomeService) {
 
     var context = this;
@@ -41,11 +46,13 @@ export class HomeComponent {
           context.homeService.getData().subscribe(data => {
           context.items = data.categories;
           context.title = data.title;
+          context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
           context.serialize(context.CATEGORIES_KEY, JSON.stringify(context.items));
           context.serialize(context.TITLE_KEY, JSON.stringify(context.title));
           });
         } else {
           context.items = JSON.parse(store);
+          context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
           context.deserialize(context.TITLE_KEY).then((title) => {
             context.title = JSON.parse(title);
           });
@@ -75,7 +82,6 @@ export class HomeComponent {
       }
     });
   }
-
 
   /**
    * @description Function to serialize the passed value with corresnds to key specified.

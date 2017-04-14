@@ -109,7 +109,9 @@ export class TransactionComponent {
    */
   save() {
     alert('Transaction Saved');
-    this.navCtrl.setRoot(HomeComponent);
+    this.navCtrl.setRoot(HomeComponent, {
+      tranasction: this.transaction
+    });
   }
 
 
