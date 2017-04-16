@@ -8,12 +8,6 @@ import { Platform } from 'ionic-angular';
 export class HomeService {
 
   /**
-   * @description flag to know app is working on device or not
-   * @private 
-   */
-  private isDevice:boolean;
-
-  /**
    * @description data url
    * @private 
    */
