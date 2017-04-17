@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { TransactionListComponent } from '../transaction-list/transaction-list.component';
 
@@ -49,6 +50,7 @@ export class AccountabilityComponent {
   */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    private storage: Storage,
     private logger: LoggerService,
     private utilService: UtilService,
     private accountabilityService: AccountabilityService) {
@@ -63,15 +65,28 @@ export class AccountabilityComponent {
   loadData() {
     var context = this;
     
-    if(!context.parentData || !context.parentData.item ) {
+    if(!context.parentData || !context.parentData.item || !context.parentData.storeId) {
       context.logger.error('AccountabilityComponent --> Error in retrieving parent data');
       return;
     }
-     context.accountabilityService.getData(context.parentData.item.id).subscribe(data => {
-        context.items = data.accountabilities;
-        context.title = data.title;
-        context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
-     });
+
+    context.title = context.parentData.item.title;
+
+    context.storage.get(context.parentData.storeId).then((store) => {
+        if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
+
+          context.accountabilityService.getData(context.parentData.item.id).subscribe(data => {
+            context.items = data.accountabilities;
+            
+            context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+            context.storage.set(context.parentData.storeId, JSON.stringify(context.items));
+          });
+
+        } else {
+          context.items = JSON.parse(store);
+          context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+        }
+      });
     }
 
   /**

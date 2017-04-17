@@ -51,6 +51,14 @@ export class HomeComponent {
   private TITLE_KEY: string = this.STORE_KEY + '-title';
 
 
+   /**
+   * @description ACCOUNTABILITY key. It is used to store and retrieve data from storage
+   * @private 
+   */
+  private ACCOUNTABILITY_KEY: string = this.STORE_KEY + '-accountability';
+
+
+
  /**
   * @constructor 
   * @param navCtrl Navigation Controller
@@ -77,20 +85,20 @@ export class HomeComponent {
   loadData() {
     var context = this;
 
-      context.deserialize(context.CATEGORIES_KEY).then((store) => {
+      context.storage.get(context.CATEGORIES_KEY).then((store) => {
         if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
 
           context.homeService.getData().subscribe(data => {
           context.items = data.categories;
           context.title = data.title;
           context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
-          context.serialize(context.CATEGORIES_KEY, JSON.stringify(context.items));
-          context.serialize(context.TITLE_KEY, JSON.stringify(context.title));
+          context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
+          context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
           });
         } else {
           context.items = JSON.parse(store);
           context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
-          context.deserialize(context.TITLE_KEY).then((title) => {
+          context.storage.get(context.TITLE_KEY).then((title) => {
             context.title = JSON.parse(title);
           });
         }
@@ -102,9 +110,11 @@ export class HomeComponent {
    * @param selectedItem {Object} category Item clicked
    */  
   loadAccountibiltyPage(selectedItem) {
+    var context = this;
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
-        item: selectedItem
+        item: selectedItem,
+        storeId: context.ACCOUNTABILITY_KEY + selectedItem.id
       }
     });
   }
@@ -119,23 +129,4 @@ export class HomeComponent {
       }
     });
   }
-
-  /**
-   * @description Function to serialize the passed value with corresnds to key specified.
-   * @param {string} key 
-   * @param {string} value
-   */
-  serialize(key: string, value: string) {
-    this.storage.set(key, value);
-  }
-
-  /**
-   * @description Function to deserialize the passed value with corresnds to key specified.
-   * @param {string} key 
-   * @returns Promise that resolves with the value
-   */
-  deserialize(key: string) {
-    return this.storage.get(key);
-  }
-
 }
