@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.yuvrajpatil.app.assettracker" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>asset-tracker</name>
-  <description>An awesome Ionic/Cordova app.</description>
+  <name>Asset Tracker</name>
+  <description>It is a product to analyse our assests. It showcases all your assest in a nice way.</description>
   <author email="yuvraj.patil.it@gmail.com" href="http://yuvrajpatil.com/">Yuvraj Patil</author>
   <content src="index.html"/>
   <access origin="*"/>
