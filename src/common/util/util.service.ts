@@ -15,7 +15,6 @@ export class UtilService {
    * @param visibilityProperty {String} Visibility property name if any
    */
   getTotal(items, calculationProperty: string, visibilityProperty?: string) {
-    this.logger.info('Total is being calculated by UtilService');
     if(typeof items !== 'undefined') {
       return items.reduce((total, item) => {
         if(typeof visibilityProperty === 'undefined' || item[visibilityProperty]) {
