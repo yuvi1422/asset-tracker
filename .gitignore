@@ -33,5 +33,6 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 
+documentation/
 
 resources/gradle-*.zip
