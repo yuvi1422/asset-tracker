@@ -43,6 +43,20 @@ It is a product to analyse our assests. Features provided by this product are as
     http://localhost:8100
     ```    
 
+
+# Auto-generate API documentation
+
+-  Run following command which will automatically generate API documentation for us.
+  
+  ```sh
+    $   npm run compodoc
+    ```
+
+
+- Verify the API document by navigating to 'documentation/index.html' in your preferred browser.
+
+
+
 # Deploying on Android Devices
 - Setup Gradle ( If your proxy has file download limit )
 
