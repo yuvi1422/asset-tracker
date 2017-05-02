@@ -50,17 +50,17 @@ It is a product to analyse our assests. Features provided by this product are as
   
   ```sh
     $   npm run compodoc
-    ```
+  ```
 
 - Start documentation server
   ```sh
     $   compodoc -s --port 8686
-    ```
+  ```
 
 - Verify the API document by navigating to your server address in your preferred browser.
   ```sh
     $   http://localhost:8686
-    ```
+  ```
 
 # Deploying on Android Devices
 - Setup Gradle ( If your proxy has file download limit )
