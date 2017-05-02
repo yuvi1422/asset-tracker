@@ -14,6 +14,7 @@ import { UtilService } from "../common/util/util.service";
 
 import { HomeService } from '../pages/home/home.service';
 import { AccountabilityService } from '../pages/accountability/accountability.service';
+import { TransactionService } from "../pages/transaction/transaction.service";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,6 @@ import { AccountabilityService } from '../pages/accountability/accountability.se
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
              LoggerService, UtilService,
-              HomeService, AccountabilityService]
+              HomeService, AccountabilityService, TransactionService]
 })
 export class AppModule {}
