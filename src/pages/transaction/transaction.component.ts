@@ -7,12 +7,25 @@ import { Storage } from '@ionic/storage';
 import { HomeComponent } from '../home/home.component';
 
 import { LoggerService } from "../../common/log/logger.service";
+import { TransactionService } from "./transaction.service";
 
 @Component({
   selector: 'page-home',
   templateUrl: 'transaction.component.html'
 })
 export class TransactionComponent {
+
+  /**
+   * @description item list to be displayed
+   * @private 
+   */
+   private SEPARATOR: string = '-';
+
+ /**
+   * @description ACCOUNTABILITY key. It is used to store and retrieve data from storage
+   * @private 
+   */
+   private ACCOUNTABILITY_KEY: string = 'accountability';
 
   /**
    * @description Data received from parent
@@ -28,27 +41,27 @@ export class TransactionComponent {
 
   /**
    * @description Title of component
-   * @private 
+   * @public 
    */
-  private title:string = 'Transaction Details';
+  public title:string = 'Transaction Details';
 
   /**
    * @description Transaction object
-   * @private 
+   * @public 
    */
-  private transaction:any;
+  public transaction:any;
 
   /**
    * @description list of categories
-   * @private 
+   * @public 
    */
-  private categories:any[];
+  public categories:any[];
 
   /**
    * @description flag showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
-   * @private 
+   * @public 
    */
-  private isPristine:boolean; 
+  public isPristine:boolean; 
 
 
   /**
@@ -62,7 +75,8 @@ export class TransactionComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
-    private logger: LoggerService) {
+    private logger: LoggerService,
+    private transactionService: TransactionService) {
 
     var context = this;
 
@@ -111,10 +125,42 @@ export class TransactionComponent {
    * @description Function to save the Transaction
    */
   save() {
-    alert('Transaction Saved');
-    this.navCtrl.setRoot(HomeComponent, {
-      tranasction: this.transaction
+    var context = this;
+    context.transaction.price = parseInt(context.transaction.price);
+
+    if(this.isPristine) {
+      // TODO: Remove hard coading of category Id accountability Id
+      let categoryId = 'people', accountId =  'ganu';
+
+      let storeURL = this.parentData.storeId + this.SEPARATOR + this.ACCOUNTABILITY_KEY + this.SEPARATOR + categoryId;
+    //  this.transactionService.addTransaction(storeURL, this.transaction, accountId);
+
+      context.storage.get(storeURL).then((store) => {
+      if (store === null || typeof store === 'undefined') {  //  When account does not exist in store
+        context.logger.log('No data');
+      } else {  //  When account exists in store
+        
+        store = JSON.parse(store);
+        if(typeof store.accountabilities === 'undefined') { //  When accountabilities array is not present
+          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+          return;
+        }
+        store.accountabilities.forEach(function(account) {
+          if(account.id === accountId) {
+            account.transactions.push(context.transaction);
+            context.storage.set(storeURL, JSON.stringify(store));
+            context.navCtrl.setRoot(HomeComponent, {
+              tranasction: context.transaction
+            });
+            alert('Transaction Saved');
+            return;
+          }
+        });
+      }
     });
+
+    }
+    
   }
 
 
@@ -125,13 +171,17 @@ export class TransactionComponent {
   getBean() {
     return {
       id: '',
+      title: 'Note',
+      icon: 'assets/avatar/person.ico',   // TODO: Once App is working start to end, Provide facility to change icon per transaction.
+      price: 0,
+      isActive: true,
+      
+      date: new Date(),
       category: null,
       accountability: {
         icon: 'assets/avatar/person.ico',
         title:'Default Account'
-      },
-      price: 0,
-      date: new Date()
+      }
     }
   }
 

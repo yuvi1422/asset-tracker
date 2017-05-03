@@ -24,26 +24,27 @@ export class AccountabilityComponent {
 
   /**
   * @description item list to be displayed
-  * @private 
+  * @public 
   */
-  private items: Array<any>;
+  public items: Array<any>;
 
   /**
   * @description Title of component
   * @private 
   */
-  private title:string;
+   public title:string;
 
   /**
    * @description Sum of all the item's price
    * @private 
    */
-  private totalAmount:number;
+   public totalAmount:number;
 
 /**
   * @constructor 
   * @param navCtrl Navigation Controller
   * @param navParams It is used to retrieve navigation parameters
+  * @param storage Storage Service provided by Ionic
   * @param logger Logger Service
   * @param utilService Utility Service
   * @param accountabilityService Accountability Page Service
@@ -73,18 +74,16 @@ export class AccountabilityComponent {
     context.title = context.parentData.item.title;
 
     context.storage.get(context.parentData.storeId).then((store) => {
-        if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
 
-          context.accountabilityService.getData(context.parentData.item.id).subscribe(data => {
-            context.items = data.accountabilities;
-            
-            context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
-            context.storage.set(context.parentData.storeId, JSON.stringify(context.items));
-          });
-
+        store = JSON.parse(store);
+        if (store === null || typeof store === 'undefined' || 
+                typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
+          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+          return; 
         } else {
-          context.items = JSON.parse(store);
+          context.items = store.accountabilities;
           context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+          
         }
       });
     }

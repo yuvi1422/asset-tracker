@@ -8,54 +8,63 @@ import { TransactionComponent } from '../transaction/transaction.component';
 import { HomeService } from './home.service';
 import { LoggerService } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
+import { AccountabilityService } from './../accountability/accountability.service';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.component.html'
 })
 export class HomeComponent {
+
+  
   /**
    * @description item list to be displayed
    * @private 
    */
-  private items: Array<any>;
+   private SEPARATOR: string = '-';
+
+  /**
+   * @description item list to be displayed
+   * @public 
+   */
+   public items: Array<any>;
 
    /**
    * @description Title of component
-   * @private 
+   * @public 
    */
-  private title:string;
+    public title:string;
 
    /**
    * @description Sum of all the item's price
-   * @private 
+   * @public 
    */
-  private totalAmount:number;
+   public totalAmount:number;
 
    /**
    * @description Storage key. It is used to store and retrieve data from storage
    * @private 
    */
-  private STORE_KEY: string = 'asset-tracker-store';
+   private STORE_KEY: string = 'asset-tracker-store';
 
    /**
    * @description Categories key. It is used to store and retrieve data from storage
    * @private 
    */
-  private CATEGORIES_KEY: string = this.STORE_KEY + '-categories';
+   private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + 'categories';
 
    /**
    * @description Title key. It is used to store and retrieve data from storage
    * @private 
    */
-  private TITLE_KEY: string = this.STORE_KEY + '-title';
+   private TITLE_KEY: string = this.STORE_KEY + this.SEPARATOR  + 'title';
 
 
    /**
    * @description ACCOUNTABILITY key. It is used to store and retrieve data from storage
    * @private 
    */
-  private ACCOUNTABILITY_KEY: string = this.STORE_KEY + '-accountability';
+   private ACCOUNTABILITY_KEY: string = this.STORE_KEY + this.SEPARATOR + 'accountability';
 
 
 
@@ -66,12 +75,14 @@ export class HomeComponent {
   * @param logger Logger Service
   * @param utilService Utility Service
   * @param homeService Home Page Service
+  * @param accountabilityService Accountability Page Service
   */
   constructor(public navCtrl: NavController,
     private storage: Storage,
     private logger: LoggerService,
     private utilService: UtilService,
-    private homeService: HomeService) {
+    private homeService: HomeService,
+    private accountabilityService: AccountabilityService) {
 
     var context = this;
     storage.ready().then(() => {
@@ -94,6 +105,17 @@ export class HomeComponent {
           context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
           context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
           context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
+          
+
+           data.categories.forEach(function(account) {
+            context.accountabilityService.getData(account.id).subscribe(data => {
+              context.storage.set(context.ACCOUNTABILITY_KEY + context.SEPARATOR + account.id,  JSON.stringify(data));
+            }, error => {
+              context.storage.set(context.ACCOUNTABILITY_KEY + context.SEPARATOR + account.id,  '');
+              context.logger.error(account.id + ' is invalid: ' + error);
+            });
+           });
+
           });
         } else {
           context.items = JSON.parse(store);
@@ -114,7 +136,7 @@ export class HomeComponent {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
         item: selectedItem,
-        storeId: context.ACCOUNTABILITY_KEY + selectedItem.id
+        storeId: context.ACCOUNTABILITY_KEY + context.SEPARATOR + selectedItem.id
       }
     });
   }
@@ -125,7 +147,8 @@ export class HomeComponent {
   loadTransactionPage() {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
-        title: 'Transaction Details'
+        title: 'Transaction Details',
+        storeId: this.STORE_KEY
       }
     });
   }

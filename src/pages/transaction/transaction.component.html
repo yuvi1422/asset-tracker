@@ -26,8 +26,13 @@
     </ion-item>
 
     <ion-item>
+        <ion-icon name="md-create" item-left></ion-icon>
+        <ion-input type="text" placeholder="{{transaction.title}}" 
+                   [(ngModel)]="transaction.title"></ion-input>
+    </ion-item>
+
+    <ion-item>
         <ion-icon name="logo-usd" item-left></ion-icon>
-        <ion-label fixed>Price</ion-label>
         <ion-input type="number" placeholder="{{transaction.price}}" 
                    [(ngModel)]="transaction.price"></ion-input>
     </ion-item>

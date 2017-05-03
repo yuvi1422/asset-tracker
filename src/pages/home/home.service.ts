@@ -26,6 +26,11 @@ export class HomeService {
   private DEVICE_DATA_URL:string = '';
 
 
+  /**
+  * @constructor 
+  * @param http Http service of Angular
+  * @param platform Platform service of ionic
+  */
   constructor(private http: Http, private platform: Platform ) { 
 
     var context = this;
