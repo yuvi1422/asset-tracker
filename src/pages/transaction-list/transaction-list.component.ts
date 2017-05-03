@@ -21,21 +21,21 @@ export class TransactionListComponent {
 
   /**
   * @description Data received from parent
-  * @private 
+  * @public 
   */
-  private items: Array<any>;
+  public items: Array<any>;
 
   /**
   * @description Data received from parent
-  * @private 
+  * @public 
   */
-  private title: string;
+  public title: string;
 
 /**
  * @description Sum of all the item's price
- * @private 
+ * @public 
  */
-  private totalAmount:number;
+  public totalAmount:number;
 
 /**
   * @constructor 
