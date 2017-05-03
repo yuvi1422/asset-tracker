@@ -170,10 +170,13 @@ export class TransactionComponent {
    */
   getBean() {
     return {
+      titlePlaceholder: 'Note',
+      pricePlaceholder: 0,
+
       id: '',
-      title: 'Note',
+      title: '',
       icon: 'assets/avatar/person.ico',   // TODO: Once App is working start to end, Provide facility to change icon per transaction.
-      price: 0,
+      price: '',
       isActive: true,
       
       date: new Date(),

@@ -26,14 +26,14 @@
     </ion-item>
 
     <ion-item>
-        <ion-icon name="md-create" item-left></ion-icon>
-        <ion-input type="text" placeholder="{{transaction.title}}" 
+         <ion-icon ios="ios-create" md="md-create" item-left></ion-icon>
+        <ion-input type="text" placeholder="{{transaction.titlePlaceholder}}" 
                    [(ngModel)]="transaction.title"></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-icon name="logo-usd" item-left></ion-icon>
-        <ion-input type="number" placeholder="{{transaction.price}}" 
+        <ion-input type="number" placeholder="{{transaction.pricePlaceholder}}" 
                    [(ngModel)]="transaction.price"></ion-input>
     </ion-item>
 
