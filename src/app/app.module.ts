@@ -1,6 +1,10 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
+  import { HttpModule } from '@angular/http';
 
 import { MyApp } from './app.component';
 
@@ -25,6 +29,8 @@ import { TransactionService } from "../pages/transaction/transaction.service";
     TransactionComponent
   ],
   imports: [
+    BrowserModule,
+    HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot()
   ],
@@ -36,7 +42,10 @@ import { TransactionService } from "../pages/transaction/transaction.service";
     TransactionListComponent,
     TransactionComponent
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+  providers: [
+  	     StatusBar,
+         SplashScreen,
+  	     {provide: ErrorHandler, useClass: IonicErrorHandler},
              LoggerService, UtilService,
               HomeService, AccountabilityService, TransactionService]
 })
