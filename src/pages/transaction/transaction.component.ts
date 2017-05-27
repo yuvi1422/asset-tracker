@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
-import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
 
 import { HomeComponent } from '../home/home.component';
 
@@ -61,7 +60,7 @@ export class TransactionComponent {
   /**
    * @description flag showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
    * @public 
-   */
+   */   
   public isPristine: boolean;
 
 
@@ -76,19 +75,10 @@ export class TransactionComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
-    private contacts: Contacts,
     private logger: LoggerService,
     private transactionService: TransactionService) {
 
     var context = this;
-    
-    let contact: Contact = this.contacts.create();
-    contact.name = new ContactName(null, 'Smith', 'John');
-    contact.phoneNumbers = [new ContactField('mobile', '6471234567')];
-    contact.save().then(
-      () => console.log('Contact saved!', contact),
-      (error: any) => console.error('Error saving contact.', error)
-    );
 
     context.parentData = navParams.get('parentData');
     storage.ready().then(() => {
