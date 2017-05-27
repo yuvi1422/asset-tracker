@@ -16,12 +16,6 @@ import { TransactionService } from "./transaction.service";
 export class TransactionComponent {
 
   /**
-   * @description item list to be displayed
-   * @private 
-   */
-  private SEPARATOR: string = '-';
-
-  /**
     * @description ACCOUNTABILITY key. It is used to store and retrieve data from storage
     * @private 
     */
@@ -37,7 +31,7 @@ export class TransactionComponent {
    * @description Categories key. It is used to store and retrieve data from storage
    * @private 
    */
-  private CATEGORIES_KEY: string = 'asset-tracker-store-categories';
+  private CATEGORIES_KEY: string = 'categories';
 
   /**
    * @description Title of component
@@ -98,7 +92,8 @@ export class TransactionComponent {
       return;
     }
 
-    context.storage.get(context.CATEGORIES_KEY).then((storeData) => {
+    context.storage.get(context.parentData.storeId + context.parentData.SEPARATOR + 
+                                context.CATEGORIES_KEY).then((storeData) => {
       if (storeData === null || typeof storeData === 'undefined') {  //  True: when no value is stored in storage
         context.logger.error('TransactionComponent --> Error in retrieving storage data');
         return;
@@ -118,7 +113,6 @@ export class TransactionComponent {
 
     });
 
-
   }
 
   /**
@@ -132,7 +126,8 @@ export class TransactionComponent {
       // TODO: Remove hard coading of category Id accountability Id
       let categoryId = 'people', accountId = 'ganu';
 
-      let storeURL = this.parentData.storeId + this.SEPARATOR + this.ACCOUNTABILITY_KEY + this.SEPARATOR + categoryId;
+      let storeURL = this.parentData.storeId + this.parentData.SEPARATOR + this.ACCOUNTABILITY_KEY + 
+                          this.parentData.SEPARATOR + categoryId;
       //  this.transactionService.addTransaction(storeURL, this.transaction, accountId);
 
       context.storage.get(storeURL).then((store) => {
@@ -162,7 +157,6 @@ export class TransactionComponent {
     }
 
   }
-
 
   /**
    * @description Function to get the Transaction bean

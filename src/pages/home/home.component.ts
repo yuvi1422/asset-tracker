@@ -148,7 +148,8 @@ export class HomeComponent {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
         title: 'Transaction Details',
-        storeId: this.STORE_KEY
+        storeId: this.STORE_KEY,
+        SEPARATOR: this.SEPARATOR
       }
     });
   }
