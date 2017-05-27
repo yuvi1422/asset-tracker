@@ -2,6 +2,7 @@
     "title": "Accountability List",
     "accountabilities": [
         {
+            "index":0,
             "id": "sbi",
             "title": "State Bank of India",
             "icon": "assets/avatar/janu.jpg",

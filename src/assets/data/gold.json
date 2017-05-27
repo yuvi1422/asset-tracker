@@ -2,6 +2,7 @@
     "title": "Accountability List",
     "accountabilities": [
         {
+            "index":0,
             "id": "png",
             "title": "PNG Gadgil",
             "icon": "assets/avatar/teju.jpg",

@@ -2,6 +2,7 @@
     "title": "Dashboard",
     "categories": [
         {
+            "index":0,
             "id": "people",
             "title": "Friends and Relatives",
             "icon": "people",
@@ -9,6 +10,7 @@
             "isActive": true
         },
         {
+            "index":1,
             "id": "fd",
             "title": "FD",
             "icon": "lock",
@@ -16,6 +18,7 @@
             "isActive": true
         },
         {
+            "index":2,
             "id": "gold",
             "title": "Gold",
             "icon": "flask",
@@ -23,6 +26,7 @@
             "isActive": false
         },
         {
+            "index":3,
             "id": "mf",
             "title": "Mutual Fund",
             "icon": "pulse",

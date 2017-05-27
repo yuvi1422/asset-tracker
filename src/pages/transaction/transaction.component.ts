@@ -137,11 +137,10 @@ export class TransactionComponent {
     var context = this;
     context.transaction.price = parseInt(context.transaction.price);
 
-    if (this.isPristine) {
-        let storeURL = this.parentData.CATEGORIES_KEY +
-                     this.parentData.SEPARATOR +
+    if (context.isPristine) {
+        let storeURL = context.parentData.CATEGORIES_KEY +
+                     context.parentData.SEPARATOR +
                      this.transaction.category.id;
-      //  this.transactionService.addTransaction(storeURL, this.transaction, accountId);
 
       context.storage.get(storeURL).then((store) => {
 
@@ -152,20 +151,18 @@ export class TransactionComponent {
           context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
           return;
         } else {
-          
-          store.accountabilities.forEach(function (accountability) {
-            if (accountability.id === context.transaction.accountability.id) {
-              accountability.price += context.transaction.price;
-              accountability.transactions.push(context.transaction);
 
-              context.storage.set(storeURL, JSON.stringify(store));
+              store.accountabilities[context.transaction.accountability.index].transactions.push(context.transaction);  // Add Transaction
+              store.accountabilities[context.transaction.accountability.index].price += context.transaction.price;      // Update Accountability Price
+              context.storage.set(storeURL, JSON.stringify(store));                                                     // Update Accountability Storage
+
+              context.categories[context.transaction.category.index].price += context.transaction.price;  // Update Category Price
+              context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
+
               context.navCtrl.setRoot(HomeComponent, {
                 tranasction: context.transaction
               });
               alert('Transaction Saved');
-              return;
-            }
-          });
         }
       });
     }
