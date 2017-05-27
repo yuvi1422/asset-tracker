@@ -124,11 +124,12 @@ export class HomeComponent {
    * @param selectedItem {Object} category Item clicked
    */  
   loadAccountibiltyPage(selectedItem) {
-    var context = this;
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
         item: selectedItem,
-        storeId: context.CATEGORIES_KEY + context.SEPARATOR + selectedItem.id
+        CATEGORIES_KEY: this.CATEGORIES_KEY,
+        SEPARATOR: this.SEPARATOR,
+        categoryId: selectedItem.id
       }
     });
   }
@@ -140,7 +141,6 @@ export class HomeComponent {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
         title: 'Transaction Details',
-        storeId: this.STORE_KEY,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR
       }

@@ -23,12 +23,6 @@ export class TransactionComponent {
   private parentData: any = null;
 
   /**
-   * @description Categories key. It is used to store and retrieve data from storage
-   * @private 
-   */
-  private CATEGORIES_KEY: string = 'categories';
-
-  /**
    * @description Title of component
    * @public 
    */
@@ -88,13 +82,15 @@ export class TransactionComponent {
 
     var context = this;
 
-    if (!context.parentData || !context.parentData.title) {
-      context.logger.error('TransactionComponent --> Error in retrieving parent data');
-      return;
+    if(!context.parentData ||
+      !context.parentData.title ||
+      !context.parentData.CATEGORIES_KEY ||
+      !context.parentData.SEPARATOR) {
+        context.logger.error('TransactionComponent --> Error in retrieving parent data');
+        return;
     }
 
-    context.storage.get(context.parentData.storeId + context.parentData.SEPARATOR + 
-                                context.CATEGORIES_KEY).then((storeData) => {
+    context.storage.get(context.parentData.CATEGORIES_KEY).then((storeData) => {
       if (storeData === null || typeof storeData === 'undefined') {  //  True: when no value is stored in storage
         context.logger.error('TransactionComponent --> Error in retrieving storage data');
         return;

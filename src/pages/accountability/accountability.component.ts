@@ -65,18 +65,25 @@ export class AccountabilityComponent {
    */
   loadData() {
     var context = this;
-    
-    if(!context.parentData || !context.parentData.item || !context.parentData.storeId) {
-      context.logger.error('AccountabilityComponent --> Error in retrieving parent data');
-      return;
+
+    if(!context.parentData ||
+       !context.parentData.item ||
+       !context.parentData.SEPARATOR ||
+       !context.parentData.categoryId) {
+        context.logger.error('AccountabilityComponent --> Error in retrieving parent data');
+        return;
     }
 
     context.title = context.parentData.item.title;
 
-    context.storage.get(context.parentData.storeId).then((store) => {
+    let storeURL = context.parentData.CATEGORIES_KEY +
+                     context.parentData.SEPARATOR +
+                     context.parentData.categoryId;
+
+    context.storage.get(storeURL).then((store) => {
         
         store = JSON.parse(store);
-        if (store === null || typeof store === 'undefined' || 
+        if (store === null || typeof store === 'undefined' ||
                 typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
           context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
           return; 
