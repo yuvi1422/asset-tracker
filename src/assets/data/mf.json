@@ -1,0 +1,21 @@
+{
+    "title": "Accountability List",
+    "accountabilities": [
+        {
+            "id": "birla",
+            "title": "Birla Sun Life",
+            "icon": "assets/avatar/janu.jpg",
+            "price": 1000,
+            "isActive": true,
+            "transactions": [
+                {
+                    "id": "",
+                    "title": "ELSS Plan",
+                    "icon": "assets/avatar/teju.jpg",
+                    "price": 1000,
+                    "isActive": true
+                }
+            ]
+        }
+    ]
+}

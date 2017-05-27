@@ -13,7 +13,7 @@
 
     <ng-container *ngFor="let item of items;">
  
-      <button ion-item *ngIf="item.isActive" (click)="loadTransactionListPage(item)">
+      <button ion-item *ngIf="item.isActive && item.price !==0 " (click)="loadTransactionListPage(item)">
         <ion-avatar item-left><img [src]="item.icon"></ion-avatar>
             {{ item.title }}
 

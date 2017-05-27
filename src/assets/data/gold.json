@@ -1,0 +1,26 @@
+{
+    "title": "Accountability List",
+    "accountabilities": [
+        {
+            "id": "png",
+            "title": "PNG Gadgil",
+            "icon": "assets/avatar/teju.jpg",
+            "price": 12000,
+            "isActive": true,
+            "transactions": [
+                {
+                    "id": "",
+                    "title": "5 Gram",
+                    "price": 14800,
+                    "isActive": true
+                },
+                {
+                    "id": "",
+                    "title": "10 Gram",
+                    "price": 26000,
+                    "isActive": true
+                }
+            ]
+        }
+    ]
+}

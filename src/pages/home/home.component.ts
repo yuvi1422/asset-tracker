@@ -19,25 +19,25 @@ export class HomeComponent {
   
   /**
    * @description item list to be displayed
-   * @private 
+   * @private
    */
    private SEPARATOR: string = '-';
 
   /**
    * @description item list to be displayed
-   * @public 
+   * @public
    */
    public items: Array<any>;
 
    /**
    * @description Title of component
-   * @public 
+   * @public
    */
     public title:string;
 
    /**
    * @description Sum of all the item's price
-   * @public 
+   * @public
    */
    public totalAmount:number;
 
@@ -49,27 +49,19 @@ export class HomeComponent {
 
    /**
    * @description Categories key. It is used to store and retrieve data from storage
-   * @private 
+   * @private
    */
    private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + 'categories';
 
    /**
    * @description Title key. It is used to store and retrieve data from storage
-   * @private 
+   * @private
    */
    private TITLE_KEY: string = this.STORE_KEY + this.SEPARATOR  + 'title';
 
 
-   /**
-   * @description ACCOUNTABILITY key. It is used to store and retrieve data from storage
-   * @private 
-   */
-   private ACCOUNTABILITY_KEY: string = this.STORE_KEY + this.SEPARATOR + 'accountability';
-
-
-
  /**
-  * @constructor 
+  * @constructor
   * @param navCtrl Navigation Controller
   * @param storage Storage Service provided by Ionic
   * @param logger Logger Service
@@ -109,9 +101,9 @@ export class HomeComponent {
 
            data.categories.forEach(function(account) {
             context.accountabilityService.getData(account.id).subscribe(data => {
-              context.storage.set(context.ACCOUNTABILITY_KEY + context.SEPARATOR + account.id,  JSON.stringify(data));
+              context.storage.set(context.CATEGORIES_KEY + context.SEPARATOR + account.id, JSON.stringify(data));
             }, error => {
-              context.storage.set(context.ACCOUNTABILITY_KEY + context.SEPARATOR + account.id,  '');
+              context.storage.set(context.CATEGORIES_KEY + context.SEPARATOR + account.id, {});
               context.logger.error(account.id + ' is invalid: ' + error);
             });
            });
@@ -136,7 +128,7 @@ export class HomeComponent {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
         item: selectedItem,
-        storeId: context.ACCOUNTABILITY_KEY + context.SEPARATOR + selectedItem.id
+        storeId: context.CATEGORIES_KEY + context.SEPARATOR + selectedItem.id
       }
     });
   }
@@ -149,6 +141,7 @@ export class HomeComponent {
       parentData: {
         title: 'Transaction Details',
         storeId: this.STORE_KEY,
+        CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR
       }
     });

@@ -74,7 +74,7 @@ export class AccountabilityComponent {
     context.title = context.parentData.item.title;
 
     context.storage.get(context.parentData.storeId).then((store) => {
-
+        
         store = JSON.parse(store);
         if (store === null || typeof store === 'undefined' || 
                 typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
@@ -83,7 +83,6 @@ export class AccountabilityComponent {
         } else {
           context.items = store.accountabilities;
           context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
-          
         }
       });
     }

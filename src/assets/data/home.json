@@ -5,14 +5,14 @@
             "id": "people",
             "title": "Friends and Relatives",
             "icon": "people",
-            "price": 20000,
+            "price": 12000,
             "isActive": true
         },
         {
             "id": "fd",
             "title": "FD",
             "icon": "lock",
-            "price": 30000,
+            "price": 10000,
             "isActive": true
         },
         {

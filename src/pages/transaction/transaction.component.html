@@ -12,7 +12,8 @@
 
     <ion-item *ngIf="isPristine && transaction.category">
       <ion-icon [name]="transaction.category.icon" item-left></ion-icon>
-      <ion-select [(ngModel)]="transaction.category" item-right>
+      <ion-select [(ngModel)]="transaction.category" 
+                  (ngModelChange)="loadAccountabilities()" item-right>
         <ion-option *ngFor="let category of categories; let i = index;"
                     [selected]="i == 0"
                     [value]="category">{{category.title}}</ion-option>
@@ -20,9 +21,13 @@
     </ion-item>
 
  
-    <ion-item  *ngIf="transaction.accountability">
+     <ion-item *ngIf="transaction.accountability">
       <ion-avatar item-left><img [src]="transaction.accountability.icon"></ion-avatar>
-      <ion-note item-right>  {{ transaction.accountability.title }} </ion-note>
+      <ion-select [(ngModel)]="transaction.accountability" item-right>
+        <ion-option *ngFor="let accountability of accountabilities; let i = index;"
+                    [selected]="i == 0"
+                    [value]="accountability">{{accountability.title}}</ion-option>
+      </ion-select>
     </ion-item>
 
     <ion-item>

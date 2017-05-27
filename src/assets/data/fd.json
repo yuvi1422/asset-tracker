@@ -1,0 +1,21 @@
+{
+    "title": "Accountability List",
+    "accountabilities": [
+        {
+            "id": "sbi",
+            "title": "State Bank of India",
+            "icon": "assets/avatar/janu.jpg",
+            "price": 10000,
+            "isActive": true,
+            "transactions": [
+                {
+                    "id": "",
+                    "title": "Farm",
+                    "icon": "assets/avatar/ganu.jpg",
+                    "price": 10000,
+                    "isActive": true
+                }
+            ]
+        }
+    ]
+}

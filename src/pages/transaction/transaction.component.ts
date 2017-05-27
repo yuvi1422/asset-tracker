@@ -15,11 +15,6 @@ import { TransactionService } from "./transaction.service";
 })
 export class TransactionComponent {
 
-  /**
-    * @description ACCOUNTABILITY key. It is used to store and retrieve data from storage
-    * @private 
-    */
-  private ACCOUNTABILITY_KEY: string = 'accountability';
 
   /**
    * @description Data received from parent
@@ -50,6 +45,12 @@ export class TransactionComponent {
    * @public 
    */
   public categories: any[];
+
+  /**
+   * @description list of accountabilities
+   * @public 
+   */
+  public accountabilities: any[];
 
   /**
    * @description flag showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
@@ -110,9 +111,23 @@ export class TransactionComponent {
         context.transaction = context.parentData.item;
       }
       context.title = context.parentData.title;
-
+      context.loadAccountabilities();
     });
 
+  }
+
+   /**
+   * @description Function to load accountabilities related to selected category
+   */
+  loadAccountabilities() {
+    this.storage.get(this.parentData.CATEGORIES_KEY + 
+                     this.parentData.SEPARATOR + 
+                     this.transaction.category.id).then((accountabilityData) => {
+
+        this.accountabilities = JSON.parse(accountabilityData).accountabilities;
+        this.transaction.accountability = this.accountabilities[0];
+    });
+ 
   }
 
   /**
@@ -123,26 +138,26 @@ export class TransactionComponent {
     context.transaction.price = parseInt(context.transaction.price);
 
     if (this.isPristine) {
-      // TODO: Remove hard coading of category Id accountability Id
-      let categoryId = 'people', accountId = 'ganu';
-
-      let storeURL = this.parentData.storeId + this.parentData.SEPARATOR + this.ACCOUNTABILITY_KEY + 
-                          this.parentData.SEPARATOR + categoryId;
+        let storeURL = this.parentData.CATEGORIES_KEY +
+                     this.parentData.SEPARATOR +
+                     this.transaction.category.id;
       //  this.transactionService.addTransaction(storeURL, this.transaction, accountId);
 
       context.storage.get(storeURL).then((store) => {
-        if (store === null || typeof store === 'undefined') {  //  When account does not exist in store
-          context.logger.log('No data');
-        } else {  //  When account exists in store
 
-          store = JSON.parse(store);
-          if (typeof store.accountabilities === 'undefined') { //  When accountabilities array is not present
-            context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
-            return;
-          }
-          store.accountabilities.forEach(function (account) {
-            if (account.id === accountId) {
-              account.transactions.push(context.transaction);
+        store = JSON.parse(store);
+
+        if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
+                            typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
+          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+          return;
+        } else {
+          
+          store.accountabilities.forEach(function (accountability) {
+            if (accountability.id === context.transaction.accountability.id) {
+              accountability.price += context.transaction.price;
+              accountability.transactions.push(context.transaction);
+
               context.storage.set(storeURL, JSON.stringify(store));
               context.navCtrl.setRoot(HomeComponent, {
                 tranasction: context.transaction
@@ -153,9 +168,7 @@ export class TransactionComponent {
           });
         }
       });
-
     }
-
   }
 
   /**

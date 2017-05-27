@@ -35,29 +35,33 @@
             "id": "teju",
             "title": "Teju",
             "icon": "assets/avatar/teju.jpg",
-            "price": 4000,
-            "isActive": true
+            "price": 0,
+            "isActive": true,
+            "transactions": []
         },
         {
             "id": "prashu",
             "title": "Prashu",
             "icon": "assets/avatar/prashu.jpg",
-            "price": 1500,
-            "isActive": true
+            "price": 0,
+            "isActive": true,
+            "transactions": []
         },
         {
             "id": "sagarjadhav",
             "title": "Sagar Jadhav",
             "icon": "assets/avatar/person.ico",
-            "price": 2500,
-            "isActive": true
+            "price": 0,
+            "isActive": true,
+            "transactions": []
         },
         {
             "id": "janu",
             "title": "Janu",
             "icon": "assets/avatar/janu.jpg",
             "price": 0,
-            "isActive": false
+            "isActive": false,
+            "transactions": []
         }
     ]
 }
