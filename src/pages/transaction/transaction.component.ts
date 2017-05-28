@@ -52,7 +52,6 @@ export class TransactionComponent {
    */   
   public isPristine: boolean;
 
-
   /**
    * @constructor 
    * @param navCtrl Navigation Controller
@@ -148,11 +147,13 @@ export class TransactionComponent {
           return;
         } else {
 
-              store.accountabilities[context.transaction.accountability.index].transactions.push(context.transaction);  // Add Transaction
-              store.accountabilities[context.transaction.accountability.index].price += context.transaction.price;      // Update Accountability Price
-              context.storage.set(storeURL, JSON.stringify(store));                                                     // Update Accountability Storage
+              let selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.transaction.accountability.id));
+              store.accountabilities[selectedAccountabilityIndex].transactions.push(context.transaction);  // Add Transaction
+              store.accountabilities[selectedAccountabilityIndex].price += context.transaction.price;      // Update Accountability Price
+              context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
 
-              context.categories[context.transaction.category.index].price += context.transaction.price;  // Update Category Price
+              let selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.transaction.category.id));
+              context.categories[selectedCategoryIndex].price += context.transaction.price;  // Update Category Price
               context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
 
               context.navCtrl.setRoot(HomeComponent, {
