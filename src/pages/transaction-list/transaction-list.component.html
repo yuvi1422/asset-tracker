@@ -9,12 +9,11 @@
 
 <ion-content padding>
 
-
 <ion-list>
 
-    <ng-container *ngFor="let item of items;">
+    <ng-container *ngFor="let item of items; let i = index;">
  
-      <button ion-item *ngIf="item.isActive" (click)="loadTransactionPage(item)">
+      <button ion-item *ngIf="item.isActive" (click)="loadTransactionPage(item, i)">
 
             {{ item.title }}
 
@@ -23,9 +22,6 @@
         </div>
 
       </button>
-
     </ng-container>
-  
   </ion-list>
-
 </ion-content>

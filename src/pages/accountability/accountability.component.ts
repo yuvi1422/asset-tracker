@@ -101,7 +101,9 @@ export class AccountabilityComponent {
   loadTransactionListPage(selectedItem) {
     this.navCtrl.push(TransactionListComponent, {
        parentData: {
-        item: selectedItem
+        item: selectedItem,
+        CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
+        SEPARATOR: this.parentData.SEPARATOR
       }
     });
   }

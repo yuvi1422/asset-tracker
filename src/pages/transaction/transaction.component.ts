@@ -47,10 +47,16 @@ export class TransactionComponent {
   public accountabilities: any[];
 
   /**
-   * @description flag showing status of tranasction. true if transaction is new. i.e. true when -- > it is not update/delete tranasction
+   * @description Selected Category Index
    * @public 
-   */   
-  public isPristine: boolean;
+   */
+  public selectedCategoryIndex: number = 0;
+
+  /**
+   * @description Selected Accountability Index
+   * @public 
+   */
+  public selectedAccountabilityIndex: number = 0;
 
   /**
    * @constructor 
@@ -97,16 +103,17 @@ export class TransactionComponent {
         context.categories = JSON.parse(storeData);
       }
 
-      context.isPristine = (!context.parentData.item) ? true : false;
 
-      if (context.isPristine) {                 // Add new transaction
+      if (context.parentData.isPristine === true) {                 // Add new transaction
         context.transaction = context.getBean();
-        context.transaction.category = context.categories[0];  // Set first category as default
+        context.transaction.category = context.categories[context.selectedCategoryIndex];  // Set first category as default
       } else {                                 // update/delete existing transaction
-        context.transaction = context.parentData.item;
+        context.transaction = JSON.parse(JSON.stringify(context.parentData.transaction));
+        context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
+        context.transaction.category = context.categories[context.selectedCategoryIndex];
       }
-      context.title = context.parentData.title;
       context.loadAccountabilities();
+      context.title = context.parentData.title;
     });
 
   }
@@ -115,12 +122,20 @@ export class TransactionComponent {
    * @description Function to load accountabilities related to selected category
    */
   loadAccountabilities() {
-    this.storage.get(this.parentData.CATEGORIES_KEY + 
-                     this.parentData.SEPARATOR + 
-                     this.transaction.category.id).then((accountabilityData) => {
+    let context = this,
+        storeURL = context.parentData.CATEGORIES_KEY + 
+                     context.parentData.SEPARATOR + 
+                     context.transaction.category.id;
 
-        this.accountabilities = JSON.parse(accountabilityData).accountabilities;
-        this.transaction.accountability = this.accountabilities[0];
+    context.storage.get(storeURL).then((accountabilityData) => {
+
+        accountabilityData = JSON.parse(accountabilityData);
+        context.accountabilities = accountabilityData.accountabilities;
+        if(context.parentData.isPristine !== true) {
+          context.selectedAccountabilityIndex = context.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
+        }
+        context.transaction.accountability = context.accountabilities[context.selectedAccountabilityIndex];
+        context.logger.log('test');
     });
  
   }
@@ -132,7 +147,7 @@ export class TransactionComponent {
     var context = this;
     context.transaction.price = parseInt(context.transaction.price);
 
-    if (context.isPristine) {
+    if (context.parentData.isPristine || true) {
         let storeURL = context.parentData.CATEGORIES_KEY +
                      context.parentData.SEPARATOR +
                      this.transaction.category.id;
@@ -147,13 +162,21 @@ export class TransactionComponent {
           return;
         } else {
 
-              let selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.transaction.accountability.id));
-              store.accountabilities[selectedAccountabilityIndex].transactions.push(context.transaction);  // Add Transaction
-              store.accountabilities[selectedAccountabilityIndex].price += context.transaction.price;      // Update Accountability Price
+        if(context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
+          let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
+          let previousCategoryIndex =  context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
+          store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
+          store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;  // Update Accountability Price
+          context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;            // Update Category Price
+        }
+
+              context.selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.transaction.accountability.id));
+              store.accountabilities[context.selectedAccountabilityIndex].transactions.push(context.transaction);  // Add Transaction
+              store.accountabilities[context.selectedAccountabilityIndex].price += context.transaction.price;      // Update Accountability Price
               context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
 
-              let selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.transaction.category.id));
-              context.categories[selectedCategoryIndex].price += context.transaction.price;  // Update Category Price
+              context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.transaction.category.id));
+              context.categories[context.selectedCategoryIndex].price += context.transaction.price;  // Update Category Price
               context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
 
               context.navCtrl.setRoot(HomeComponent, {

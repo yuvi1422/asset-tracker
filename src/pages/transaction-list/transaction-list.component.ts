@@ -71,14 +71,17 @@ export class TransactionListComponent {
   /**
   * @description Function to load the Transaction Detail Page
   * @param selectedItem {Object} Transaction Item clicked
+  * @param transactionIndex {number} Index of Transaction Item clicked
   */
-  loadTransactionPage(selectedItem) {
+  loadTransactionPage(selectedItem, transactionIndex) {
     var context = this;
     context.navCtrl.push(TransactionComponent, {
       parentData: {
         title: 'From List Transaction Details',
-        item: selectedItem,
-        accountability: context.parentData.item
+        transaction: selectedItem,
+        transactionIndex: transactionIndex,
+        CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
+        SEPARATOR: this.parentData.SEPARATOR
       }
     });
   }
