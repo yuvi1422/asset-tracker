@@ -147,45 +147,41 @@ export class TransactionComponent {
     var context = this;
     context.transaction.price = parseInt(context.transaction.price);
 
-    if (context.parentData.isPristine || true) {
-        let storeURL = context.parentData.CATEGORIES_KEY +
-                     context.parentData.SEPARATOR +
-                     this.transaction.category.id;
+    let storeURL = context.parentData.CATEGORIES_KEY +
+      context.parentData.SEPARATOR +
+      this.transaction.category.id;
 
-      context.storage.get(storeURL).then((store) => {
+    context.storage.get(storeURL).then((store) => {
 
-        store = JSON.parse(store);
+      store = JSON.parse(store);
 
-        if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
-                            typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
-          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
-          return;
-        } else {
+      if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
+        typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
+        context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+        return;
+      }
+      if (context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
+        let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
+        let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
+        store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
+        store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;  // Update Accountability Price
+        context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;            // Update Category Price
+      }
 
-        if(context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
-          let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
-          let previousCategoryIndex =  context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
-          store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
-          store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;  // Update Accountability Price
-          context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;            // Update Category Price
-        }
+      context.selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.transaction.accountability.id));
+      store.accountabilities[context.selectedAccountabilityIndex].transactions.push(context.transaction);  // Add Transaction
+      store.accountabilities[context.selectedAccountabilityIndex].price += context.transaction.price;      // Update Accountability Price
+      context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
 
-              context.selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.transaction.accountability.id));
-              store.accountabilities[context.selectedAccountabilityIndex].transactions.push(context.transaction);  // Add Transaction
-              store.accountabilities[context.selectedAccountabilityIndex].price += context.transaction.price;      // Update Accountability Price
-              context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
+      context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.transaction.category.id));
+      context.categories[context.selectedCategoryIndex].price += context.transaction.price;  // Update Category Price
+      context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
 
-              context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.transaction.category.id));
-              context.categories[context.selectedCategoryIndex].price += context.transaction.price;  // Update Category Price
-              context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
-
-              context.navCtrl.setRoot(HomeComponent, {
-                tranasction: context.transaction
-              });
-              alert('Transaction Saved');
-        }
+      context.navCtrl.setRoot(HomeComponent, {
+        tranasction: context.transaction
       });
-    }
+      alert('Transaction Saved');
+    });
   }
 
   /**
