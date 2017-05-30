@@ -147,7 +147,7 @@ export class TransactionComponent {
     context.transaction.price = parseInt(context.transaction.price);
 
     if(isNaN(context.transaction.price) || context.transaction.price === 0 || context.transaction.title.trim() ==='') {
-      context.presentAlert('Please fill up all details');
+      context.displayAlert('Please fill up all details');
       return;
     }
     let storeURL = context.parentData.CATEGORIES_KEY +
