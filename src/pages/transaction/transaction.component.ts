@@ -134,7 +134,6 @@ export class TransactionComponent {
           context.selectedAccountabilityIndex = context.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
         }
         context.transaction.accountability = context.accountabilities[context.selectedAccountabilityIndex];
-        context.logger.log('test');
     });
  
   }
