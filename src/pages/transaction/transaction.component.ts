@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
-import { AlertController } from 'ionic-angular';
+import { NavController, NavParams, ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { HomeComponent } from '../home/home.component';
@@ -69,7 +68,7 @@ export class TransactionComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
-    private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private logger: LoggerService,
     private transactionService: TransactionService) {
 
@@ -103,7 +102,6 @@ export class TransactionComponent {
       } else {
         context.categories = JSON.parse(storeData);
       }
-
 
       if (context.parentData.isPristine === true) {                 // Add new transaction
         context.transaction = context.getBean();
@@ -185,7 +183,7 @@ export class TransactionComponent {
       context.navCtrl.setRoot(HomeComponent, {
         tranasction: context.transaction
       });
-      context.presentAlert('Transaction Saved');
+      context.displayAlert('Transaction Saved');
     });
   }
 
@@ -193,12 +191,18 @@ export class TransactionComponent {
    * @description Function to show Ionic alert
    * @param {string} message message to be displayed
    */
-  presentAlert(message) {
-    let alert = this.alertCtrl.create({
-      title: message,
-      buttons: ['OK']
-    });
-    alert.present();
+  displayAlert(message) {
+    let toast = this.toastCtrl.create({
+    message: message,
+    duration: 3000,
+    position: 'bottom'
+  });
+
+  toast.onDidDismiss(() => {
+    console.log('Dismissed toast');
+  });
+
+  toast.present();
   }
 
   /**
