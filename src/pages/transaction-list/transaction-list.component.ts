@@ -77,7 +77,7 @@ export class TransactionListComponent {
     var context = this;
     context.navCtrl.push(TransactionComponent, {
       parentData: {
-        title: 'From List Transaction Details',
+        title: 'Transaction',
         transaction: selectedItem,
         transactionIndex: transactionIndex,
         CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
