@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
-
+import { AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { HomeComponent } from '../home/home.component';
@@ -69,6 +69,7 @@ export class TransactionComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
+    private alertCtrl: AlertController,
     private logger: LoggerService,
     private transactionService: TransactionService) {
 
@@ -147,10 +148,14 @@ export class TransactionComponent {
     var context = this;
     context.transaction.price = parseInt(context.transaction.price);
 
+    if(isNaN(context.transaction.price) || context.transaction.price === 0 || context.transaction.title.trim() ==='') {
+      context.presentAlert('Please fill up all details');
+      return;
+    }
     let storeURL = context.parentData.CATEGORIES_KEY +
       context.parentData.SEPARATOR +
       this.transaction.category.id;
-
+    
     context.storage.get(storeURL).then((store) => {
 
       store = JSON.parse(store);
@@ -180,8 +185,20 @@ export class TransactionComponent {
       context.navCtrl.setRoot(HomeComponent, {
         tranasction: context.transaction
       });
-      alert('Transaction Saved');
+      context.presentAlert('Transaction Saved');
     });
+  }
+
+  /**
+   * @description Function to show Ionic alert
+   * @param {string} message message to be displayed
+   */
+  presentAlert(message) {
+    let alert = this.alertCtrl.create({
+      title: message,
+      buttons: ['OK']
+    });
+    alert.present();
   }
 
   /**
