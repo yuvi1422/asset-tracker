@@ -197,10 +197,6 @@ export class TransactionComponent {
     position: 'bottom'
   });
 
-  toast.onDidDismiss(() => {
-    console.log('Dismissed toast');
-  });
-
   toast.present();
   }
 

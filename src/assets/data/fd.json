@@ -4,18 +4,31 @@
         {
             "id": "sbi",
             "title": "State Bank of India",
-            "icon": "assets/avatar/janu.jpg",
+            "icon": "assets/avatar/fd/sbi.png",
             "price": 10000,
-            "isActive": true,
+            "isActive": true,   
             "transactions": [
                 {
                     "id": "",
-                    "title": "Farm",
-                    "icon": "assets/avatar/ganu.jpg",
-                    "price": 10000,
+                    "title": "Flat DP",
+                    "price": 50000,
+                    "category": {
+                        "id": "fd"
+                    },
+                    "accountability": {
+                      "id": "sbi"
+                    },
                     "isActive": true
                 }
             ]
+        },
+        {
+            "id": "hdfc",
+            "title": "HDFC Bank",
+            "icon": "assets/avatar/fd/hdfc.png",
+            "price": 0,
+            "isActive": true,
+            "transactions": [ ]
         }
     ]
 }
