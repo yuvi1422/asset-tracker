@@ -4,7 +4,7 @@
         {
             "id": "png",
             "title": "PNG Gadgil",
-            "icon": "assets/avatar/gold/png.jpg",
+            "icon": "assets/avatar/gold/png.png",
             "price": 0,
             "isActive": true,
             "transactions": []
