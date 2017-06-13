@@ -5,29 +5,25 @@
             "id": "people",
             "title": "Friends and Relatives",
             "icon": "people",
-            "price": 12000,
-            "isActive": true
+            "price": 0
         },
         {
             "id": "fd",
             "title": "FD",
             "icon": "lock",
-            "price": 10000,
-            "isActive": true
+            "price": 0
         },
         {
             "id": "gold",
             "title": "Gold",
             "icon": "flask",
-            "price": 55,
-            "isActive": false
+            "price": 0
         },
         {
             "id": "mf",
             "title": "Mutual Fund",
             "icon": "pulse",
-            "price": 0,
-            "isActive": false
+            "price": 0
         }
     ]
 }

@@ -4,63 +4,36 @@
         {
             "id": "ganu",
             "title": "Ganu",
-            "icon": "assets/avatar/ganu.jpg",
-            "price": 12000,
-            "isActive": true,
-            "transactions": [
-                {
-                    "id": "",
-                    "title": "Farm",
-                    "icon": "assets/avatar/ganu.jpg",
-                    "price": 10000,
-                    "isActive": true
-                },
-                {
-                    "id": "",
-                    "title": "Room Rent",
-                    "icon": "people",
-                    "price": 1500,
-                    "isActive": true
-                },
-                {
-                    "id": "",
-                    "title": "Pizza",
-                    "icon": "people",
-                    "price": 500,
-                    "isActive":false
-                }
-            ]
+            "icon": "assets/avatar/people/ganu.jpg",
+            "price": 0,
+            "transactions": []
         },
         {
             "id": "teju",
             "title": "Teju",
-            "icon": "assets/avatar/teju.jpg",
+            "icon": "assets/avatar/people/teju.jpg",
             "price": 0,
-            "isActive": true,
             "transactions": []
         },
         {
             "id": "prashu",
             "title": "Prashu",
-            "icon": "assets/avatar/prashu.jpg",
+            "icon": "assets/avatar/people/prashu.jpg",
             "price": 0,
-            "isActive": true,
             "transactions": []
         },
         {
             "id": "sagarjadhav",
             "title": "Sagar Jadhav",
-            "icon": "assets/avatar/person.ico",
+            "icon": "assets/avatar/people/person.ico",
             "price": 0,
-            "isActive": true,
             "transactions": []
         },
         {
             "id": "janu",
             "title": "Janu",
-            "icon": "assets/avatar/janu.jpg",
+            "icon": "assets/avatar/people/janu.jpg",
             "price": 0,
-            "isActive": false,
             "transactions": []
         }
     ]

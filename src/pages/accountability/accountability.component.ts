@@ -89,7 +89,7 @@ export class AccountabilityComponent {
           return; 
         } else {
           context.items = store.accountabilities;
-          context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+          context.totalAmount = context.utilService.getTotal(context.items, 'price');
         }
       });
     }

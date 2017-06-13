@@ -12,7 +12,7 @@
  <ion-list>
     <ng-container *ngFor="let item of items;">
  
-      <button ion-item *ngIf="item.isActive" (click)="loadAccountibiltyPage(item)">
+      <button ion-item *ngIf="item.price>0" (click)="loadAccountibiltyPage(item)">
 
         <ion-icon [name]="item.icon" item-left></ion-icon>
            

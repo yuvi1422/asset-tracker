@@ -12,15 +12,11 @@ export class UtilService {
    * @description Function to get total of a property values from an array
    * @param items {Array} Array of object whose sum need to be calculated
    * @param calculationProperty {String} Name of the property whose value need to be calcuated to get total
-   * @param visibilityProperty {String} Visibility property name if any
    */
-  getTotal(items, calculationProperty: string, visibilityProperty?: string) {
+  getTotal(items, calculationProperty: string) {
     if(typeof items !== 'undefined') {
       return items.reduce((total, item) => {
-        if(typeof visibilityProperty === 'undefined' || item[visibilityProperty]) {
           return total + item[calculationProperty];
-        }
-        return total;
       }, 0); 
     }
     return 0;

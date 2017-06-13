@@ -65,7 +65,7 @@ export class TransactionListComponent {
     }
     context.items = context.parentData.item.transactions;
     context.title = context.parentData.item.title;
-    context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+    context.totalAmount = context.utilService.getTotal(context.items, 'price');
   }
 
   /**

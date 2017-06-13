@@ -5,22 +5,9 @@
             "id": "sbi",
             "title": "State Bank of India",
             "icon": "assets/avatar/fd/sbi.png",
-            "price": 10000,
+            "price": 0,
             "isActive": true,   
-            "transactions": [
-                {
-                    "id": "",
-                    "title": "Flat DP",
-                    "price": 50000,
-                    "category": {
-                        "id": "fd"
-                    },
-                    "accountability": {
-                      "id": "sbi"
-                    },
-                    "isActive": true
-                }
-            ]
+            "transactions": []
         },
         {
             "id": "hdfc",

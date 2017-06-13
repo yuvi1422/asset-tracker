@@ -211,14 +211,14 @@ export class TransactionComponent {
 
       id: '',
       title: '',
-      icon: 'assets/avatar/person.ico',   // TODO: Once App is working start to end, Provide facility to change icon per transaction.
+      icon: 'assets/avatar/people/person.ico',   // TODO: Once App is working start to end, Provide facility to change icon per transaction.
       price: '',
       isActive: true,
 
       date: new Date(),
       category: null,
       accountability: {
-        icon: 'assets/avatar/person.ico',
+        icon: 'assets/avatar/people/person.ico',
         title: 'Default Account'
       }
     }

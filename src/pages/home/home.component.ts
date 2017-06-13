@@ -94,7 +94,7 @@ export class HomeComponent {
           context.homeService.getData().subscribe(data => {
           context.items = data.categories;
           context.title = data.title;
-          context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+          context.totalAmount = context.utilService.getTotal(context.items, 'price');
           context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
           context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
           
@@ -111,7 +111,7 @@ export class HomeComponent {
           });
         } else {
           context.items = JSON.parse(store);
-          context.totalAmount = context.utilService.getTotal(context.items, 'price', 'isActive');
+          context.totalAmount = context.utilService.getTotal(context.items, 'price');
           context.storage.get(context.TITLE_KEY).then((title) => {
             context.title = JSON.parse(title);
           });
