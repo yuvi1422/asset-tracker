@@ -13,10 +13,10 @@ export class TransactionService {
 
   /**
   * @constructor 
-  * @param http Http service of Angular
-  * @param platform Platform service of ionic
-  * @param storage Storage Service provided by Ionic
-  * @param logger Logger Service
+  * @param {Http} http - Http service of Angular
+  * @param {Platform} platform - Platform service of ionic
+  * @param {Storage} storage - Storage Service provided by Ionic
+  * @param {LoggerService} logger - Logger Service
   */
   constructor(private http: Http, private platform: Platform, 
                 private storage: Storage, 

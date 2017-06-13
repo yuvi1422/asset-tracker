@@ -89,6 +89,7 @@ export class AccountabilityComponent {
           return; 
         } else {
           context.items = store.accountabilities;
+          context.items = context.utilService.sort(context.items, 'price', 'descending');
           context.totalAmount = context.utilService.getTotal(context.items, 'price');
         }
       });

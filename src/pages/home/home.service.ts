@@ -28,8 +28,8 @@ export class HomeService {
 
   /**
   * @constructor 
-  * @param http Http service of Angular
-  * @param platform Platform service of ionic
+  * @param {Http} http - Http service of Angular
+  * @param {Platform} platform - Platform service of ionic
   */
   constructor(private http: Http, private platform: Platform ) { 
 

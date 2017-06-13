@@ -11,10 +11,10 @@ export class AccountabilityService {
 
 /**
   * @description Function to get accountability data
-  * @param id 
+  * @param {string} id - Id of accountability
   * @return {Array} Promise with List of accountability
   */
-  getData(id) {
+  getData(id: string) {
 
     var url = 'assets/data/' + id + '.json';
 

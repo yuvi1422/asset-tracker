@@ -25,8 +25,12 @@ export class CategoryService {
    */
   private DEVICE_DATA_URL:string = '';
 
-
-  constructor(private http: Http, private platform: Platform ) { 
+ /**
+  * @constructor 
+  * @param {Http} http - Http service of Angular
+  * @param {Platform} platform - Platform service of ionic
+  */
+  constructor(private http: Http, private platform: Platform ) {
 
     var context = this;
     if(context.platform.is('cordova') && context.platform.is('android')) {

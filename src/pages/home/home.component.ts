@@ -92,26 +92,30 @@ export class HomeComponent {
         if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
 
           context.homeService.getData().subscribe(data => {
-          context.items = data.categories;
-          context.title = data.title;
-          context.totalAmount = context.utilService.getTotal(context.items, 'price');
-          context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
-          context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
-          
+            context.items = data.categories;
+            context.title = data.title;
+            
+            context.totalAmount = context.utilService.getTotal(context.items, 'price');
+            context.items = context.utilService.sort(context.items, 'price', 'descending');
 
-           data.categories.forEach(function(account) {
-            context.accountabilityService.getData(account.id).subscribe(data => {
-              context.storage.set(context.CATEGORIES_KEY + context.SEPARATOR + account.id, JSON.stringify(data));
-            }, error => {
-              context.storage.set(context.CATEGORIES_KEY + context.SEPARATOR + account.id, {});
-              context.logger.error(account.id + ' is invalid: ' + error);
+            context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
+            context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
+            
+
+            data.categories.forEach(function(account) {
+              context.accountabilityService.getData(account.id).subscribe(data => {
+                context.storage.set(context.CATEGORIES_KEY + context.SEPARATOR + account.id, JSON.stringify(data));
+              }, error => {
+                context.storage.set(context.CATEGORIES_KEY + context.SEPARATOR + account.id, {});
+                context.logger.error(account.id + ' is invalid: ' + error);
+              });
             });
-           });
 
           });
         } else {
           context.items = JSON.parse(store);
           context.totalAmount = context.utilService.getTotal(context.items, 'price');
+          context.items = context.utilService.sort(context.items, 'price', 'descending');
           context.storage.get(context.TITLE_KEY).then((title) => {
             context.title = JSON.parse(title);
           });
