@@ -34,9 +34,16 @@
       </ion-select>
     </ion-item>
 
+    <ion-item *ngIf="transaction.accountability">
+         <ion-avatar item-left class="iconSizedAvatar"><img [src]="transaction.accountability.icon"></ion-avatar>
+         <button ion-button clear class="removeTextTransform" (click)="pickContact();">
+            {{transaction.accountability.title}}
+         </button>
+    </ion-item>
+
     <ion-item>
          <ion-icon ios="ios-create" md="md-create" item-left></ion-icon>
-        <ion-input type="text" placeholder="{{transaction.titlePlaceholder}}" 
+         <ion-input type="text" placeholder="{{transaction.titlePlaceholder}}" 
                    [(ngModel)]="transaction.title"></ion-input>
     </ion-item>
 
