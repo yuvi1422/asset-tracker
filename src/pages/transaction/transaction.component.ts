@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams, ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
 
 import { HomeComponent } from '../home/home.component';
 
@@ -68,6 +69,7 @@ export class TransactionComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
+    private contacts: Contacts,
     private toastCtrl: ToastController,
     private logger: LoggerService,
     private transactionService: TransactionService) {
@@ -224,4 +226,14 @@ export class TransactionComponent {
     }
   }
 
+  /**
+   * @description Function to pick contact from contact list. This only works on devices.
+   */
+  pickContact() {
+    this.contacts.pickContact().then((contact) => {
+      //alert('Selected Contact is: ' + JSON.stringify(contact));
+      this.transaction.accountability.title = contact.displayName;
+      this.transaction.accountability.icon = contact.photos[0].value;
+    });
+  }
 }

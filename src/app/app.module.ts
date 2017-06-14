@@ -4,7 +4,8 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
-  import { HttpModule } from '@angular/http';
+import { HttpModule } from '@angular/http';
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';  
 
 import { MyApp } from './app.component';
 
@@ -45,6 +46,7 @@ import { TransactionService } from "../pages/transaction/transaction.service";
   providers: [
   	     StatusBar,
          SplashScreen,
+         Contacts,
   	     {provide: ErrorHandler, useClass: IonicErrorHandler},
              LoggerService, UtilService,
               HomeService, AccountabilityService, TransactionService]
