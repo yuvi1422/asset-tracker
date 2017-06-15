@@ -92,6 +92,5 @@ It is a product to analyse our assests. Features provided by this product are as
      
    It will create APK at "platforms\android\build\outputs\apk".  
    
-   If you have enabled USB debugging and Developer Mode on your Android device, this APK should be installed on connected android device.
-    
+    Use this APK to install this app.
      
