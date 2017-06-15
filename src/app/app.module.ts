@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
-import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';  
+import { Contacts } from '@ionic-native/contacts';  
 
 import { MyApp } from './app.component';
 
