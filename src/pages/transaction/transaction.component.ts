@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams, ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts';
+import { Contacts } from '@ionic-native/contacts';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { HomeComponent } from '../home/home.component';
 
@@ -70,6 +71,7 @@ export class TransactionComponent {
     public navParams: NavParams,
     private storage: Storage,
     private contacts: Contacts,
+    private sanitizer: DomSanitizer,
     private toastCtrl: ToastController,
     private logger: LoggerService,
     private transactionService: TransactionService) {
@@ -233,7 +235,7 @@ export class TransactionComponent {
     this.contacts.pickContact().then((contact) => {
       //alert('Selected Contact is: ' + JSON.stringify(contact));
       this.transaction.accountability.title = contact.displayName;
-      this.transaction.accountability.icon = contact.photos[0].value;
+      this.transaction.accountability.icon = this.sanitizer.bypassSecurityTrustUrl(contact.photos[0].value);
     });
   }
 }
