@@ -3,12 +3,12 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
-import { DomSanitizer } from '@angular/platform-browser';
 
 import { HomeComponent } from '../home/home.component';
 
 import { LoggerService } from "../../common/log/logger.service";
 import { TransactionService } from "./transaction.service";
+import { UtilService } from "../../common/util/util.service";
 
 @Component({
   selector: 'page-home',
@@ -64,16 +64,20 @@ export class TransactionComponent {
    * @param navCtrl Navigation Controller
    * @param navParams It is used to retrieve navigation parameters
    * @param storage Storage Service provided by Ionic
+   * @param contacts Contacts Service provided by Ionic
+   * @param toastCtrl ToastController Service provided by Ionic-Angular
    * @param logger Logger Service
+   * @param utilService Utility Service
+   * @param transactionService Transaction Service
    */
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
     private contacts: Contacts,
-    private sanitizer: DomSanitizer,
     private toastCtrl: ToastController,
     private logger: LoggerService,
+    private utilService: UtilService,
     private transactionService: TransactionService) {
 
     var context = this;
@@ -112,6 +116,11 @@ export class TransactionComponent {
         context.transaction.category = context.categories[context.selectedCategoryIndex];  // Set first category as default
       } else {                                 // update/delete existing transaction
         context.transaction = JSON.parse(JSON.stringify(context.parentData.transaction));
+
+        if(context.transaction.accountability.icon_uri) {
+          context.transaction.accountability.icon = this.utilService.getSanitizedUrl(context.transaction.accountability.icon_uri);
+        }
+
         context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
         context.transaction.category = context.categories[context.selectedCategoryIndex];
       }
@@ -137,7 +146,7 @@ export class TransactionComponent {
         if(context.parentData.isPristine !== true) {
           context.selectedAccountabilityIndex = context.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
         }
-        context.transaction.accountability = context.accountabilities[context.selectedAccountabilityIndex];
+        //  context.transaction.accountability = context.accountabilities[context.selectedAccountabilityIndex];
     });
  
   }
@@ -146,47 +155,59 @@ export class TransactionComponent {
    * @description Function to save the Transaction
    */
   save() {
-    var context = this;
-    context.transaction.price = parseInt(context.transaction.price);
 
-    if(isNaN(context.transaction.price) || context.transaction.price === 0 || context.transaction.title.trim() ==='') {
+    let context = this;
+    let accountability = context.transaction.accountability;
+    let transaction = JSON.parse(JSON.stringify(context.transaction));    // Make a clone of transaction to avoid circular object
+    transaction.price = parseInt(transaction.price);
+
+    if (isNaN(transaction.price) || transaction.price === 0 || transaction.title.trim() === '') {
       context.displayAlert('Please fill up all details');
       return;
     }
     let storeURL = context.parentData.CATEGORIES_KEY +
       context.parentData.SEPARATOR +
       this.transaction.category.id;
-    
+
     context.storage.get(storeURL).then((store) => {
+      try {
+        store = JSON.parse(store);
 
-      store = JSON.parse(store);
+        if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
+          typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
+          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+          return;
+        }
+        if (context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
+          let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
+          let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
+          store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
+          store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;  // Update Accountability Price
+          context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;            // Update Category Price
+        }
 
-      if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
-        typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
-        context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
-        return;
+        context.selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == transaction.accountability.id));
+        if (context.selectedAccountabilityIndex === -1) {
+          store.accountabilities.push(accountability);
+          context.selectedAccountabilityIndex = store.accountabilities.length - 1;
+        }
+
+        store.accountabilities[context.selectedAccountabilityIndex].transactions.push(transaction);  // Add Transaction
+        store.accountabilities[context.selectedAccountabilityIndex].price += transaction.price;      // Update Accountability Price
+
+        context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
+
+        context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == transaction.category.id));
+        context.categories[context.selectedCategoryIndex].price += transaction.price;  // Update Category Price
+        context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
+
+        context.navCtrl.setRoot(HomeComponent, {
+          tranasction: transaction
+        });
+        context.displayAlert('Transaction Saved');
+      } catch (err) {
+        context.displayAlert('Error in Saving Transaction');
       }
-      if (context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
-        let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
-        let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
-        store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
-        store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;  // Update Accountability Price
-        context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;            // Update Category Price
-      }
-
-      context.selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.transaction.accountability.id));
-      store.accountabilities[context.selectedAccountabilityIndex].transactions.push(context.transaction);  // Add Transaction
-      store.accountabilities[context.selectedAccountabilityIndex].price += context.transaction.price;      // Update Accountability Price
-      context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
-
-      context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == context.transaction.category.id));
-      context.categories[context.selectedCategoryIndex].price += context.transaction.price;  // Update Category Price
-      context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
-
-      context.navCtrl.setRoot(HomeComponent, {
-        tranasction: context.transaction
-      });
-      context.displayAlert('Transaction Saved');
     });
   }
 
@@ -223,7 +244,9 @@ export class TransactionComponent {
       category: null,
       accountability: {
         icon: 'assets/avatar/people/person.ico',
-        title: 'Default Account'
+        title: 'Select Contact',
+        price: 0,
+        transactions: []
       }
     }
   }
@@ -232,10 +255,13 @@ export class TransactionComponent {
    * @description Function to pick contact from contact list. This only works on devices.
    */
   pickContact() {
+
     this.contacts.pickContact().then((contact) => {
-      //alert('Selected Contact is: ' + JSON.stringify(contact));
-      this.transaction.accountability.title = contact.displayName;
-      this.transaction.accountability.icon = this.sanitizer.bypassSecurityTrustUrl(contact.photos[0].value);
+
+     this.transaction.accountability.id = contact.id;
+     this.transaction.accountability.title = contact.displayName;
+     this.transaction.accountability.icon_uri = contact.photos[0].value;
+     this.transaction.accountability.icon = this.utilService.getSanitizedUrl(contact.photos[0].value);
     });
   }
-}
+}11

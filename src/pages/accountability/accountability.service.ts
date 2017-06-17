@@ -26,7 +26,5 @@ export class AccountabilityService {
       .map((res) => {
         return res.json()
       });
-
   }
 }
-

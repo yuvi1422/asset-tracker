@@ -17,7 +17,8 @@
     <ion-item *ngIf="transaction.category">
       <ion-icon [name]="transaction.category.icon" item-left></ion-icon>
       <ion-select [(ngModel)]= "transaction.category" 
-                  (ngModelChange)= "loadAccountabilities()" item-right>
+                  (ngModelChange)= "loadAccountabilities()" 
+                  disabled item-right> <!--TODO: Remove disabled attr once other category support is added. -->
         <ion-option *ngFor="let category of categories; let i = index;"
                     [selected]="i == selectedCategoryIndex"
                     [value]="category">{{category.title}}</ion-option>
@@ -25,7 +26,11 @@
 
     </ion-item>
 
-     <ion-item *ngIf="transaction.accountability">
+<!--     
+    TODO: Use code commented below to provide other categories support.
+    Work on this only after friends and relatives category implementation is completed.
+  
+  <ion-item *ngIf="transaction.accountability">
       <ion-avatar item-left class="iconSizedAvatar"><img [src]="transaction.accountability.icon"></ion-avatar>
       <ion-select [(ngModel)]="transaction.accountability" item-right>
         <ion-option *ngFor="let accountability of accountabilities; let i = index;"
@@ -33,7 +38,7 @@
                     [value]="accountability">{{accountability.title}}</ion-option>
       </ion-select>
     </ion-item>
-
+-->
     <ion-item *ngIf="transaction.accountability">
          <ion-avatar item-left class="iconSizedAvatar"><img [src]="transaction.accountability.icon"></ion-avatar>
          <button ion-button clear class="removeTextTransform" (click)="pickContact();">
@@ -44,7 +49,7 @@
     <ion-item>
          <ion-icon ios="ios-create" md="md-create" item-left></ion-icon>
          <ion-input type="text" placeholder="{{transaction.titlePlaceholder}}" 
-                   [(ngModel)]="transaction.title"></ion-input>
+                   [(ngModel)]="transaction.title"  ></ion-input>
     </ion-item>
 
     <ion-item>

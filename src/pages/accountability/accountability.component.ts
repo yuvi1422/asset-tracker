@@ -81,13 +81,18 @@ export class AccountabilityComponent {
                      context.parentData.categoryId;
 
     context.storage.get(storeURL).then((store) => {
-        
+
         store = JSON.parse(store);
         if (store === null || typeof store === 'undefined' ||
                 typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
           context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
           return; 
         } else {
+          store.accountabilities.forEach(accountability => {
+            if(accountability.icon_uri) {
+              accountability.icon = this.utilService.getSanitizedUrl(accountability.icon_uri);
+            }
+          });
           context.items = store.accountabilities;
           context.items = context.utilService.sort(context.items, 'price', 'descending');
           context.totalAmount = context.utilService.getTotal(context.items, 'price');
