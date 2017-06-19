@@ -7,13 +7,22 @@ ion-item ion-select {
 }
 
 ion-avatar.iconSizedAvatar {
+  margin: 11px 8px 10px 0 !important;
   min-height: 28px !important;
-  min-width: 28px !important;
+  min-width: 24px !important;
   height: 28px;
-  width: 28px;
+  width: 24px;
 }
 
 ion-avatar.iconSizedAvatar img {
   height: 100%;
   width: 100%;
+}
+/**
+* To align ion-avatar similar to ion-icon
+*/
+ion-avatar.iconSizedAvatar + .item-inner {
+  width: 288px;
+  height: 48px;
+  margin-left: 24px;
 }
