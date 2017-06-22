@@ -112,7 +112,7 @@ export class TransactionComponent {
       }
 
       if (context.parentData.isPristine === true) {                 // Add new transaction
-        context.transaction = context.getBean();
+        context.transaction = context.transactionService.getBean();
         context.transaction.category = context.categories[context.selectedCategoryIndex];  // Set first category as default
       } else {                                 // update/delete existing transaction
         context.transaction = JSON.parse(JSON.stringify(context.parentData.transaction));
@@ -223,32 +223,6 @@ export class TransactionComponent {
   });
 
   toast.present();
-  }
-
-  /**
-   * @description Function to get the Transaction bean
-   * @returns {object} transaction object
-   */
-  getBean() {
-    return {
-      titlePlaceholder: 'Note',
-      pricePlaceholder: 0,
-
-      id: '',
-      title: '',
-      icon: 'assets/avatar/people/person.ico',   // TODO: Once App is working start to end, Provide facility to change icon per transaction.
-      price: '',
-      isActive: true,
-
-      date: new Date(),
-      category: null,
-      accountability: {
-        icon: 'assets/avatar/people/person.ico',
-        title: 'Select Contact',
-        price: 0,
-        transactions: []
-      }
-    }
   }
 
   /**
