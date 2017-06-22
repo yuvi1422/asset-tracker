@@ -165,6 +165,12 @@ export class TransactionComponent {
       context.displayAlert('Please fill up all details');
       return;
     }
+    //  When user do not select any accountability in case of 'people' category.
+    if(transaction.category.id === 'people' && 
+          transaction.accountability.title === context.transactionService.getBean().accountability.title) {
+      context.displayAlert('Please select a contact');
+      return;
+    }
     let storeURL = context.parentData.CATEGORIES_KEY +
       context.parentData.SEPARATOR +
       this.transaction.category.id;
