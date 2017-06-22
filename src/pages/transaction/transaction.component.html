@@ -60,7 +60,11 @@
 
     <ion-item>
       <ion-icon name="md-calendar" item-left></ion-icon>
-      <ion-datetime displayFormat="DD/MMM/YYYY" [(ngModel)]="transaction.date"></ion-datetime>
+      <input class="datepicker"
+             [ngModel]="transaction.date | date:'yyyy-MM-dd'" 
+             (ngModelChange)="transaction.date = $event" 
+             type="date" 
+             name="transactionDate"/>
     </ion-item>
 
   </ion-list>
