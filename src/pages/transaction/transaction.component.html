@@ -42,9 +42,9 @@
 -->
     <ion-item *ngIf="transaction.accountability">
          <ion-avatar item-left class="iconSizedAvatar"><img [src]="transaction.accountability.icon"></ion-avatar>
-         <button ion-button clear class="removeTextTransform" (click)="pickContact();">
+         <div clear (click)="pickContact();">
             {{transaction.accountability.title}}
-         </button>
+         </div>
     </ion-item>
 
     <ion-item>
