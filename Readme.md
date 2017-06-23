@@ -1,8 +1,12 @@
 # Asset Tracker
 
+![alt text](https://user-images.githubusercontent.com/5191208/27481891-b91361fe-583c-11e7-8ec2-741f43a909a0.png)
+
 It is a product to analyse our assests. Features provided by this product are as below:
-- Dashboard of all assets
-- Adding new asset into total assets
+- Dashboard of all assets.
+- Adding new asset into asset list.
+- Updating existing asset details.
+- Deleting existing asset details.
 
 
 # Prerequisite
