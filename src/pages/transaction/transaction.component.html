@@ -14,11 +14,12 @@
 
   <ion-list  *ngIf="transaction">
 
-    <ion-item *ngIf="transaction.category">
+<!--TODO: Remove hidden attr once other category support is added.-->
+    <ion-item *ngIf="transaction.category" [hidden]="true">
       <ion-icon [name]="transaction.category.icon" item-left></ion-icon>
       <ion-select [(ngModel)]= "transaction.category" 
                   (ngModelChange)= "loadAccountabilities()" 
-                  disabled item-right> <!--TODO: Remove disabled attr once other category support is added. -->
+                  item-right>
         <ion-option *ngFor="let category of categories; let i = index;"
                     [selected]="i == selectedCategoryIndex"
                     [value]="category">{{category.title}}</ion-option>
