@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      {{ title }}
+      {{ parentData.title }}
       <div class="pull-right">
         <ion-icon name="md-create" ></ion-icon>
         <ion-icon name="md-trash" class="deleteTranasction"></ion-icon>
@@ -12,7 +12,7 @@
 
 <ion-content padding>
 
-  <ion-list *ngIf="transaction">
+  <ion-list  *ngIf="transaction">
 
     <ion-item *ngIf="transaction.category">
       <ion-icon [name]="transaction.category.icon" item-left></ion-icon>
@@ -72,5 +72,6 @@
   <button  id="accountabilityBtn"
            (click)="save();"
            color="secondary"
-           ion-button full>Save</button>
+           ion-button full
+           *ngIf="transaction">Save</button>
 </ion-content>

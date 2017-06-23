@@ -21,13 +21,7 @@ export class TransactionComponent {
    * @description Data received from parent
    * @private 
    */
-  private parentData: any = null;
-
-  /**
-   * @description Title of component
-   * @public 
-   */
-  public title: string = 'Transaction Details';
+  public parentData: any = null;
 
   /**
    * @description Transaction object
@@ -125,9 +119,7 @@ export class TransactionComponent {
         context.transaction.category = context.categories[context.selectedCategoryIndex];
       }
       context.loadAccountabilities();
-      context.title = context.parentData.title;
     });
-
   }
 
    /**
@@ -146,7 +138,8 @@ export class TransactionComponent {
         if(context.parentData.isPristine !== true) {
           context.selectedAccountabilityIndex = context.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
         }
-        //  context.transaction.accountability = context.accountabilities[context.selectedAccountabilityIndex];
+        //  TODO: Use code below once other category support is added.
+        //  context.transaction.accountability = context.accountabilities[context.selectedAccountabilityIndex]; 
     });
  
   }
