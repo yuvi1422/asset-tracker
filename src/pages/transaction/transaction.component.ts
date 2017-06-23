@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, ToastController} from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
 
@@ -60,6 +60,7 @@ export class TransactionComponent {
    * @param storage Storage Service provided by Ionic
    * @param contacts Contacts Service provided by Ionic
    * @param toastCtrl ToastController Service provided by Ionic-Angular
+   * @param alertCtrl AlertController Service provided by Ionic-Angular
    * @param logger Logger Service
    * @param utilService Utility Service
    * @param transactionService Transaction Service
@@ -70,6 +71,7 @@ export class TransactionComponent {
     private storage: Storage,
     private contacts: Contacts,
     private toastCtrl: ToastController,
+    private alertCtrl: AlertController,
     private logger: LoggerService,
     private utilService: UtilService,
     private transactionService: TransactionService) {
@@ -155,13 +157,13 @@ export class TransactionComponent {
     transaction.price = parseInt(transaction.price);
 
     if (isNaN(transaction.price) || transaction.price === 0 || transaction.title.trim() === '') {
-      context.displayAlert('Please fill up all details');
+      context.displayToast('Please fill up all details');
       return;
     }
     //  When user do not select any accountability in case of 'people' category.
     if(transaction.category.id === 'people' && 
           transaction.accountability.title === context.transactionService.getBean().accountability.title) {
-      context.displayAlert('Please select a contact');
+      context.displayToast('Please select a contact');
       return;
     }
     let storeURL = context.parentData.CATEGORIES_KEY +
@@ -178,11 +180,7 @@ export class TransactionComponent {
           return;
         }
         if (context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
-          let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
-          let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
-          store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
-          store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;  // Update Accountability Price
-          context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;            // Update Category Price
+          context.delete(store);
         }
 
         context.selectedAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == transaction.accountability.id));
@@ -190,34 +188,106 @@ export class TransactionComponent {
           store.accountabilities.push(accountability);
           context.selectedAccountabilityIndex = store.accountabilities.length - 1;
         }
+        
+        // Add Transaction
+        store.accountabilities[context.selectedAccountabilityIndex].transactions.push(transaction);
 
-        store.accountabilities[context.selectedAccountabilityIndex].transactions.push(transaction);  // Add Transaction
-        store.accountabilities[context.selectedAccountabilityIndex].price += transaction.price;      // Update Accountability Price
+        // Update Accountability Price
+        store.accountabilities[context.selectedAccountabilityIndex].price += transaction.price;
 
-        context.storage.set(storeURL, JSON.stringify(store));                                        // Update Accountability Storage
+        // Update Accountability Storage
+        context.storage.set(storeURL, JSON.stringify(store));
 
         context.selectedCategoryIndex = context.categories.findIndex((obj => obj.id == transaction.category.id));
-        context.categories[context.selectedCategoryIndex].price += transaction.price;  // Update Category Price
-        context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories)); //  Update Category Storage
 
-        context.navCtrl.setRoot(HomeComponent, {
-          tranasction: transaction
-        });
-        context.displayAlert('Transaction Saved');
+        // Update Category Price
+        context.categories[context.selectedCategoryIndex].price += transaction.price;
+
+        //  Update Category Storage
+        context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories));
+
+        context.navCtrl.setRoot(HomeComponent);
+        context.displayToast('Transaction Saved Sucessfully');
       } catch (err) {
-        context.displayAlert('Error in Saving Transaction');
+        context.displayToast('Error in Saving Transaction');
       }
     });
   }
 
   /**
-   * @description Function to show Ionic alert
+   * @description Function to delete the Transaction
+   * @param {any} store - Either a promise object or null.
+   */
+  delete(store) {
+     let context = this;
+
+     if(store !== null) {  // When store value is already retrieved. Ex. Clicking on Save Button.
+       let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
+       let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
+       store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
+
+      // Update Accountability Price
+       store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;
+
+      // Update Category Price
+       context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;
+     } else { //  Clicking on Delete Button.
+
+       let alert = this.alertCtrl.create({
+         title: 'Confirm Delete',
+         message: 'Are you sure you want to delete this transaction?',
+         buttons: [
+           {
+             text: 'Cancel',
+             role: 'cancel'
+           },
+           {
+             text: 'Delete',
+             handler: () => {
+               let storeURL = context.parentData.CATEGORIES_KEY +
+                 context.parentData.SEPARATOR +
+                 context.parentData.transaction.category.id;
+
+               context.storage.get(storeURL).then((store) => {
+
+                 store = JSON.parse(store);
+
+
+                 let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
+                 let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
+                 store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
+
+                 // Update Accountability Price
+                 store.accountabilities[previousAccountabilityIndex].price -= context.parentData.transaction.price;
+
+                 // Update Category Price
+                 context.categories[previousCategoryIndex].price -= context.parentData.transaction.price;
+
+                 // Update Accountability Storage
+                 context.storage.set(storeURL, JSON.stringify(store));
+
+                 //  Update Category Storage
+                 context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories));
+
+                 context.navCtrl.setRoot(HomeComponent);
+                 context.displayToast('Transaction Deleted Sucessfully');
+               });
+             }
+           }
+         ]
+       });
+       alert.present();
+     }
+  }
+
+  /**
+   * @description Function to show Ionic Toast
    * @param {string} message message to be displayed
    */
-  displayAlert(message) {
+  displayToast(message) {
     let toast = this.toastCtrl.create({
     message: message,
-    duration: 3000,
+    duration: 2500,
     position: 'bottom'
   });
 
