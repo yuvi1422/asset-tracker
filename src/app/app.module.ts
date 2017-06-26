@@ -16,12 +16,16 @@ import { AccountabilityComponent } from '../pages/accountability/accountability.
 import { TransactionListComponent } from '../pages/transaction-list/transaction-list.component';
 import { TransactionComponent } from '../pages/transaction/transaction.component';
 
+import { SettingsComponent } from '../pages/settings/settings.component';
+
 import { LoggerService } from "../common/log/logger.service";
 import { UtilService } from "../common/util/util.service";
 
 import { HomeService } from '../pages/home/home.service';
 import { AccountabilityService } from '../pages/accountability/accountability.service';
 import { TransactionService } from "../pages/transaction/transaction.service";
+
+import { SettingsService } from "../pages/settings/settings.service";
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { TransactionService } from "../pages/transaction/transaction.service";
     HomeComponent,
     AccountabilityComponent,
     TransactionListComponent,
-    TransactionComponent
+    TransactionComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +50,8 @@ import { TransactionService } from "../pages/transaction/transaction.service";
     HomeComponent,
     AccountabilityComponent,
     TransactionListComponent,
-    TransactionComponent
+    TransactionComponent,
+    SettingsComponent
   ],
   providers: [
   	     StatusBar,
@@ -53,6 +59,6 @@ import { TransactionService } from "../pages/transaction/transaction.service";
          Contacts,
   	     {provide: ErrorHandler, useClass: IonicErrorHandler},
              LoggerService, UtilService,
-              HomeService, AccountabilityService, TransactionService]
+              HomeService, AccountabilityService, TransactionService, SettingsService]
 })
 export class AppModule {}

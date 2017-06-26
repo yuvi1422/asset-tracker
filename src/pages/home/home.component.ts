@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, PopoverController} from 'ionic-angular';
+import { NavController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { PopoverListComponent } from '../../common/popover/popover-list.component';
@@ -93,7 +93,9 @@ export class HomeComponent {
     var context = this;
 
       context.storage.get(context.CATEGORIES_KEY).then((store) => {
-        if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
+
+        //  True: when no value is stored in storage
+        if (store === null || typeof store === 'undefined') {
 
           context.homeService.getData().subscribe(data => {
             context.items = data.categories;
@@ -161,12 +163,7 @@ export class HomeComponent {
    */
   displayMenu(event) {
     let popover = this.popoverCtrl.create(PopoverListComponent, {
-      items: [
-        {
-          title: 'Settings',
-          url: 'home'
-        }
-      ]
+      items: [ 'settings' ]
     });
     popover.present({
       ev: event

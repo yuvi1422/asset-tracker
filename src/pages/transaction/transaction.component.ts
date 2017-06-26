@@ -16,7 +16,6 @@ import { UtilService } from "../../common/util/util.service";
 })
 export class TransactionComponent {
 
-
   /**
    * @description Data received from parent
    * @private 
