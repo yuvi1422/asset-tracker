@@ -20,7 +20,7 @@ export class HomeComponent {
 
   
   /**
-   * @description item list to be displayed
+   * @description Path Seperator
    * @private
    */
    private SEPARATOR: string = '-';
@@ -30,12 +30,6 @@ export class HomeComponent {
    * @public
    */
    public items: Array<any>;
-
-   /**
-   * @description Title of component
-   * @public
-   */
-    public title:string;
 
    /**
    * @description Sum of all the item's price
@@ -54,13 +48,6 @@ export class HomeComponent {
    * @private
    */
    private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + 'categories';
-
-   /**
-   * @description Title key. It is used to store and retrieve data from storage
-   * @private
-   */
-   private TITLE_KEY: string = this.STORE_KEY + this.SEPARATOR  + 'title';
-
 
  /**
   * @constructor
@@ -99,14 +86,11 @@ export class HomeComponent {
 
           context.homeService.getData().subscribe(data => {
             context.items = data.categories;
-            context.title = data.title;
             
             context.totalAmount = context.utilService.getTotal(context.items, 'price');
             context.items = context.utilService.sort(context.items, 'price', 'descending');
 
             context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
-            context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
-            
 
             data.categories.forEach(function(account) {
               context.accountabilityService.getData(account.id).subscribe(data => {
@@ -122,9 +106,6 @@ export class HomeComponent {
           context.items = JSON.parse(store);
           context.totalAmount = context.utilService.getTotal(context.items, 'price');
           context.items = context.utilService.sort(context.items, 'price', 'descending');
-          context.storage.get(context.TITLE_KEY).then((title) => {
-            context.title = JSON.parse(title);
-          });
         }
       });
     }

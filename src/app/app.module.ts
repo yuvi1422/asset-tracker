@@ -5,7 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
 import { HttpModule } from '@angular/http';
-import { Contacts } from '@ionic-native/contacts';  
+import { Contacts } from '@ionic-native/contacts';
+import { File } from '@ionic-native/file';
 
 import { MyApp } from './app.component';
 
@@ -20,6 +21,8 @@ import { SettingsComponent } from '../pages/settings/settings.component';
 
 import { LoggerService } from "../common/log/logger.service";
 import { UtilService } from "../common/util/util.service";
+import { UrlService } from "../common/util/url.service";
+import { MessageService } from "../common/util/message.service";
 
 import { HomeService } from '../pages/home/home.service';
 import { AccountabilityService } from '../pages/accountability/accountability.service';
@@ -57,8 +60,9 @@ import { SettingsService } from "../pages/settings/settings.service";
   	     StatusBar,
          SplashScreen,
          Contacts,
+         File,
   	     {provide: ErrorHandler, useClass: IonicErrorHandler},
-             LoggerService, UtilService,
+             LoggerService, UtilService, UrlService, MessageService,
               HomeService, AccountabilityService, TransactionService, SettingsService]
 })
 export class AppModule {}

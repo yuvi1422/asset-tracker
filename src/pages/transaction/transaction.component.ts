@@ -56,10 +56,10 @@ export class TransactionComponent {
    * @constructor 
    * @param navCtrl Navigation Controller
    * @param navParams It is used to retrieve navigation parameters
-   * @param storage Storage Service provided by Ionic
-   * @param contacts Contacts Service provided by Ionic
    * @param toastCtrl ToastController Service provided by Ionic-Angular
    * @param alertCtrl AlertController Service provided by Ionic-Angular
+   * @param storage Storage Service provided by Ionic
+   * @param contacts Contacts Service provided by Ionic   
    * @param logger Logger Service
    * @param utilService Utility Service
    * @param transactionService Transaction Service
@@ -67,10 +67,10 @@ export class TransactionComponent {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private storage: Storage,
-    private contacts: Contacts,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
+    private storage: Storage,
+    private contacts: Contacts,
     private logger: LoggerService,
     private utilService: UtilService,
     private transactionService: TransactionService) {
@@ -161,6 +161,7 @@ export class TransactionComponent {
     }
 
     //  When user do not select any accountability in case of 'people' category.
+
     if(transaction.category.id === 'people' && 
           transaction.accountability.title === context.transactionService.getBean().accountability.title) {
       context.displayToast('Please select a contact');
@@ -251,7 +252,6 @@ export class TransactionComponent {
                context.storage.get(storeURL).then((store) => {
 
                  store = JSON.parse(store);
-
 
                  let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
                  let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));

@@ -11,8 +11,7 @@
 <ion-list *ngIf = "items">
 
     <ng-container *ngFor="let item of items">
- 
-      <button ion-item> {{ item.title }} </button>
+       <button ion-item (click)="changeSettings(item.id);"> {{ item.title }} </button>
     </ng-container>
 
   </ion-list>
