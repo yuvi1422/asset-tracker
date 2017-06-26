@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [ngClass]="{ 'noTransaction': totalAmount == 0 }">
 
  <ion-list>
     <ng-container *ngFor="let item of items;">
@@ -28,8 +28,8 @@
 
     </ng-container>
   
-  </ion-list>
-
+ </ion-list>
+ <img *ngIf="totalAmount === 0 " src="../../assets/images/add_btn_message.jpg">
 
  <ion-fab center bottom>
     <button ion-fab color="secondary" (click)="loadTransactionPage()">

@@ -159,6 +159,7 @@ export class TransactionComponent {
       context.displayToast('Please fill up all details');
       return;
     }
+
     //  When user do not select any accountability in case of 'people' category.
     if(transaction.category.id === 'people' && 
           transaction.accountability.title === context.transactionService.getBean().accountability.title) {
