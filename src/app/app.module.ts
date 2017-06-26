@@ -9,9 +9,7 @@ import { Contacts } from '@ionic-native/contacts';
 
 import { MyApp } from './app.component';
 
-import { PopoverListComponent } from '../common/popover/popover-list.component';
-
-import { HomeComponent} from '../pages/home/home.component';
+import { HomeComponent } from '../pages/home/home.component';
 import { AccountabilityComponent } from '../pages/accountability/accountability.component';
 import { TransactionListComponent } from '../pages/transaction-list/transaction-list.component';
 import { TransactionComponent } from '../pages/transaction/transaction.component';
@@ -26,7 +24,6 @@ import { TransactionService } from "../pages/transaction/transaction.service";
 @NgModule({
   declarations: [
     MyApp,
-    PopoverListComponent,
     HomeComponent,
     AccountabilityComponent,
     TransactionListComponent,
@@ -41,7 +38,6 @@ import { TransactionService } from "../pages/transaction/transaction.service";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    PopoverListComponent,
     HomeComponent,
     AccountabilityComponent,
     TransactionListComponent,
