@@ -3,7 +3,7 @@ import { ViewController} from 'ionic-angular';
 
 @Component({
   template: `
-    <ion-list>
+    <ion-list class="zeroMarginBottom">
       <button ion-item *ngFor="let item of items;" (click)="close()">{{ item.title }}</button>
     </ion-list>
   `
