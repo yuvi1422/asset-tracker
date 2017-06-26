@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, PopoverController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+
+import { PopoverListComponent } from '../../common/popover/popover-list.component';
 
 import { AccountabilityComponent } from '../accountability/accountability.component';
 import { TransactionComponent } from '../transaction/transaction.component';
@@ -63,6 +65,7 @@ export class HomeComponent {
  /**
   * @constructor
   * @param navCtrl Navigation Controller
+  * @param popoverCtrl Popover Controller
   * @param storage Storage Service provided by Ionic
   * @param logger Logger Service
   * @param utilService Utility Service
@@ -70,6 +73,7 @@ export class HomeComponent {
   * @param accountabilityService Accountability Page Service
   */
   constructor(public navCtrl: NavController,
+    private popoverCtrl: PopoverController,
     private storage: Storage,
     private logger: LoggerService,
     private utilService: UtilService,
@@ -149,6 +153,23 @@ export class HomeComponent {
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR
       }
+    });
+  }
+
+  /**
+   * @description Function to show Popover Menu
+   */
+  displayMenu(event) {
+    let popover = this.popoverCtrl.create(PopoverListComponent, {
+      items: [
+        {
+          title: 'Settings',
+          url: 'home'
+        }
+      ]
+    });
+    popover.present({
+      ev: event
     });
   }
 }
