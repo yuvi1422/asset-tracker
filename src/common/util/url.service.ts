@@ -62,6 +62,12 @@ export class UrlService {
    */
   private DEVICE_DATA_URL:string = '';
 
+   /**
+   * @description Add Btn Image Url.
+   * @private 
+   */
+  private ADD_BTN_IMAGE_URL:string = 'assets/images/add_btn_message.jpg';
+
 
   /**
    * @constructor
@@ -73,6 +79,7 @@ export class UrlService {
     if (this.platform.is('cordova') && this.platform.is('android')) {
       this.DEVICE_DATA_URL = this.ANDROID_DATA_URL;
     }
+    this.ADD_BTN_IMAGE_URL = this.DEVICE_DATA_URL + this.ADD_BTN_IMAGE_URL;
   }
 
 
@@ -139,5 +146,13 @@ export class UrlService {
    */
   getDeviceDataUrl() {
     return this.DEVICE_DATA_URL;
+  }
+
+   /**
+   * @description Function to Add Btn Image Url.
+   * @returns {string} Add Btn Image Url.
+   */
+  getAddBtnImageUrl() {
+    return this.ADD_BTN_IMAGE_URL;
   }
 }

@@ -29,7 +29,7 @@
     </ng-container>
   
  </ion-list>
- <img *ngIf="totalAmount === 0 " src="../../assets/images/add_btn_message.jpg">
+ <img *ngIf="totalAmount === 0 " [src]="addBtnImageUrl">
 
  <ion-fab center bottom>
     <button ion-fab color="secondary" (click)="loadTransactionPage()">

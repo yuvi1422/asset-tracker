@@ -10,6 +10,8 @@ import { TransactionComponent } from '../transaction/transaction.component';
 import { HomeService } from './home.service';
 import { LoggerService } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
+import { UrlService } from "../../common/util/url.service";
+
 import { AccountabilityService } from './../accountability/accountability.service';
 
 @Component({
@@ -49,6 +51,12 @@ export class HomeComponent {
    */
    private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + 'categories';
 
+  /**
+   * @description Add Btn Image Url.
+   * @private 
+   */
+  public addBtnImageUrl:string;
+
  /**
   * @constructor
   * @param navCtrl Navigation Controller
@@ -56,6 +64,7 @@ export class HomeComponent {
   * @param storage Storage Service provided by Ionic
   * @param logger Logger Service
   * @param utilService Utility Service
+  * @param urlService Url Service used to get all application urls.
   * @param homeService Home Page Service
   * @param accountabilityService Accountability Page Service
   */
@@ -64,6 +73,7 @@ export class HomeComponent {
     private storage: Storage,
     private logger: LoggerService,
     private utilService: UtilService,
+    private urlService: UrlService,
     private homeService: HomeService,
     private accountabilityService: AccountabilityService) {
 
@@ -78,6 +88,8 @@ export class HomeComponent {
    */
   loadData() {
     var context = this;
+
+      context.addBtnImageUrl = context.urlService.getAddBtnImageUrl();
 
       context.storage.get(context.CATEGORIES_KEY).then((store) => {
 
