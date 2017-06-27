@@ -20,7 +20,12 @@ import { AccountabilityService } from './../accountability/accountability.servic
 })
 export class HomeComponent {
 
-  
+   /**
+   * @description Title of component
+   * @public
+   */
+    public title:string;
+
   /**
    * @description Path Seperator
    * @private
@@ -90,7 +95,8 @@ export class HomeComponent {
     var context = this;
 
       context.addBtnImageUrl = context.urlService.getAddBtnImageUrl();
-
+      context.title = context.urlService.getAppName();
+      
       context.storage.get(context.CATEGORIES_KEY).then((store) => {
 
         //  True: when no value is stored in storage
