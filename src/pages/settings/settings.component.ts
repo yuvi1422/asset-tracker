@@ -130,8 +130,7 @@ export class SettingsComponent {
                  try{
                      context.writeToFile(rootPath, appDirectoryPath, dirName, fileName, storeData, true); 
                  } catch (err) {
-                   context.messageService.displayToast('Error while taking backup. Details are as below \n : ' + 
-                                                          JSON.stringify(err), 4000, 'bottom');
+                   context.messageService.displayToast('Error while taking backup.', 4000, 'bottom');
                  }
              });
            }
@@ -162,12 +161,10 @@ export class SettingsComponent {
       context.file.writeFile(appDirectoryPath, fileName, JSON.parse(storeData), options).then(function(result) {
       context.messageService.displayToast('Backup Taken Sucessfully', 2500, 'bottom');
       }, function(err) {
-        context.messageService.displayToast('Error while writing. Details are as below \n : ' +
-                                        JSON.stringify(err), 4000, 'bottom');
+        context.messageService.displayToast('Error while writing data to backup file.', 4000, 'bottom');
       });
     }, function(err) {
-      context.messageService.displayToast('Error while creating App Directory. Details are as below \n : ' +
-                                        JSON.stringify(err), 4000, 'bottom');
+      context.messageService.displayToast('Error while creating App Directory.', 4000, 'bottom');
     });
   }
 }
