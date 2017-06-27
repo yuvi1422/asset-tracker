@@ -63,7 +63,7 @@ export class TransactionListComponent {
       context.logger.error('TransactionListComponent --> Error in retrieving parent data');
       return;
     }
-    context.items = context.parentData.item.transactions;
+    context.items = context.utilService.sort(context.parentData.item.transactions, 'date', 'ascending');
     context.title = context.parentData.item.title;
     context.totalAmount = context.utilService.getTotal(context.items, 'price');
   }
