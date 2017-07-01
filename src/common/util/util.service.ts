@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { LoggerService } from "../log/logger.service";
+import { Logger } from "../log/logger.service";
 
 @Injectable()
 export class UtilService {
@@ -12,7 +12,7 @@ export class UtilService {
    * @param sanitizer DomSanitizer provided by Angular
    * @param logger Logger Service
    */
-  constructor(private sanitizer: DomSanitizer, private logger: LoggerService){ }
+  constructor(private sanitizer: DomSanitizer, private logger: Logger){ }
 
   /**
    * @description Function to get total of a property values from an array.

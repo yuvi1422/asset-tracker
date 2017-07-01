@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 
 import { ToastController, AlertController} from 'ionic-angular';
 
-import { LoggerService } from "../log/logger.service";
+import { Logger } from "../log/logger.service";
 
 @Injectable()
 export class MessageService {
@@ -16,7 +16,7 @@ export class MessageService {
    */
   constructor(private toastCtrl: ToastController,
               private alertCtrl: AlertController,
-              private logger: LoggerService){ }
+              private logger: Logger){ }
 
  /**
    * @description Function to show Ionic Toast

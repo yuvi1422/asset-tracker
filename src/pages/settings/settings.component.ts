@@ -4,7 +4,7 @@ import { NavController, ToastController, AlertController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/file';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UrlService } from "../../common/util/url.service";
 import { MessageService } from "../../common/util/message.service";
 
@@ -52,7 +52,7 @@ export class SettingsComponent {
     private alertCtrl: AlertController,
     private storage: Storage,
     private file: File,
-    private logger: LoggerService,
+    private logger: Logger,
     private urlService: UrlService,
     private messageService: MessageService,
     private settingsService: SettingsService) {

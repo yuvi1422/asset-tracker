@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 
 import { Platform } from 'ionic-angular';
 
-import { LoggerService } from "../log/logger.service";
+import { Logger } from "../log/logger.service";
 
 @Injectable()
 export class UrlService {
@@ -74,7 +74,7 @@ export class UrlService {
    * @param logger Logger Service
    * @param {Platform} platform - Platform service of ionic
    */
-  constructor(private logger: LoggerService,
+  constructor(private logger: Logger,
               private platform: Platform ) {
     if (this.platform.is('cordova') && this.platform.is('android')) {
       this.DEVICE_DATA_URL = this.ANDROID_DATA_URL;

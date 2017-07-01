@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { TransactionComponent } from '../transaction/transaction.component';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 
 @Component({
@@ -47,7 +47,7 @@ export class TransactionListComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private utilService: UtilService,
-    private logger: LoggerService) {
+    private logger: Logger) {
 
     this.parentData = navParams.get('parentData');
     this.loadData();

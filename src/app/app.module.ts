@@ -19,7 +19,7 @@ import { TransactionComponent } from '../pages/transaction/transaction.component
 
 import { SettingsComponent } from '../pages/settings/settings.component';
 
-import { LoggerService } from "../common/log/logger.service";
+import { Logger } from "../common/log/logger.service";
 import { UtilService } from "../common/util/util.service";
 import { UrlService } from "../common/util/url.service";
 import { MessageService } from "../common/util/message.service";
@@ -62,7 +62,7 @@ import { SettingsService } from "../pages/settings/settings.service";
          Contacts,
          File,
   	     {provide: ErrorHandler, useClass: IonicErrorHandler},
-             LoggerService, UtilService, UrlService, MessageService,
+             Logger, UtilService, UrlService, MessageService,
               HomeService, AccountabilityService, TransactionService, SettingsService]
 })
 export class AppModule {}

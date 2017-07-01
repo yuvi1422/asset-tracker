@@ -8,7 +8,7 @@ import { AccountabilityComponent } from '../accountability/accountability.compon
 import { TransactionComponent } from '../transaction/transaction.component';
 
 import { HomeService } from './home.service';
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 import { UrlService } from "../../common/util/url.service";
 
@@ -76,7 +76,7 @@ export class HomeComponent {
   constructor(public navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private storage: Storage,
-    private logger: LoggerService,
+    private logger: Logger,
     private utilService: UtilService,
     private urlService: UrlService,
     private homeService: HomeService,

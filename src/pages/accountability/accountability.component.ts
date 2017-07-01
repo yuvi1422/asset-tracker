@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 
 import { TransactionListComponent } from '../transaction-list/transaction-list.component';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 
 import { AccountabilityService } from './accountability.service';
@@ -52,7 +52,7 @@ export class AccountabilityComponent {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
-    private logger: LoggerService,
+    private logger: Logger,
     private utilService: UtilService,
     private accountabilityService: AccountabilityService) {
 

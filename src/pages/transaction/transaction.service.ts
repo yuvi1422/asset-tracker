@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 
 import { Platform } from 'ionic-angular';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 
 @Injectable()
 export class TransactionService {
@@ -16,11 +16,11 @@ export class TransactionService {
   * @param {Http} http - Http service of Angular
   * @param {Platform} platform - Platform service of ionic
   * @param {Storage} storage - Storage Service provided by Ionic
-  * @param {LoggerService} logger - Logger Service
+  * @param {Logger} logger - Logger Service
   */
   constructor(private http: Http, private platform: Platform, 
                 private storage: Storage, 
-                private logger: LoggerService) { 
+                private logger: Logger) { 
     
   }
 

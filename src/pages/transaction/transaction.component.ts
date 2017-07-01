@@ -6,7 +6,7 @@ import { Contacts } from '@ionic-native/contacts';
 
 import { HomeComponent } from '../home/home.component';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { TransactionService } from "./transaction.service";
 import { UtilService } from "../../common/util/util.service";
 
@@ -71,7 +71,7 @@ export class TransactionComponent {
     private alertCtrl: AlertController,
     private storage: Storage,
     private contacts: Contacts,
-    private logger: LoggerService,
+    private logger: Logger,
     private utilService: UtilService,
     private transactionService: TransactionService) {
 
