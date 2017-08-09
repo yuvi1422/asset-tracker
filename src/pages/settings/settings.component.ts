@@ -4,6 +4,8 @@ import { NavController, ToastController, AlertController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/file';
 
+import { HomeComponent } from '../home/home.component';
+
 import { Logger } from "../../common/log/logger.service";
 import { UrlService } from "../../common/util/url.service";
 import { MessageService } from "../../common/util/message.service";
@@ -15,6 +17,19 @@ import { SettingsService } from "./settings.service";
   templateUrl: 'settings.component.html'
 })
 export class SettingsComponent {
+
+   /**
+   * @description Name of component
+   * @private
+   */
+    private name:string = 'settings';
+
+   /**
+   * @description An object containing all messages of this component.
+   * @private
+   */
+    private messageContainer:any;
+
 
    /**
    * @description Title of component
@@ -43,7 +58,7 @@ export class SettingsComponent {
    * @param file File Service provided by Ionic
    * @param logger Logger Service
    * @param urlService Url Service used to get all application urls.
-   * @param MessageService Url Service used to show messages.
+   * @param MessageService Message Service used to show messages.
    * @param settingsService Service of Settings module.
    */
 
@@ -86,6 +101,9 @@ export class SettingsComponent {
         context.items = storeData.items;
       }
 
+      //  Load all messages
+      context.messageContainer = context.messageService.getMessages(context.name);
+
     });
   }
 
@@ -95,49 +113,86 @@ export class SettingsComponent {
   changeSettings(settingId) {
     let context = this;
 
-    switch(settingId) {
-      case 'backup':
-          context.exportData();
-          break;
+    switch (settingId) {
+      case 'export':
+        context.exportData();
+        break;
+
+      case 'import':
+        context.importData();
+        break;
     }
   }
 
   /**
-   * @description Function to export (i.e.) Backup data.
+   * @description Function to export (i.e. Backup ) the data.
    */
   exportData() {
-    
+
     let context = this;
     let rootPath = context.file.externalRootDirectory,
-        dirName = context.urlService.getAppName(),
-        appDirectoryPath = rootPath +  dirName,
-        fileName =  Math.floor(Date.now() / 1000) + '.json';
+      dirName = context.urlService.getAppName(),
+      appDirectoryPath = rootPath + dirName,
+      fileName = '' + Math.floor(Date.now() / 1000),
+      fileExtension = '.json';
 
-     let alert = this.alertCtrl.create({
-         title: 'Confirm Backup',
-         message: 'Are you sure you want to backup current data?',
-         buttons: [
-           {
-             text: 'Cancel',
-             role: 'cancel'
-           },
-           {
-             text: 'YES',
-             handler: () => {
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Backup',
+      message: 'Are you sure you want to backup current data?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'YES',
+          handler: () => {
 
-               context.storage.get(context.urlService.getAccountabilityKey('people')).then((storeData) => {
+            context.storage.get(context.urlService.getCategoriesKey()).then((categoriesData) => {
+              let accountabilityName = 'people',
+                  exportObj = {
+                    accountabilities: {}
+                  };
 
-                 try{
-                     context.writeToFile(rootPath, appDirectoryPath, dirName, fileName, storeData, true); 
-                 } catch (err) {
-                   context.messageService.displayToast('Error while taking backup.', 4000, 'bottom');
-                 }
-             });
-           }
-           }
-         ]
-       });
-       alert.present();
+              context.storage.get(context.urlService.getAccountabilityKey(accountabilityName)).then((accountabilityData) => {
+                
+                exportObj.accountabilities[accountabilityName] = accountabilityData;
+
+                exportObj[context.urlService.getCategoriesId()] = categoriesData;
+
+                try {
+                  context.writeToFile(rootPath, appDirectoryPath, dirName, fileName + fileExtension, JSON.stringify(exportObj), true);
+                } catch (err) {
+                  context.messageService.displayToast(context.messageContainer.exportFail , 4000, 'bottom');
+                }
+              });
+
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  /**
+   * @description Function to import (i.e. Restore ) the data.
+   */
+  importData() {
+
+    let context = this;
+    context.settingsService.importData().subscribe(data => {
+      let accountabilityName = 'people';
+
+      try {
+        context.storage.set(context.urlService.getCategoriesKey(), data[context.urlService.getCategoriesId()]);
+        context.storage.set(context.urlService.getAccountabilityKey(accountabilityName), data.accountabilities[accountabilityName]);
+        context.navCtrl.setRoot(HomeComponent);
+        context.displayToast(context.messageContainer.importSuccess);
+      } catch (err) {
+        context.displayToast(context.messageContainer.importFail);
+      }
+    });
   }
 
   /**
@@ -159,12 +214,27 @@ export class SettingsComponent {
 
     // Write to file
       context.file.writeFile(appDirectoryPath, fileName, JSON.parse(storeData), options).then(function(result) {
-      context.messageService.displayToast('Backup Taken Sucessfully', 2500, 'bottom');
+      context.messageService.displayToast(context.messageContainer.exportSuccess, 2500, 'bottom');
       }, function(err) {
-        context.messageService.displayToast('Error while writing data to backup file.', 4000, 'bottom');
+        context.messageService.displayToast(context.messageContainer.exportFail, 4000, 'bottom');
       });
     }, function(err) {
-      context.messageService.displayToast('Error while creating App Directory.', 4000, 'bottom');
+      context.messageService.displayToast(context.messageContainer.appDirFail, 4000, 'bottom');
     });
   }
+
+   /**
+   * @description Function to show Ionic Toast
+   * @param {string} message message to be displayed
+   */
+  displayToast(message) {
+    let toast = this.toastCtrl.create({
+    message: message,
+    duration: 2500,
+    position: 'bottom'
+  });
+
+  toast.present();
+}
+
 }

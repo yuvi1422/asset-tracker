@@ -44,12 +44,26 @@ export class SettingsService {
   * @return {Array} Promise with all data
   */
   getData() {
-    
-    var context = this;
 
-    return context.http.get(context.DEVICE_DATA_URL + context.DATA_URL)
+    return this.http.get(this.DEVICE_DATA_URL + this.DATA_URL)
       .map((res) => {
-        return res.json()
+        return res.json();
+      });
+
+  }
+
+    /**
+  * @description Function to import data
+  * @return {Array} Promise with all data
+  */
+  importData() {
+
+    var context = this,
+        importDataUrl = 'assets/data/1498491909.json';
+    
+    return context.http.get(context.DEVICE_DATA_URL + importDataUrl)
+      .map((res) => {
+        return res.json();
       });
 
   }
