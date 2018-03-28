@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "exportSuccess": "Backup Taken Sucessfully.",
+        "exportFail": "Error while writing data to backup file.",
+        "appDirFail": "Error while creating App directory.",
+        "importSuccess": "Data Restored Sucessfully.",
+        "importFail": "Data Restore Failed.",
+        "backupNotFound": "No Backup File Found",
+        "cordovaNotFound": "Cordova Not Found.",
+        "backupListingFail": "Error while listing backup files"
+    }
+}

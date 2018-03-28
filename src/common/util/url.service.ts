@@ -38,11 +38,20 @@ export class UrlService {
    */
    private STORE_KEY: string = this.APP_KEY + this.SEPARATOR + 'store';
 
+
+  /**
+   * @description Categories Id. It is used to create Category key. 
+   *              It is also used to store and retrieve data from backup files.
+   * @private
+   */
+   private CATEGORIES_ID: string = 'categories';
+
    /**
    * @description Categories key. It is used to store and retrieve data from storage
    * @private
    */
-   private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + 'categories';
+   private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + this.CATEGORIES_ID;
+
 
    /**
    * @description key of title of category page. It is used to store and retrieve data from storage
@@ -68,6 +77,11 @@ export class UrlService {
    */
   private ADD_BTN_IMAGE_URL:string = 'assets/images/add_btn_message.jpg';
 
+   /**
+   * @description Name of the CATEGORIES file ( Excluding extension).
+   * @private 
+   */
+  private CATEGORIES_FILE_NAME:string = 'home';
 
   /**
    * @constructor
@@ -115,6 +129,15 @@ export class UrlService {
     return this.STORE_KEY;
   }
 
+
+  /**
+   * @description Function to get Categories Id.
+   * @returns {string} Categories Id
+   */
+  getCategoriesId () {
+    return this.CATEGORIES_ID;
+  }
+
   /**
    * @description Function to get Categories key.
    * @returns {string} Categories Key
@@ -154,5 +177,13 @@ export class UrlService {
    */
   getAddBtnImageUrl() {
     return this.ADD_BTN_IMAGE_URL;
+  }
+
+     /**
+   * @description Function to get name of the CATEGORIES file ( Excluding extension).
+   * @returns {string} Name of the CATEGORIES file ( Excluding extension)
+   */
+  getCategoriesFileName() {
+    return this.CATEGORIES_FILE_NAME;
   }
 }

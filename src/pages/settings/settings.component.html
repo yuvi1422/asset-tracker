@@ -8,11 +8,10 @@
 
 <ion-content padding>
 
-<ion-list *ngIf = "items">
-
-    <ng-container *ngFor="let item of items">
-       <button ion-item (click)="changeSettings(item.id);"> {{ item.title }} </button>
-    </ng-container>
-
+  <ion-list *ngIf = "items">
+      <ng-container *ngFor="let item of items">
+        <button ion-item (click)="changeSettings(item.id);"> {{ item.title }} </button>
+      </ng-container>
   </ion-list>
+  
 </ion-content>

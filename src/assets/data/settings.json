@@ -2,8 +2,12 @@
     "title": "Settings",
     "items": [
         {
-            "id": "backup",
+            "id": "export",
             "title": "Back Up"
+        },
+        {
+            "id": "import",
+            "title": "Restore"
         }
     ]
 }
