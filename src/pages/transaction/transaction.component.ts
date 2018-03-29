@@ -303,8 +303,13 @@ export class TransactionComponent {
 
      this.transaction.accountability.id = contact.id;
      this.transaction.accountability.title = contact.displayName;
-     this.transaction.accountability.icon_uri = contact.photos[0].value;
-     this.transaction.accountability.icon = this.utilService.getSanitizedUrl(contact.photos[0].value);
+     if(contact.photos && contact.photos[0] && contact.photos[0].value) {
+        this.transaction.accountability.icon_uri = contact.photos[0].value;
+        this.transaction.accountability.icon = this.utilService.getSanitizedUrl(contact.photos[0].value);
+     } else {
+        this.transaction.accountability.icon_uri = null;
+        this.transaction.accountability.icon = this.transactionService.getBean().accountability.icon;
+     }   
     });
   }
-}11
+}
