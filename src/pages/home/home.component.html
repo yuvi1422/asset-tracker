@@ -1,10 +1,11 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [color]="theme.color">
     <ion-title mode="ios">
       <span >{{ title }}</span>
-      <div class="pull-right moreIcon">
+      <!--TODO: Start working on it once End to End UI is at nice level. -->
+      <!--<div class="pull-right moreIcon">
         <ion-icon name="md-more" (click)="displayMenu($event)"></ion-icon>
-      </div>
+      </div>-->
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -31,7 +32,7 @@
  <img *ngIf="totalAmount === 0 " [src]="addBtnImageUrl">
 
  <ion-fab center bottom>
-    <button ion-fab color="secondary" (click)="loadTransactionPage()">
+    <button ion-fab [color]="theme.color" (click)="loadTransactionPage()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

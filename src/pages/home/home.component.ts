@@ -58,9 +58,18 @@ export class HomeComponent {
 
   /**
    * @description Add Btn Image Url.
-   * @private 
+   * @public 
    */
   public addBtnImageUrl:string;
+
+  /**
+   * @description theme of the application
+   * @private 
+   */
+  public theme = {
+    name:  'primary',
+    color: 'primary'
+  };
 
  /**
   * @constructor
@@ -85,6 +94,7 @@ export class HomeComponent {
     var context = this;
     storage.ready().then(() => {
       context.loadData();
+      context.theme = context.utilService.getTheme('royal');
     });
   }
 
