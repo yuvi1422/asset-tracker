@@ -3,9 +3,6 @@ import { NavController, ToastController, AlertController, ActionSheetController,
 import { Storage } from '@ionic/storage';
 import { File } from '@ionic-native/file';
 
-import { HomeComponent } from '../home/home.component';
-
-import { Logger } from "../../common/log/logger.service";
 import { UrlService } from "../../common/util/url.service";
 import { MessageService } from "../../common/util/message.service";
 
@@ -56,7 +53,6 @@ export class SettingsComponent {
    * @param actionSheetCtrl ActionSheetController Service provided by Ionic-Angular
    * @param storage Storage Service provided by Ionic
    * @param file File Service provided by Ionic
-   * @param logger Logger Service
    * @param urlService Url Service used to get all application urls.
    * @param MessageService Message Service used to show messages.
    * @param settingsService Service of Settings module.
@@ -69,7 +65,6 @@ export class SettingsComponent {
     private storage: Storage,
     private file: File,
     private platform: Platform,
-    private logger: Logger,
     private urlService: UrlService,
     private messageService: MessageService,
     private settingsService: SettingsService) {
@@ -225,25 +220,10 @@ export class SettingsComponent {
       let msg = (err === 'cordova_not_available')?
                     context.messageContainer.cordovaNotFound: context.messageContainer.backupListingFail
 
-//      context.messageService.displayToast(msg, 4000, 'bottom');
-        context.messageService.displayToast(err, 4000, 'bottom');
+      context.messageService.displayToast(msg, 4000, 'bottom');
     });
     });
   }
-    /*
-      context.settingsService.importData().subscribe(data => {
-      let accountabilityName = 'people';
-
-      try {
-        context.storage.set(context.urlService.getCategoriesKey(), data[context.urlService.getCategoriesId()]);
-        context.storage.set(context.urlService.getAccountabilityKey(accountabilityName), data.accountabilities[accountabilityName]);
-        context.navCtrl.setRoot(HomeComponent);
-        context.displayToast(context.messageContainer.importSuccess);
-      } catch (err) {
-        context.displayToast(context.messageContainer.importFail);
-      }
-    });
-*/  
 
   /**
    * @param {string} rootPath Base FileSystem.

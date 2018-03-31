@@ -8,8 +8,6 @@ import { TransactionListComponent } from '../transaction-list/transaction-list.c
 import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 
-import { AccountabilityService } from './accountability.service';
-
 @Component({
   selector: 'page-home',
   templateUrl: 'accountability.component.html'
@@ -47,14 +45,12 @@ export class AccountabilityComponent {
   * @param storage Storage Service provided by Ionic
   * @param logger Logger Service
   * @param utilService Utility Service
-  * @param accountabilityService Accountability Page Service
   */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
     private logger: Logger,
-    private utilService: UtilService,
-    private accountabilityService: AccountabilityService) {
+    private utilService: UtilService) {
 
       this.parentData = navParams.get('parentData');
       this.loadData();
