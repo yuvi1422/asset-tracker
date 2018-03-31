@@ -92,6 +92,7 @@ export class TransactionComponent {
 
     if(!context.parentData ||
       !context.parentData.title ||
+      !context.parentData.theme ||
       !context.parentData.CATEGORIES_KEY ||
       !context.parentData.SEPARATOR) {
         context.logger.error('TransactionComponent --> Error in retrieving parent data');

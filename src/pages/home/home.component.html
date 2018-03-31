@@ -14,21 +14,14 @@
 
  <ion-list>
     <ng-container *ngFor="let item of items;">
- 
+
       <button ion-item *ngIf="item.price>0" (click)="loadAccountibiltyPage(item)">
-
-        <ion-icon [name]="item.icon" item-left></ion-icon>
-           
-            {{ item.title }}
-
-        <div class="item-note" item-right>
-          {{ item.price.toLocaleString() }} 
-        </div>
+        <ion-icon [name]="item.icon" item-left></ion-icon>{{ item.title }}
+        <div class="item-note" item-right>{{ item.price.toLocaleString() }}</div>
       </button>
-
-    </ng-container>
-  
+    </ng-container>  
  </ion-list>
+
  <img *ngIf="totalAmount === 0 " [src]="addBtnImageUrl">
 
  <ion-fab center bottom>

@@ -160,6 +160,7 @@ export class HomeComponent {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
         title: 'Transaction',
+        theme: this.theme,
         isPristine: true,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR
