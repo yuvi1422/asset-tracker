@@ -32,9 +32,8 @@ export class CategoryService {
   */
   constructor(private http: Http, private platform: Platform ) {
 
-    var context = this;
-    if(context.platform.is('cordova') && context.platform.is('android')) {
-      context.DEVICE_DATA_URL = context.ANDROID_DATA_URL;
+    if(this.platform.is('cordova') && this.platform.is('android')) {
+      this.DEVICE_DATA_URL = this.ANDROID_DATA_URL;
     }
   }
 

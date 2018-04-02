@@ -146,6 +146,7 @@ export class HomeComponent {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
         item: selectedItem,
+        theme: this.theme,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR,
         categoryId: selectedItem.id

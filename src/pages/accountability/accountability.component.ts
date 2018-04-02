@@ -40,11 +40,11 @@ export class AccountabilityComponent {
 
 /**
   * @constructor 
-  * @param navCtrl Navigation Controller
-  * @param navParams It is used to retrieve navigation parameters
+  * @param {NavController} navCtrl - Navigation Controller
+  * @param {NavParams} navParams - It is used to retrieve navigation parameters
   * @param storage Storage Service provided by Ionic
-  * @param logger Logger Service
-  * @param utilService Utility Service
+  * @param {Logger} logger - Logger Service
+  * @param {Utility} utilService - Utility Service
   */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -104,6 +104,7 @@ export class AccountabilityComponent {
     this.navCtrl.push(TransactionListComponent, {
        parentData: {
         item: selectedItem,
+        theme: this.parentData.theme,
         CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
         SEPARATOR: this.parentData.SEPARATOR
       }

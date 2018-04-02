@@ -39,15 +39,15 @@ export class TransactionListComponent {
 
 /**
   * @constructor 
-  * @param navCtrl Navigation Controller
-  * @param navParams It is used to retrieve navigation parameters
-  * @param utilService Utility Service
-  * @param logger Logger Service
+  * @param {NavController} navCtrl - Navigation Controller
+  * @param {NavParams} navParams - It is used to retrieve navigation parameters
+  * @param {Logger} logger - Logger Service
+  * @param {Utility} utilService - Utility Service
  */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private utilService: UtilService,
-    private logger: Logger) {
+    private logger: Logger,
+    private utilService: UtilService) {
 
     this.parentData = navParams.get('parentData');
     this.loadData();
@@ -79,6 +79,7 @@ export class TransactionListComponent {
       parentData: {
         title: 'Transaction',
         transaction: selectedItem,
+        theme: this.parentData.theme,
         transactionIndex: transactionIndex,
         CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
         SEPARATOR: this.parentData.SEPARATOR
