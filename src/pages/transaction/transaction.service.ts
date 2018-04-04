@@ -18,7 +18,7 @@ export class TransactionService {
   getBean() {
     return {
       titlePlaceholder: 'Note',
-      pricePlaceholder: 0,
+      pricePlaceholder: 'Price',
 
       id: '',
       title: '',
