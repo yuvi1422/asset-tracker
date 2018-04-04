@@ -15,9 +15,9 @@
  
       <button ion-item *ngIf="item.price > 0 " (click)="loadTransactionListPage(item)">
         <ion-avatar item-left><img [src]="item.icon"></ion-avatar>
-            {{ item.title }}
+            <span class="bold">{{ item.title }}</span>
 
-        <div class="item-note" item-right>
+        <div class="item-note bold" item-right>
           {{item.price.toLocaleString()}} 
         </div>
 

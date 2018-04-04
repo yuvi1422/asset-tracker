@@ -16,8 +16,8 @@
     <ng-container *ngFor="let item of items;">
 
       <button ion-item *ngIf="item.price>0" (click)="loadAccountibiltyPage(item)">
-        <ion-icon [name]="item.icon" item-left></ion-icon>{{ item.title }}
-        <div class="item-note" item-right>{{ item.price.toLocaleString() }}</div>
+        <ion-icon [name]="item.icon" item-left></ion-icon> <span class="bold">{{ item.title }}</span>
+        <div class="item-note bold" item-right>{{ item.price.toLocaleString() }}</div>
       </button>
     </ng-container>  
  </ion-list>
