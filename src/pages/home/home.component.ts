@@ -160,7 +160,7 @@ export class HomeComponent {
   loadTransactionPage() {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
-        title: 'Transaction',
+        title: 'Add Transaction',
         theme: this.theme,
         isPristine: true,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
