@@ -23,6 +23,7 @@ import { Logger } from "../common/log/logger.service";
 import { UtilService } from "../common/util/util.service";
 import { UrlService } from "../common/util/url.service";
 import { MessageService } from "../common/util/message.service";
+import { CategoryService } from "../common/category/category.service";
 
 import { HomeService } from '../pages/home/home.service';
 import { AccountabilityService } from '../pages/accountability/accountability.service';
@@ -62,7 +63,7 @@ import { SettingsService } from "../pages/settings/settings.service";
          Contacts,
          File,
   	     {provide: ErrorHandler, useClass: IonicErrorHandler},
-             Logger, UtilService, UrlService, MessageService,
+             Logger, UtilService, UrlService, MessageService, CategoryService,
               HomeService, AccountabilityService, TransactionService, SettingsService]
 })
 export class AppModule {}

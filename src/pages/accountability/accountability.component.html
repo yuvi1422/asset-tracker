@@ -17,7 +17,7 @@
         <ion-avatar item-left><img [src]="item.icon"></ion-avatar>
             <span class="bold">{{ item.title }}</span>
 
-        <div class="item-note bold" item-right>
+        <div class="item-note bold" [ngClass]="{'danger': item.price > parentData.item.thresholdLimit }" item-right>
           {{item.price.toLocaleString()}} 
         </div>
 

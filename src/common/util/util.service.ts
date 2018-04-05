@@ -77,6 +77,17 @@ export class UtilService {
     }];
   }
 
+ /**
+   * @description Function to get Object from Array.
+   * @param {array} myArray - Array of Objects
+   * @param {string} attrName - Name of the attribute.
+   * @param {string} attrValue - Value of the attribute.
+   * @returns {object} Selected Object
+   */
+  getObjFromArray(myArray, attrName, attrValue) {
+    return myArray.find(obj => obj[attrName] === attrValue);
+  }
+
   /**
    * @description Function to get theme.
    * @param {string} themeName - Name of the theme.

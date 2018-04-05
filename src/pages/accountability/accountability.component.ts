@@ -8,6 +8,8 @@ import { TransactionListComponent } from '../transaction-list/transaction-list.c
 import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 
+import { AccountabilityService } from "./accountability.service";
+
 @Component({
   selector: 'page-home',
   templateUrl: 'accountability.component.html'
@@ -45,12 +47,14 @@ export class AccountabilityComponent {
   * @param storage Storage Service provided by Ionic
   * @param {Logger} logger - Logger Service
   * @param {Utility} utilService - Utility Service
+  * @param {AccountabilityService} accountabilityService - AccountabilityService Service
   */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
     private logger: Logger,
-    private utilService: UtilService) {
+    private utilService: UtilService,
+    private accountabilityService: AccountabilityService) {
 
       this.parentData = navParams.get('parentData');
       this.loadData();
@@ -79,6 +83,7 @@ export class AccountabilityComponent {
     context.storage.get(storeURL).then((store) => {
 
         store = JSON.parse(store);
+        
         if (store === null || typeof store === 'undefined' ||
                 typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
           context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
@@ -104,6 +109,7 @@ export class AccountabilityComponent {
     this.navCtrl.push(TransactionListComponent, {
        parentData: {
         item: selectedItem,
+        thresholdLimit: this.accountabilityService.getThresholdLimit(this.parentData.categoryId),
         theme: this.parentData.theme,
         CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
         SEPARATOR: this.parentData.SEPARATOR

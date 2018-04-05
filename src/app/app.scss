@@ -48,3 +48,7 @@ ion-navbar.toolbar-md-royal {
 .bold{
     font-weight: bold;
 }
+
+.danger {
+  color: map-get($colors, danger);
+}

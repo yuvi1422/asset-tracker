@@ -4,25 +4,29 @@
             "id": "people",
             "title": "Borrowers",
             "icon": "people",
-            "price": 0
+            "price": 0,
+            "thresholdLimit": 100000
         },
         {
             "id": "fd",
             "title": "FD",
             "icon": "lock",
-            "price": 0
+            "price": 0,
+            "thresholdLimit": 100000
         },
         {
             "id": "gold",
             "title": "Gold",
             "icon": "ios-star-half",
-            "price": 0
+            "price": 0,
+            "thresholdLimit": 50000
         },
         {
             "id": "mf",
             "title": "Mutual Fund",
             "icon": "pulse",
-            "price": 0
+            "price": 0,
+            "thresholdLimit": 50000
         }
     ]
 }
