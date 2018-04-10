@@ -65,7 +65,7 @@ export class HomeComponent {
 
   /**
    * @description theme of the application
-   * @private 
+   * @public 
    */
   public theme = {
     name:  'primary',
@@ -178,6 +178,7 @@ export class HomeComponent {
 
   /**
    * @description Function to show Popover Menu
+   * @param {Object} event - Event Object
    */
   displayMenu(event) {
     let popover = this.popoverCtrl.create(PopoverListComponent, {

@@ -47,15 +47,16 @@ export class SettingsComponent {
 
   /**
    * @constructor 
-   * @param navCtrl Navigation Controller
-   * @param toastCtrl ToastController Service provided by Ionic-Angular
-   * @param alertCtrl AlertController Service provided by Ionic-Angular
-   * @param actionSheetCtrl ActionSheetController Service provided by Ionic-Angular
-   * @param storage Storage Service provided by Ionic
-   * @param file File Service provided by Ionic
-   * @param urlService Url Service used to get all application urls.
-   * @param MessageService Message Service used to show messages.
-   * @param settingsService Service of Settings module.
+   * @param {NavController} navCtrl - Navigation Controller
+   * @param {ToastController} toastCtrl - ToastController Service provided by Ionic-Angular
+   * @param {AlertController} alertCtrl - AlertController Service provided by Ionic-Angular
+   * @param {ActionSheetController} actionSheetCtrl - ActionSheetController Service provided by Ionic-Angular
+   * @param {Storage} storage - Storage Service provided by Ionic
+   * @param {File} file - File Service provided by Ionic
+   * @param {Platform} platform - Platform service of ionic
+   * @param {UrlService} urlService - Url Service used to get all application urls.
+   * @param {MessageService} messageService - Message Service used to show messages.
+   * @param {SettingsService} settingsService - Service of Settings module.
    */
 
   constructor(public navCtrl: NavController,

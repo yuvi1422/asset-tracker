@@ -30,13 +30,13 @@ export class AccountabilityComponent {
 
   /**
   * @description Title of component
-  * @private 
+  * @public 
   */
    public title:string;
 
   /**
    * @description Sum of all the item's price
-   * @private 
+   * @public 
    */
    public totalAmount:number;
 
@@ -44,7 +44,7 @@ export class AccountabilityComponent {
   * @constructor 
   * @param {NavController} navCtrl - Navigation Controller
   * @param {NavParams} navParams - It is used to retrieve navigation parameters
-  * @param storage Storage Service provided by Ionic
+  * @param {Storage} storage - Storage Service provided by Ionic
   * @param {Logger} logger - Logger Service
   * @param {Utility} utilService - Utility Service
   * @param {AccountabilityService} accountabilityService - AccountabilityService Service
