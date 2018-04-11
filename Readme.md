@@ -50,6 +50,13 @@ It is a product to analyse our assests. Features provided by this product are as
 
 # Auto-generate API documentation
 
+-  Install Compdoc Globally.
+  
+  ```sh
+    $   npm install -g @compodoc/compodoc
+  ```
+
+
 -  Run following command which will automatically generate API documentation for us.
   
   ```sh
