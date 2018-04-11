@@ -7,11 +7,12 @@ import { PopoverListComponent } from '../../common/popover/popover-list.componen
 import { AccountabilityComponent } from '../accountability/accountability.component';
 import { TransactionComponent } from '../transaction/transaction.component';
 
-import { HomeService } from './home.service';
 import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 import { UrlService } from "../../common/util/url.service";
+import { CategoryService } from "../../common/category/category.service";
 
+import { HomeService } from './home.service';
 import { AccountabilityService } from './../accountability/accountability.service';
 
 @Component({
@@ -58,20 +59,30 @@ export class HomeComponent {
 
   /**
    * @description Add Btn Image Url.
-   * @private 
+   * @public 
    */
   public addBtnImageUrl:string;
 
+  /**
+   * @description theme of the application
+   * @public 
+   */
+  public theme = {
+    name:  'primary',
+    color: 'primary'
+  };
+
  /**
   * @constructor
-  * @param navCtrl Navigation Controller
-  * @param popoverCtrl Popover Controller
-  * @param storage Storage Service provided by Ionic
-  * @param logger Logger Service
-  * @param utilService Utility Service
-  * @param urlService Url Service used to get all application urls.
-  * @param homeService Home Page Service
-  * @param accountabilityService Accountability Page Service
+  * @param {NavController} navCtrl - Navigation Controller
+  * @param {PopoverController} popoverCtrl - Popover Controller
+  * @param {Storage} storage - Storage Service provided by Ionic
+  * @param {Logger} logger - Logger Service
+  * @param {UtilService} utilService - Utility Service
+  * @param {UrlService} urlService - Url Service used to get all application urls.
+  * @param {CategoryService} categoryService - Category Service
+  * @param {HomeService} homeService - Home Page Service
+  * @param {AccountabilityService} accountabilityService - Accountability Page Service
   */
   constructor(public navCtrl: NavController,
     private popoverCtrl: PopoverController,
@@ -79,12 +90,14 @@ export class HomeComponent {
     private logger: Logger,
     private utilService: UtilService,
     private urlService: UrlService,
+    private categoryService: CategoryService,
     private homeService: HomeService,
     private accountabilityService: AccountabilityService) {
 
     var context = this;
     storage.ready().then(() => {
       context.loadData();
+      context.theme = context.utilService.getTheme('royal');
     });
   }
 
@@ -103,6 +116,10 @@ export class HomeComponent {
         if (store === null || typeof store === 'undefined') {
 
           context.homeService.getData().subscribe(data => {
+
+            //  Set categories in a service.
+            context.categoryService.setCategories(data.categories);
+
             context.items = data.categories;
             
             context.totalAmount = context.utilService.getTotal(context.items, 'price');
@@ -136,6 +153,7 @@ export class HomeComponent {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
         item: selectedItem,
+        theme: this.theme,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR,
         categoryId: selectedItem.id
@@ -149,7 +167,8 @@ export class HomeComponent {
   loadTransactionPage() {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
-        title: 'Transaction',
+        title: 'Add Transaction',
+        theme: this.theme,
         isPristine: true,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR
@@ -159,6 +178,7 @@ export class HomeComponent {
 
   /**
    * @description Function to show Popover Menu
+   * @param {Object} event - Event Object
    */
   displayMenu(event) {
     let popover = this.popoverCtrl.create(PopoverListComponent, {

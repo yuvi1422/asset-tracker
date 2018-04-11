@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { Http } from '@angular/http';
-import { ToastController, AlertController, Platform} from 'ionic-angular';
-
-import { Logger } from "../log/logger.service";
+import { ToastController, Platform} from 'ionic-angular';
 
 @Injectable()
 export class MessageService {
@@ -37,15 +35,11 @@ export class MessageService {
    * @constructor
    * @param {Http} http - Http service of Angular
    * @param toastCtrl ToastController Service provided by Ionic-Angular
-   * @param alertCtrl AlertController Service provided by Ionic-Angular
    * @param {Platform} platform - Platform service of ionic
-   * @param logger Logger Service
    */
   constructor(private http: Http,
     private toastCtrl: ToastController,
-    private alertCtrl: AlertController,
-    private platform: Platform,
-    private logger: Logger) {
+    private platform: Platform) {
     if (this.platform.is('cordova') && this.platform.is('android')) {
       this.DEVICE_DATA_URL = this.ANDROID_DATA_URL;
     }

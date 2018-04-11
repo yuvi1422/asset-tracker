@@ -1,7 +1,6 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      {{ parentData.title }}
+  <ion-navbar [color]="parentData.theme.color">
+    <ion-title>{{ parentData.title }}
       <div class="pull-right">
         <ion-icon name="md-trash" 
                   class="deleteTranasction"
@@ -74,7 +73,7 @@
 
   <button  id="accountabilityBtn"
            (click)="save();"
-           color="secondary"
+           [color]="parentData.theme.color"
            ion-button full
            *ngIf="transaction">Save</button>
 </ion-content>

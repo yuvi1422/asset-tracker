@@ -91,10 +91,10 @@ It is a product to analyse our assests. Features provided by this product are as
 - Make Android Build
 
     ```sh
-    $   ionic cordova build --prod android
+    $   ionic cordova build android --prod
     ```
      
-   It will create APK at "platforms\android\build\outputs\apk". "prod" flag will create a production apk which will be smaller. App will load faster beacuse of this flag.
-   
+   It will create APK at "platforms/android/app/build/outputs/apk/debug". "prod" flag will create a production apk which will be smaller. App will load faster beacuse of this flag. Don't try "release" flag during development. It will create corrupted APK.
+
     Use this APK to install this app. 
      
