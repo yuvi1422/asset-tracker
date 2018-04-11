@@ -1,3 +1,5 @@
+@import "../theme/variables";
+
 // http://ionicframework.com/docs/v2/theming/
 
 
@@ -26,7 +28,27 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
 .pull-left {
   float: left;
 }
-
+/**
+* Styles for navbar - Royal Theme
+*/
+ion-navbar.toolbar-md-royal {
+  span {
+    color: map-get($colors, light);
+    font-size: 2rem;
+  }
+}
 .removeTextTransform {
   text-transform: none;
+}
+
+.zeroMarginBottom {
+  margin-bottom: 0;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.danger {
+  color: map-get($colors, danger);
 }

@@ -1,0 +1,13 @@
+{
+    "title": "Settings",
+    "items": [
+        {
+            "id": "export",
+            "title": "Back Up"
+        },
+        {
+            "id": "import",
+            "title": "Restore"
+        }
+    ]
+}

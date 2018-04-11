@@ -4,7 +4,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { TransactionComponent } from '../transaction/transaction.component';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 
 @Component({
@@ -39,15 +39,15 @@ export class TransactionListComponent {
 
 /**
   * @constructor 
-  * @param navCtrl Navigation Controller
-  * @param navParams It is used to retrieve navigation parameters
-  * @param utilService Utility Service
-  * @param logger Logger Service
+  * @param {NavController} navCtrl - Navigation Controller
+  * @param {NavParams} navParams - It is used to retrieve navigation parameters
+  * @param {Logger} logger - Logger Service
+  * @param {Utility} utilService - Utility Service
  */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private utilService: UtilService,
-    private logger: LoggerService) {
+    private logger: Logger,
+    private utilService: UtilService) {
 
     this.parentData = navParams.get('parentData');
     this.loadData();
@@ -63,7 +63,7 @@ export class TransactionListComponent {
       context.logger.error('TransactionListComponent --> Error in retrieving parent data');
       return;
     }
-    context.items = context.parentData.item.transactions;
+    context.items = context.utilService.sort(context.parentData.item.transactions, 'date', 'ascending');
     context.title = context.parentData.item.title;
     context.totalAmount = context.utilService.getTotal(context.items, 'price');
   }
@@ -77,8 +77,9 @@ export class TransactionListComponent {
     var context = this;
     context.navCtrl.push(TransactionComponent, {
       parentData: {
-        title: 'Transaction',
+        title: 'Update Transaction',
         transaction: selectedItem,
+        theme: this.parentData.theme,
         transactionIndex: transactionIndex,
         CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
         SEPARATOR: this.parentData.SEPARATOR

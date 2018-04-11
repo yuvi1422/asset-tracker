@@ -1,40 +1,4 @@
 {
     "title": "Accountability List",
-    "accountabilities": [
-        {
-            "id": "ganu",
-            "title": "Ganu",
-            "icon": "assets/avatar/people/ganu.jpg",
-            "price": 0,
-            "transactions": []
-        },
-        {
-            "id": "teju",
-            "title": "Teju",
-            "icon": "assets/avatar/people/teju.jpg",
-            "price": 0,
-            "transactions": []
-        },
-        {
-            "id": "prashu",
-            "title": "Prashu",
-            "icon": "assets/avatar/people/prashu.jpg",
-            "price": 0,
-            "transactions": []
-        },
-        {
-            "id": "sagarjadhav",
-            "title": "Sagar Jadhav",
-            "icon": "assets/avatar/people/person.ico",
-            "price": 0,
-            "transactions": []
-        },
-        {
-            "id": "janu",
-            "title": "Janu",
-            "icon": "assets/avatar/people/janu.jpg",
-            "price": 0,
-            "transactions": []
-        }
-    ]
+    "accountabilities": []
 }

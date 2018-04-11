@@ -3,10 +3,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
+import { Platform } from 'ionic-angular';
 
 import { HomeComponent } from '../home/home.component';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { TransactionService } from "./transaction.service";
 import { UtilService } from "../../common/util/util.service";
 
@@ -16,10 +17,9 @@ import { UtilService } from "../../common/util/util.service";
 })
 export class TransactionComponent {
 
-
   /**
    * @description Data received from parent
-   * @private 
+   * @public 
    */
   public parentData: any = null;
 
@@ -55,24 +55,26 @@ export class TransactionComponent {
 
   /**
    * @constructor 
-   * @param navCtrl Navigation Controller
-   * @param navParams It is used to retrieve navigation parameters
-   * @param storage Storage Service provided by Ionic
-   * @param contacts Contacts Service provided by Ionic
-   * @param toastCtrl ToastController Service provided by Ionic-Angular
-   * @param alertCtrl AlertController Service provided by Ionic-Angular
-   * @param logger Logger Service
-   * @param utilService Utility Service
-   * @param transactionService Transaction Service
+   * @param {NavController} navCtrl - Navigation Controller
+   * @param {NavParams} navParams - It is used to retrieve navigation parameters
+   * @param {ToastController} toastCtrl - ToastController Service provided by Ionic-Angular
+   * @param {AlertController} alertCtrl - AlertController Service provided by Ionic-Angular
+   * @param {Storage} storage - Storage Service provided by Ionic
+   * @param {Contacts} contacts - Contacts Service provided by Ionic
+   * @param {Platform} platform - Platform service of ionic
+   * @param {Logger} logger - Logger Service
+   * @param {Utility} utilService - Utility Service
+   * @param {Transaction} transactionService - Transaction Service
    */
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    private storage: Storage,
-    private contacts: Contacts,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
-    private logger: LoggerService,
+    private storage: Storage,
+    private contacts: Contacts,
+    private platform: Platform,
+    private logger: Logger,
     private utilService: UtilService,
     private transactionService: TransactionService) {
 
@@ -93,6 +95,7 @@ export class TransactionComponent {
 
     if(!context.parentData ||
       !context.parentData.title ||
+      !context.parentData.theme ||
       !context.parentData.CATEGORIES_KEY ||
       !context.parentData.SEPARATOR) {
         context.logger.error('TransactionComponent --> Error in retrieving parent data');
@@ -160,8 +163,10 @@ export class TransactionComponent {
       context.displayToast('Please fill up all details');
       return;
     }
+
     //  When user do not select any accountability in case of 'people' category.
-    if(transaction.category.id === 'people' && 
+
+    if(this.isRunningOnDevice() && transaction.category.id === 'people' &&
           transaction.accountability.title === context.transactionService.getBean().accountability.title) {
       context.displayToast('Please select a contact');
       return;
@@ -252,7 +257,6 @@ export class TransactionComponent {
 
                  store = JSON.parse(store);
 
-
                  let previousAccountabilityIndex = store.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
                  let previousCategoryIndex = context.categories.findIndex((obj => obj.id == context.parentData.transaction.category.id));
                  store.accountabilities[previousAccountabilityIndex].transactions.splice(context.parentData.transactionIndex, 1);
@@ -299,12 +303,32 @@ export class TransactionComponent {
    */
   pickContact() {
 
+    if(!this.isRunningOnDevice()) {
+      return;
+    }
+
     this.contacts.pickContact().then((contact) => {
 
      this.transaction.accountability.id = contact.id;
      this.transaction.accountability.title = contact.displayName;
-     this.transaction.accountability.icon_uri = contact.photos[0].value;
-     this.transaction.accountability.icon = this.utilService.getSanitizedUrl(contact.photos[0].value);
+     if(contact.photos && contact.photos[0] && contact.photos[0].value) {
+        this.transaction.accountability.icon_uri = contact.photos[0].value;
+        this.transaction.accountability.icon = this.utilService.getSanitizedUrl(contact.photos[0].value);
+     } else {
+        this.transaction.accountability.icon_uri = null;
+        this.transaction.accountability.icon = this.transactionService.getBean().accountability.icon;
+     }   
     });
   }
-}11
+    /**
+   * @description Function to check for weather app is running on device or not.
+   * @returns true when app is running on device. Else returns false.
+   */
+  isRunningOnDevice() {
+    if(!this.platform.is('cordova')) {
+      this.displayToast('Cordova Not Found Error.');
+      return false;
+    }
+    return true;
+  }
+}

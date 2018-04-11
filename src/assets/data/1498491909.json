@@ -1,0 +1,6 @@
+{
+  "accountabilities": {
+    "people": "{\"title\":\"Accountability List\",\"accountabilities\":[{\"icon\":{\"changingThisBreaksApplicationSecurity\":\"content:\/\/com.android.contacts\/contacts\/2737\/photo\"},\"title\":\"Abhijit Kurane\",\"price\":130,\"transactions\":[{\"titlePlaceholder\":\"Note\",\"pricePlaceholder\":0,\"id\":\"\",\"title\":\"Paratha\",\"icon\":\"assets\/avatar\/people\/person.ico\",\"price\":130,\"isActive\":true,\"date\":\"2017-08-09T14:06:41.857Z\",\"category\":{\"id\":\"people\",\"title\":\"Friends and Relatives\",\"icon\":\"people\",\"price\":0},\"accountability\":{\"icon\":{\"changingThisBreaksApplicationSecurity\":\"content:\/\/com.android.contacts\/contacts\/2737\/photo\"},\"title\":\"Abhijit Kurane\",\"price\":0,\"transactions\":[],\"id\":\"2737\",\"icon_uri\":\"content:\/\/com.android.contacts\/contacts\/2737\/photo\"}}],\"id\":\"2737\",\"icon_uri\":\"content:\/\/com.android.contacts\/contacts\/2737\/photo\"}]}"
+  },
+  "categories": "[{\"id\":\"people\",\"title\":\"Friends and Relatives\",\"icon\":\"people\",\"price\":130},{\"id\":\"fd\",\"title\":\"FD\",\"icon\":\"lock\",\"price\":0},{\"id\":\"gold\",\"title\":\"Gold\",\"icon\":\"ios-star-half\",\"price\":0},{\"id\":\"mf\",\"title\":\"Mutual Fund\",\"icon\":\"pulse\",\"price\":0}]"
+}

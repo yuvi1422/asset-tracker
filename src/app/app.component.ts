@@ -4,7 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomeComponent } from '../pages/home/home.component';
 
-
 @Component({
   templateUrl: 'app.html'
 })
@@ -18,6 +17,8 @@ export class MyApp {
   /**
   * @constructor 
   * @param platform Platform service of ionic
+  * @param statusBar StatusBar service of ionic
+  * @param splashScreen SplashScreen service of ionic
   */
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {

@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar [color]="parentData.theme.color">
     <ion-title>
       {{ title }}
       <span class="pull-right">{{ totalAmount }}</span>
@@ -15,10 +15,10 @@
  
       <button ion-item *ngIf="item.isActive" (click)="loadTransactionPage(item, i)">
 
-            {{ item.title }}
+            <span class="bold">{{ item.title }}</span>
 
-        <div class="item-note" item-right>
-          {{item.price}} 
+        <div class="item-note bold" [ngClass]="{'danger': item.price > parentData.thresholdLimit }" item-right>
+          {{ item.price.toLocaleString() }} 
         </div>
 
       </button>

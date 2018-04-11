@@ -13,6 +13,7 @@ log.txt
 npm-debug.log*
 
 .idea/
+.sourcemaps/
 .sass-cache/
 .tmp/
 .versions/
@@ -34,5 +35,4 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 
 documentation/
-
 resources/gradle-*.zip

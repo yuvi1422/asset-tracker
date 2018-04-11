@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 import { Platform } from 'ionic-angular';
+import { UtilService } from "../util/util.service";
 
 @Injectable()
 export class CategoryService {
@@ -25,24 +26,58 @@ export class CategoryService {
    */
   private DEVICE_DATA_URL:string = '';
 
+   /**
+   * @description Categories
+   * @private 
+   */
+  private categories:any;
+
+
  /**
   * @constructor 
   * @param {Http} http - Http service of Angular
   * @param {Platform} platform - Platform service of ionic
+  * @param {UtilService} utilService - Utility Service
   */
-  constructor(private http: Http, private platform: Platform ) {
+  constructor(private http: Http, private platform: Platform, private utilService: UtilService) {
 
-    var context = this;
-    if(context.platform.is('cordova') && context.platform.is('android')) {
-      context.DEVICE_DATA_URL = context.ANDROID_DATA_URL;
+    if(this.platform.is('cordova') && this.platform.is('android')) {
+      this.DEVICE_DATA_URL = this.ANDROID_DATA_URL;
     }
   }
 
   /**
-  * @description Function to load all categories
-  * @return {Array} Promise with all categories
+  * @description Function to get all categories.
+  * @return Category Object
   */
   getCategories() {
+    return this.categories;
+  }
+
+  /**
+  * @description Function to set categories.
+  */
+  setCategories(categories) {
+    this.categories = categories;
+  }
+
+  /**
+  * @description Function to get category by id.
+  * @param {string} categoryId - Id of Category.
+  * @return Category Array
+  */
+  getCategoryById(categoryId) {
+    if(!this.categories) {
+      return null;
+    }
+    return this.utilService.getObjFromArray(this.categories, 'id', categoryId);
+  }
+
+  /**
+  * @description Function to load all categories from Config
+  * @return {Array} Promise with all categories
+  */
+  getCategoriesFromConfig() {
     
     var context = this;
 

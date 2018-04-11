@@ -1,36 +1,31 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      {{ title }}
-      <span class="pull-right">{{ totalAmount }}</span>
+  <ion-navbar [color]="theme.color">
+    <ion-title mode="ios">
+      <span>{{ title }}</span>
+      <!--TODO: Start working on it once End to End UI is at nice level. -->
+      <!--<div class="pull-right moreIcon">
+        <ion-icon name="md-more" (click)="displayMenu($event)"></ion-icon>
+      </div>-->
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding [ngClass]="{ 'noTransaction': totalAmount == 0 }">
 
  <ion-list>
     <ng-container *ngFor="let item of items;">
- 
+
       <button ion-item *ngIf="item.price>0" (click)="loadAccountibiltyPage(item)">
-
-        <ion-icon [name]="item.icon" item-left></ion-icon>
-           
-            {{ item.title }}
-
-        <div class="item-note" item-right>
-          {{item.price}} 
-        </div>
-
+        <ion-icon [name]="item.icon" item-left></ion-icon> <span class="bold">{{ item.title }}</span>
+        <div class="item-note bold" item-right>{{ item.price.toLocaleString() }}</div>
       </button>
+    </ng-container>  
+ </ion-list>
 
-    </ng-container>
-  
-  </ion-list>
-
+ <img *ngIf="totalAmount === 0 " [src]="addBtnImageUrl">
 
  <ion-fab center bottom>
-    <button ion-fab color="secondary" (click)="loadTransactionPage()">
+    <button ion-fab [color]="theme.color" (click)="loadTransactionPage()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

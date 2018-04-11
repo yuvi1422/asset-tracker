@@ -2,17 +2,25 @@ import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import { DomSanitizer } from '@angular/platform-browser';
 
-import { LoggerService } from "../log/logger.service";
+import { Logger } from "../log/logger.service";
 
 @Injectable()
 export class UtilService {
+
+  /**
+   * @description Array of themes.
+   * @private 
+   */
+  private themes = [];
 
   /**
    * @constructor
    * @param sanitizer DomSanitizer provided by Angular
    * @param logger Logger Service
    */
-  constructor(private sanitizer: DomSanitizer, private logger: LoggerService){ }
+  constructor(private sanitizer: DomSanitizer, private logger: Logger){ 
+    this.loadThemes();
+  }
 
   /**
    * @description Function to get total of a property values from an array.
@@ -48,5 +56,44 @@ export class UtilService {
    */
   getSanitizedUrl(url) {
     return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+
+  /**
+   * @description Function to load all themes.
+   */
+  loadThemes() {
+    this.themes = [{
+      name:  'primary',
+      color: 'primary'
+    },{
+      name:  'secondary',
+      color: 'secondary'
+    },{
+      name:  'dark',
+      color: 'dark'
+    },{
+      name:  'royal',
+      color: 'royal'
+    }];
+  }
+
+ /**
+   * @description Function to get Object from Array.
+   * @param {array} myArray - Array of Objects
+   * @param {string} attrName - Name of the attribute.
+   * @param {string} attrValue - Value of the attribute.
+   * @returns {object} Selected Object
+   */
+  getObjFromArray(myArray, attrName, attrValue) {
+    return myArray.find(obj => obj[attrName] === attrValue);
+  }
+
+  /**
+   * @description Function to get theme.
+   * @param {string} themeName - Name of the theme.
+   * @returns {object} Selected Theme Object
+   */
+  getTheme(themeName) {
+    return this.themes.find(obj => obj.name === themeName);
   }
 }

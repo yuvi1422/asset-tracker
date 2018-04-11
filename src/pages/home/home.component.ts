@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, PopoverController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+
+import { PopoverListComponent } from '../../common/popover/popover-list.component';
 
 import { AccountabilityComponent } from '../accountability/accountability.component';
 import { TransactionComponent } from '../transaction/transaction.component';
 
-import { HomeService } from './home.service';
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
+import { UrlService } from "../../common/util/url.service";
+import { CategoryService } from "../../common/category/category.service";
+
+import { HomeService } from './home.service';
 import { AccountabilityService } from './../accountability/accountability.service';
 
 @Component({
@@ -16,9 +21,14 @@ import { AccountabilityService } from './../accountability/accountability.servic
 })
 export class HomeComponent {
 
-  
+   /**
+   * @description Title of component
+   * @public
+   */
+    public title:string;
+
   /**
-   * @description item list to be displayed
+   * @description Path Seperator
    * @private
    */
    private SEPARATOR: string = '-';
@@ -28,12 +38,6 @@ export class HomeComponent {
    * @public
    */
    public items: Array<any>;
-
-   /**
-   * @description Title of component
-   * @public
-   */
-    public title:string;
 
    /**
    * @description Sum of all the item's price
@@ -53,32 +57,47 @@ export class HomeComponent {
    */
    private CATEGORIES_KEY: string = this.STORE_KEY + this.SEPARATOR + 'categories';
 
-   /**
-   * @description Title key. It is used to store and retrieve data from storage
-   * @private
+  /**
+   * @description Add Btn Image Url.
+   * @public 
    */
-   private TITLE_KEY: string = this.STORE_KEY + this.SEPARATOR  + 'title';
+  public addBtnImageUrl:string;
 
+  /**
+   * @description theme of the application
+   * @public 
+   */
+  public theme = {
+    name:  'primary',
+    color: 'primary'
+  };
 
  /**
   * @constructor
-  * @param navCtrl Navigation Controller
-  * @param storage Storage Service provided by Ionic
-  * @param logger Logger Service
-  * @param utilService Utility Service
-  * @param homeService Home Page Service
-  * @param accountabilityService Accountability Page Service
+  * @param {NavController} navCtrl - Navigation Controller
+  * @param {PopoverController} popoverCtrl - Popover Controller
+  * @param {Storage} storage - Storage Service provided by Ionic
+  * @param {Logger} logger - Logger Service
+  * @param {UtilService} utilService - Utility Service
+  * @param {UrlService} urlService - Url Service used to get all application urls.
+  * @param {CategoryService} categoryService - Category Service
+  * @param {HomeService} homeService - Home Page Service
+  * @param {AccountabilityService} accountabilityService - Accountability Page Service
   */
   constructor(public navCtrl: NavController,
+    private popoverCtrl: PopoverController,
     private storage: Storage,
-    private logger: LoggerService,
+    private logger: Logger,
     private utilService: UtilService,
+    private urlService: UrlService,
+    private categoryService: CategoryService,
     private homeService: HomeService,
     private accountabilityService: AccountabilityService) {
 
     var context = this;
     storage.ready().then(() => {
       context.loadData();
+      context.theme = context.utilService.getTheme('royal');
     });
   }
 
@@ -88,19 +107,25 @@ export class HomeComponent {
   loadData() {
     var context = this;
 
+      context.addBtnImageUrl = context.urlService.getAddBtnImageUrl();
+      context.title = context.urlService.getAppName();
+      
       context.storage.get(context.CATEGORIES_KEY).then((store) => {
-        if (store === null || typeof store === 'undefined') {  //  True: when no value is stored in storage
+
+        //  True: when no value is stored in storage
+        if (store === null || typeof store === 'undefined') {
 
           context.homeService.getData().subscribe(data => {
+
+            //  Set categories in a service.
+            context.categoryService.setCategories(data.categories);
+
             context.items = data.categories;
-            context.title = data.title;
             
             context.totalAmount = context.utilService.getTotal(context.items, 'price');
             context.items = context.utilService.sort(context.items, 'price', 'descending');
 
             context.storage.set(context.CATEGORIES_KEY, JSON.stringify(context.items));
-            context.storage.set(context.TITLE_KEY, JSON.stringify(context.title));
-            
 
             data.categories.forEach(function(account) {
               context.accountabilityService.getData(account.id).subscribe(data => {
@@ -116,9 +141,6 @@ export class HomeComponent {
           context.items = JSON.parse(store);
           context.totalAmount = context.utilService.getTotal(context.items, 'price');
           context.items = context.utilService.sort(context.items, 'price', 'descending');
-          context.storage.get(context.TITLE_KEY).then((title) => {
-            context.title = JSON.parse(title);
-          });
         }
       });
     }
@@ -131,6 +153,7 @@ export class HomeComponent {
     this.navCtrl.push(AccountabilityComponent, {
       parentData: {
         item: selectedItem,
+        theme: this.theme,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR,
         categoryId: selectedItem.id
@@ -144,11 +167,25 @@ export class HomeComponent {
   loadTransactionPage() {
     this.navCtrl.push(TransactionComponent, {
       parentData: {
-        title: 'Transaction',
+        title: 'Add Transaction',
+        theme: this.theme,
         isPristine: true,
         CATEGORIES_KEY: this.CATEGORIES_KEY,
         SEPARATOR: this.SEPARATOR
       }
+    });
+  }
+
+  /**
+   * @description Function to show Popover Menu
+   * @param {Object} event - Event Object
+   */
+  displayMenu(event) {
+    let popover = this.popoverCtrl.create(PopoverListComponent, {
+      items: [ 'settings' ]
+    });
+    popover.present({
+      ev: event
     });
   }
 }

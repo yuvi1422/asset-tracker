@@ -5,10 +5,10 @@ import { Storage } from '@ionic/storage';
 
 import { TransactionListComponent } from '../transaction-list/transaction-list.component';
 
-import { LoggerService } from "../../common/log/logger.service";
+import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 
-import { AccountabilityService } from './accountability.service';
+import { AccountabilityService } from "./accountability.service";
 
 @Component({
   selector: 'page-home',
@@ -30,29 +30,29 @@ export class AccountabilityComponent {
 
   /**
   * @description Title of component
-  * @private 
+  * @public 
   */
    public title:string;
 
   /**
    * @description Sum of all the item's price
-   * @private 
+   * @public 
    */
    public totalAmount:number;
 
 /**
   * @constructor 
-  * @param navCtrl Navigation Controller
-  * @param navParams It is used to retrieve navigation parameters
-  * @param storage Storage Service provided by Ionic
-  * @param logger Logger Service
-  * @param utilService Utility Service
-  * @param accountabilityService Accountability Page Service
+  * @param {NavController} navCtrl - Navigation Controller
+  * @param {NavParams} navParams - It is used to retrieve navigation parameters
+  * @param {Storage} storage - Storage Service provided by Ionic
+  * @param {Logger} logger - Logger Service
+  * @param {Utility} utilService - Utility Service
+  * @param {AccountabilityService} accountabilityService - AccountabilityService Service
   */
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private storage: Storage,
-    private logger: LoggerService,
+    private logger: Logger,
     private utilService: UtilService,
     private accountabilityService: AccountabilityService) {
 
@@ -83,6 +83,7 @@ export class AccountabilityComponent {
     context.storage.get(storeURL).then((store) => {
 
         store = JSON.parse(store);
+        
         if (store === null || typeof store === 'undefined' ||
                 typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
           context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
@@ -108,6 +109,8 @@ export class AccountabilityComponent {
     this.navCtrl.push(TransactionListComponent, {
        parentData: {
         item: selectedItem,
+        thresholdLimit: this.accountabilityService.getThresholdLimit(this.parentData.categoryId),
+        theme: this.parentData.theme,
         CATEGORIES_KEY: this.parentData.CATEGORIES_KEY,
         SEPARATOR: this.parentData.SEPARATOR
       }
