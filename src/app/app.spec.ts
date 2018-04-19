@@ -1,6 +1,8 @@
 
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { IonicModule } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyApp } from './app.component';
 import { HomeComponent } from '../pages/home/home.component';
  
@@ -16,7 +18,8 @@ describe('Component: Root Component', () => {
             declarations: [MyApp],
  
             providers: [
- 
+                StatusBar,
+                SplashScreen
             ],
  
             imports: [
@@ -50,4 +53,7 @@ describe('Component: Root Component', () => {
         expect(comp['rootPage']).toBe(HomeComponent);
     });
  
+    it('2+2', () => {
+        expect(2+2).toBe(4);
+    });
 });
