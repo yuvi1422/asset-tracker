@@ -32,7 +32,7 @@ let el: HTMLElement;
 describe('Page: Home Page', () => {
 
     beforeEach(async(() => {
-
+      // Used spy to mock services.
       let loggerSpy = jasmine.createSpyObj('Logger', ['error']),
           utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']),
           urlServiceSpy = jasmine.createSpyObj('UrlService', ['getAddBtnImageUrl', 'getAppName']),
