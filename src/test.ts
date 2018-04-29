@@ -13,8 +13,7 @@ import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@ang
 import { App, Config, Form, IonicModule, Keyboard, DomController, MenuController, NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { ConfigMock } from './mocks';
- 
+
 /**
  * @description Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
  */

@@ -1,15 +1,16 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { IonicModule } from 'ionic-angular';
+import { IonicModule, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyApp } from './app.component';
 import { HomeComponent } from '../pages/home/home.component';
 
+import {PlatformMock, StatusBarMock, SplashScreenMock} from '../mocks';
+
 let comp: MyApp;
 let fixture: ComponentFixture<MyApp>;
 
 describe('Component: Root Component', () => {
-
     beforeEach(async(() => {
 
         TestBed.configureTestingModule({
@@ -17,9 +18,10 @@ describe('Component: Root Component', () => {
             declarations: [MyApp],
 
             providers: [
-                StatusBar,
-                SplashScreen
-            ],
+                { provide: StatusBar, useClass: StatusBarMock },
+                { provide: SplashScreen, useClass: SplashScreenMock },
+                { provide: Platform, useClass: PlatformMock }
+            ],  
 
             imports: [
                 IonicModule.forRoot(MyApp)
@@ -30,7 +32,6 @@ describe('Component: Root Component', () => {
     }));
 
     beforeEach(() => {
-
         fixture = TestBed.createComponent(MyApp);
         comp    = fixture.componentInstance;
     });
@@ -41,7 +42,6 @@ describe('Component: Root Component', () => {
     });
 
     it('is created', () => {
-
         expect(fixture).toBeTruthy();
         expect(comp).toBeTruthy();
     });
