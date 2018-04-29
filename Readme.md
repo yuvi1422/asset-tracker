@@ -48,7 +48,7 @@ It is a product to analyse our assests. Features provided by this product are as
     ```    
 
 
-# Auto-generate API documentation
+# Generate API documentation
 
 -  Install Compdoc Globally.
   
@@ -68,10 +68,29 @@ It is a product to analyse our assests. Features provided by this product are as
     $   compodoc -s --port 8686
   ```
 
-- Verify the API document by navigating to your server address in your preferred browser.
+- Verify the API document by navigating to following address in your preferred browser.
   ```sh
     $   http://localhost:8686
   ```
+
+# Generate Coverage Report
+
+-  Run following command which will automatically generate API documentation for us.
+  
+  ```sh
+    $   npm run coverage
+  ```
+
+- Start documentation server
+  ```sh
+    $   compodoc -s --port 8687
+  ```
+
+- Verify the Coverage report by navigating to following address in your preferred browser.
+  ```sh
+    $   http://localhost:8687
+  ```
+
 
 # Deploying on Android Devices
 - Setup Gradle ( If your proxy has file download limit )
