@@ -15,6 +15,9 @@ import { CategoryService } from "../../common/category/category.service";
 import { HomeService } from './home.service';
 import { AccountabilityService } from './../accountability/accountability.service';
 
+/**
+ * Home Component
+ */
 @Component({
   selector: 'page-home',
   templateUrl: 'home.component.html'

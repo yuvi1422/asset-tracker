@@ -15,7 +15,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ConfigMock } from './mocks';
  
-// Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
+/**
+ * @description Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
+ */
 declare var __karma__: any;
 declare var require: any;
  
