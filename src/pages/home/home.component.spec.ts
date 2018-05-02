@@ -2,7 +2,8 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, NavController, PopoverController} from 'ionic-angular';
-import { NavMock, StorageMock} from '../../mocks';
+import { NavMock } from '../../../test-config/mocks/mocks';
+import { StorageMock } from '../../../test-config/mocks/storage.mock';
 import { Http } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -53,7 +54,7 @@ describe('Page: Home Page', () => {
                 },
                 {
                     provide: Storage,
-                    useClass: StorageMock
+                    useFactory: () => StorageMock.instance()
                 },
                 {
                     provide: Logger,
