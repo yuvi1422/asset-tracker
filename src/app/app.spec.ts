@@ -50,8 +50,4 @@ describe('Component: Root Component', () => {
     it('initialises with a root page of HomeComponent', () => {
         expect(comp['rootPage']).toBe(HomeComponent);
     });
-
-    it('2+2', () => {
-        expect(2+2).toBe(4);
-    });
 });
