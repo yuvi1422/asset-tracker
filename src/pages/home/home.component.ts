@@ -101,7 +101,7 @@ export class HomeComponent {
     storage.ready().then(() => {
       context.loadData();
       context.theme = context.utilService.getTheme('royal');
-    });
+    },fail => logger.error('Error in loading storage'));
   }
 
   /**
@@ -110,13 +110,13 @@ export class HomeComponent {
   loadData() {
     var context = this;
 
-      context.addBtnImageUrl = context.urlService.getAddBtnImageUrl();
-      context.title = context.urlService.getAppName();
+    context.addBtnImageUrl = context.urlService.getAddBtnImageUrl();
+    context.title = context.urlService.getAppName();
       
-      context.storage.get(context.CATEGORIES_KEY).then((store) => {
+    context.storage.get(context.CATEGORIES_KEY).then((store) => {
 
         //  True: when no value is stored in storage
-        if (store === null || typeof store === 'undefined') {
+        if (!store) {
 
           context.homeService.getData().subscribe(data => {
 
