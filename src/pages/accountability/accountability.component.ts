@@ -82,7 +82,8 @@ export class AccountabilityComponent {
 
     context.storage.get(storeURL).then((store) => {
 
-        store = JSON.parse(store);
+        //  When store value is '', convert it to null.
+        store = (store !== '') ? JSON.parse(store): null;
         
         if (store === null || typeof store === 'undefined' ||
                 typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
