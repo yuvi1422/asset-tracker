@@ -25,6 +25,11 @@ let fixture: ComponentFixture<AccountabilityComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
+let loggerSpy,
+    utilServiceSpy,
+    homeServiceSpy,
+    accountabilityServiceSpy;
+
 // Change default timeout of jasmine. It would be helpful to test AJAX.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
@@ -39,76 +44,75 @@ describe('Page: Accountability Page', () => {
           SEPARATOR: '-',
           categoryId: 'people'
       });
-      let loggerSpy = jasmine.createSpyObj('Logger', ['error']),
-          utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']),
-          homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']),
-          accountabilityServiceSpy = jasmine.createSpyObj('AccountabilityService', ['getData']);
+      loggerSpy = jasmine.createSpyObj('Logger', ['error']),
+      utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']),
+      homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']),
+      accountabilityServiceSpy = jasmine.createSpyObj('AccountabilityService', ['getData', 'getThresholdLimit']);
 
-          const expectedHomeServiceData = {
+      const expectedHomeServiceData = {
             categories: [
               { id: "people", title: "Borrowers", icon: "people", price: 0, thresholdLimit: 100000 },
               { id: "fd", title: "FD", icon: "lock", price: 0, thresholdLimit: 100000 },
               { id: "gold", title: "Gold", icon: "ios-star-half", price: 0, thresholdLimit: 50000 },
               { id: "mf", title: "Mutual Fund", icon: "pulse", price: 0, thresholdLimit: 50000 }
             ]
-          };
-          homeServiceSpy.getData.and.returnValue(asyncData(expectedHomeServiceData));
-          utilServiceSpy.sort.and.returnValue(expectedHomeServiceData);
-          accountabilityServiceSpy.getData.and.callFake(function(id) {
-            return asyncData({
-              title: "Accountability List",
-              accountabilities: []
-            });
-          });
+      };
+      homeServiceSpy.getData.and.returnValue(asyncData(expectedHomeServiceData));
+      utilServiceSpy.sort.and.returnValue(expectedHomeServiceData);
+      accountabilityServiceSpy.getData.and.callFake(function(id) {
+        return asyncData({
+          title: "Accountability List",
+          accountabilities: []
+        });
+      });
 
       TestBed.configureTestingModule({
 
-            declarations: [
-              MyApp, AccountabilityComponent
-            ],
+        declarations: [
+          MyApp, AccountabilityComponent
+        ],
 
-            providers: [
-                {
-                    provide: NavController,
-                    useClass: NavMock
-                },
-                {
-                    provide: NavParams,
-                    useClass: NavParamsMock
-                },
-                {
-                    provide: Storage,
-                    useFactory: () => StorageMock.instance()
-                },
-                {
-                    provide: Logger,
-                    useValue: loggerSpy
-                },
-                {
-                    provide: UtilService,
-                    useValue: utilServiceSpy
-                },
-                {
-                    provide: AccountabilityService,
-                    useValue: accountabilityServiceSpy
-                } 
-            ],
+        providers: [
+          {
+            provide: NavController,
+            useClass: NavMock
+          },
+          {
+            provide: NavParams,
+            useClass: NavParamsMock
+          },
+          {
+            provide: Storage,
+            useFactory: () => StorageMock.instance()
+          },
+          {
+            provide: Logger,
+            useValue: loggerSpy
+          },
+          {
+            provide: UtilService,
+            useValue: utilServiceSpy
+          },
+          {
+            provide: AccountabilityService,
+            useValue: accountabilityServiceSpy
+          }
+        ],
 
-            imports: [
-                HttpModule,
-                IonicModule.forRoot(MyApp),
-                IonicStorageModule.forRoot()
-            ]
+        imports: [
+          HttpModule,
+          IonicModule.forRoot(MyApp),
+          IonicStorageModule.forRoot()
+        ]
 
-        }).compileComponents();
+      }).compileComponents();
 
-    }));
+  }));
 
     beforeEach(() => {
 
         fixture = TestBed.createComponent(AccountabilityComponent);
         comp    = fixture.componentInstance;
-
     });
 
     afterEach(() => {
@@ -129,5 +133,9 @@ describe('Page: Accountability Page', () => {
       expect(comp.title).toEqual('Borrowers');
     });
 
+    it('#loadTransactionListPage() should load transaction list page', () => {
 
+      comp.loadTransactionListPage({});
+      expect(accountabilityServiceSpy.getThresholdLimit).toHaveBeenCalled();
+    });
 }); 

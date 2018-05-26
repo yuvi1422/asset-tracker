@@ -10,17 +10,16 @@ import { DebugElement } from '@angular/core';
 import { Http, HttpModule, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
+import { PlatformMock} from '../../../test-config/mocks/platform.mock';
+import { Platform } from 'ionic-angular';
 
 import { HomeService } from './home.service';
-import {PlatformMock} from '../../../test-config/mocks/platform.mock';
-import { Platform } from 'ionic-angular';
 
 describe('Service: Home Service', () => {
 
     let httpSpy: { get: jasmine.Spy };
     let platform = new PlatformMock();
     let homeService: HomeService;
-    let httpService: Http;
 
     beforeEach(async(() => {
       // Used spy to mock services.
@@ -48,5 +47,4 @@ describe('Service: Home Service', () => {
       );
       expect(httpSpy.get.calls.count()).toBe(1, 'one call');
     });
-}); 
-
+});

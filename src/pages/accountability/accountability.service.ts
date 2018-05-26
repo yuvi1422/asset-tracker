@@ -22,10 +22,11 @@ export class AccountabilityService {
   /**
   * @description Function to get thresholdLimit
   * @param {string} categoryId - Id of Category.
-  * @return Category Array
+  * @return {number} - Threshold Limit of selected category.
   */
   getThresholdLimit(categoryId) {
-    return this.categoryService.getCategoryById(categoryId);
+    return this.categoryService.getCategoryById(categoryId)? 
+              this.categoryService.getCategoryById(categoryId).thresholdLimit: null;
   }
 
   /**
@@ -43,7 +44,7 @@ export class AccountabilityService {
 
     return this.http.get(url)
       .map((res) => {
-        return res.json()
+        return res.json ? res.json(): res;
       });
   }
 }
