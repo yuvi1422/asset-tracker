@@ -35,7 +35,7 @@ describe('Service: Accountability Service', () => {
       accountabilityServiceSpy = new AccountabilityService(<any> httpSpy, new Platform(), categoryServiceSpy);
     }));
 
-    it('#getData() should load data', () => {
+    it('#getData() should get data', () => {
       const expectedData = {
         title: "Accountability List",
         accountabilities: []

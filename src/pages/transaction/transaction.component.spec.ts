@@ -1,62 +1,64 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, NavParams, PopoverController} from 'ionic-angular';
+import { Http, HttpModule} from '@angular/http';
+import { IonicModule, NavController, NavParams, Platform,
+          PopoverController, ToastController, AlertController } from 'ionic-angular';
+import { Storage, IonicStorageModule } from '@ionic/storage';
+import { Contacts } from '@ionic-native/contacts';
 
 import { NavMock, NavParamsMock } from '../../../test-config/mocks/mocks';
 import { StorageMock } from '../../../test-config/mocks/storage.mock';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
-
-import { Http, HttpModule} from '@angular/http';
-import { Storage, IonicStorageModule } from '@ionic/storage';
+import { PlatformMock} from '../../../test-config/mocks/platform.mock';
 
 import { MyApp } from '../../app/app.component';
-import { TransactionListComponent } from './transaction-list.component';
-
-import { TransactionComponent } from '../transaction/transaction.component';
+import { TransactionComponent } from './transaction.component';
 
 import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
+import { TransactionService } from './transaction.service';
 
-
-let comp: TransactionListComponent;
-let fixture: ComponentFixture<TransactionListComponent>;
+let comp: TransactionComponent;
+let fixture: ComponentFixture<TransactionComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
 let loggerSpy,
     utilServiceSpy,
-    navCtrlSpy;
+    navCtrlSpy,
+    transactionServiceSpy;
 
 // Change default timeout of jasmine. It would be helpful to test AJAX.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
-describe('Page: TransactionListComponent Page', () => {
+describe('Page: TransactionList Page', () => {
 
     beforeEach(async(() => {
       // Used spy to mock services.
       NavParamsMock.setParams({
-        item: { 
+        transaction: { 
           id: "a4445",
-          title: "Prashant Jadhav",
+          title: "Marriage",
           icon: "people",
-          price: 0,
-          transactions:[]
+          price: 20000,
         },
-        thresholdLimit: 100000,
+        transactionIndex: 0,
+        title: 'Update Transaction',
         theme: 'royal',
         CATEGORIES_KEY: 'people',
         SEPARATOR: '-'
       });
 
+      navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']),
       loggerSpy = jasmine.createSpyObj('Logger', ['error']),
       utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
-      navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']),
+      transactionServiceSpy = jasmine.createSpyObj('TransactionService', ['getBean']);
 
       TestBed.configureTestingModule({
 
         declarations: [
-          MyApp, TransactionListComponent
+          MyApp, TransactionComponent
         ],
 
         providers: [
@@ -68,6 +70,17 @@ describe('Page: TransactionListComponent Page', () => {
             provide: NavParams,
             useClass: NavParamsMock
           },
+          ToastController,
+          AlertController,
+          {
+            provide: Storage,
+            useFactory: () => StorageMock.instance()
+          },
+          Contacts,
+          {
+            provide: Platform,
+            useClass: PlatformMock
+          },
           {
             provide: Logger,
             useValue: loggerSpy
@@ -75,6 +88,10 @@ describe('Page: TransactionListComponent Page', () => {
           {
             provide: UtilService,
             useValue: utilServiceSpy
+          },
+          {
+            provide: TransactionService,
+            useValue: transactionServiceSpy
           }
         ],
 
@@ -90,7 +107,7 @@ describe('Page: TransactionListComponent Page', () => {
 
     beforeEach(() => {
 
-        fixture = TestBed.createComponent(TransactionListComponent);
+        fixture = TestBed.createComponent(TransactionComponent);
         comp    = fixture.componentInstance;
     });
 
@@ -104,16 +121,5 @@ describe('Page: TransactionListComponent Page', () => {
     it('is created', () => {
         expect(fixture).toBeTruthy();
         expect(comp).toBeTruthy();
-    });
-
-    it('#loadData() should load data', () => {
-
-      comp.loadData();
-      expect(comp.title).toEqual('Prashant Jadhav');
-    });
-
-    it('#loadTransactionPage() should load transaction page', () => {
-      comp.loadTransactionPage({}, 0);
-      expect(navCtrlSpy.push).toHaveBeenCalled();
     });
 }); 
