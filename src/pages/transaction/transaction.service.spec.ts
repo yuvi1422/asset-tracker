@@ -16,25 +16,14 @@ describe('Service: Transaction Service', () => {
 
     it('#getBean() should get Transaction bean', () => {
       const expectedData = {
-      titlePlaceholder: 'Note',
-      pricePlaceholder: 'Price',
+        accountability: {
+          icon: 'assets/avatar/people/person.ico',
+          title: 'Select Contact',
+          price: 0,
+          transactions: []
+        }
+      };
 
-      id: '',
-      title: '',
-      icon: 'assets/avatar/people/person.ico',
-      price: '',
-      isActive: true,
-
-      date: new Date(),
-      category: null,
-      accountability: {
-        icon: 'assets/avatar/people/person.ico',
-        title: 'Select Contact',
-        price: 0,
-        transactions: []
-      }
-    };
-
-      expect(transactionServiceSpy.getBean()).toEqual(expectedData);
+      expect(transactionServiceSpy.getBean().accountability).toEqual(expectedData.accountability);
     });
 }); 
