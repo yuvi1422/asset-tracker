@@ -28,7 +28,7 @@ export class UtilService {
    * @param {string} calculationProperty - Name of the property whose value need to be calcuated to get total.
    */
   getTotal(items: any[], calculationProperty: string) {
-    if(typeof items !== 'undefined') {
+    if(Array.isArray(items) && calculationProperty) {
       return items.reduce((total, item) => {
           return total + item[calculationProperty];
       }, 0); 
@@ -42,6 +42,9 @@ export class UtilService {
    * @param {string} sortProperty - Property on which array will be sorted.
    */
   sort(arr: any[], sortProperty: string, order?: string) {
+    if(!arr || !sortProperty || !sortProperty) {
+      return null;
+    }
     if(order === 'ascending') { //  Small to Large
       return arr.sort(function(a,b) {return (a[sortProperty] > b[sortProperty]) ? 1 : ((b[sortProperty] > a[sortProperty]) ? -1 : 0);} );
     }else {
@@ -85,6 +88,9 @@ export class UtilService {
    * @returns {object} Selected Object
    */
   getObjFromArray(myArray, attrName, attrValue) {
+    if(!myArray || !attrName || !attrValue) {
+      return null;
+    }
     return myArray.find(obj => obj[attrName] === attrValue);
   }
 
@@ -94,6 +100,9 @@ export class UtilService {
    * @returns {object} Selected Theme Object
    */
   getTheme(themeName) {
+    if(!themeName) {
+      return null;
+    }
     return this.themes.find(obj => obj.name === themeName);
   }
 }
