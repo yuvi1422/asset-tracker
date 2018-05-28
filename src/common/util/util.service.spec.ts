@@ -7,11 +7,10 @@ import { UtilService } from "./util.service";
 import { DomSanitizer } from '@angular/platform-browser';
 import { Logger } from "../log/logger.service";
 
-let items: any;
 
 describe('Service: Util Service', () => {
 
-    let expectedData,
+    let items,
         domSanitizerSpy,
         loggerSpy,
         utilServiceSpy;

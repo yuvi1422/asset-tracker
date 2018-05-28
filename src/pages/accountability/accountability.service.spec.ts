@@ -1,12 +1,8 @@
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { MockBackend } from '@angular/http/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 
 import 'rxjs/add/operator/map';
-
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { Http, HttpModule, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
@@ -19,7 +15,7 @@ import { UtilService } from "../../common/util/util.service";
 
 describe('Service: Accountability Service', () => {
 
-    let httpSpy: { get: jasmine.Spy },
+    let httpSpy,
       platform = new PlatformMock(),
       accountabilityServiceSpy: AccountabilityService,
       categoryServiceSpy: CategoryService,

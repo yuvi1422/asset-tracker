@@ -67,7 +67,7 @@ export class UrlService {
    * @description device data url
    * @private 
    */
-  private DEVICE_DATA_URL:string = '';
+  private deviceDataUrl:string = '';
 
    /**
    * @description Add Btn Image Url.
@@ -87,9 +87,9 @@ export class UrlService {
    */
   constructor(private platform: Platform ) {
     if (this.platform.is('cordova') && this.platform.is('android')) {
-      this.DEVICE_DATA_URL = this.ANDROID_DATA_URL;
+      this.deviceDataUrl = this.ANDROID_DATA_URL;
     }
-    this.ADD_BTN_IMAGE_URL = this.DEVICE_DATA_URL + this.ADD_BTN_IMAGE_URL;
+    this.ADD_BTN_IMAGE_URL = this.deviceDataUrl + this.ADD_BTN_IMAGE_URL;
   }
 
 
@@ -164,7 +164,7 @@ export class UrlService {
    * @returns {string} Device data url
    */
   getDeviceDataUrl() {
-    return this.DEVICE_DATA_URL;
+    return this.deviceDataUrl;
   }
 
    /**

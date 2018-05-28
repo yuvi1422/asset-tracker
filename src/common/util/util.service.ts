@@ -97,7 +97,7 @@ export class UtilService {
   /**
    * @description Function to get theme.
    * @param {string} themeName - Name of the theme.
-   * @returns {object} Selected Theme Object
+   * @returns {object} Selected Theme Object. 
    */
   getTheme(themeName) {
     if(!themeName) {
