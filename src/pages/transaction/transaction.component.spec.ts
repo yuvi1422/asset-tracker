@@ -24,7 +24,11 @@ let fixture: ComponentFixture<TransactionComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
-let loggerSpy,
+let toastSpy,
+    toastCtrlSpy,
+    alertSpy,
+    alertCtrlSpy,
+    loggerSpy,
     utilServiceSpy,
     navCtrlSpy,
     transactionServiceSpy;
@@ -50,6 +54,18 @@ describe('Page: TransactionList Page', () => {
         SEPARATOR: '-'
       });
 
+      toastSpy = jasmine.createSpyObj('Toast', ['present']);
+      toastCtrlSpy = jasmine.createSpyObj('ToastController', ['create']);
+      toastCtrlSpy.create.and.callFake(function () {
+        return toastSpy;
+      });
+
+      alertSpy = jasmine.createSpyObj('Alert', ['present']);
+      alertCtrlSpy = jasmine.createSpyObj('AlertController', ['create']);
+      alertCtrlSpy.create.and.callFake(function () {
+        return alertSpy;
+      });
+
       navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']),
       loggerSpy = jasmine.createSpyObj('Logger', ['error']),
       utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
@@ -70,8 +86,14 @@ describe('Page: TransactionList Page', () => {
             provide: NavParams,
             useClass: NavParamsMock
           },
-          ToastController,
-          AlertController,
+          {
+            provide: ToastController,
+            useValue: toastCtrlSpy
+          },
+          {
+            provide: AlertController,
+            useValue: alertCtrlSpy
+          },
           {
             provide: Storage,
             useFactory: () => StorageMock.instance()
@@ -122,4 +144,11 @@ describe('Page: TransactionList Page', () => {
         expect(fixture).toBeTruthy();
         expect(comp).toBeTruthy();
     });
+    
+    it('#displayToast() should display toast', async(() => {
+      comp.displayToast('Export fail');
+      expect(toastSpy.present).toHaveBeenCalled();
+      comp.displayToast(null);
+      expect(loggerSpy.error).toHaveBeenCalled();
+    }));
 }); 

@@ -289,6 +289,10 @@ export class TransactionComponent {
    * @param {string} message message to be displayed
    */
   displayToast(message) {
+    if(!message) {
+      this.logger.error('Invalid data submitted to toast message');
+      return;
+    }
     let toast = this.toastCtrl.create({
     message: message,
     duration: 2500,
