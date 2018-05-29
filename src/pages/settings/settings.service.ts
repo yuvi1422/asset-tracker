@@ -47,7 +47,7 @@ export class SettingsService {
 
     return this.http.get(this.DEVICE_DATA_URL + this.DATA_URL)
       .map((res) => {
-        return res.json();
+        return res.json ? res.json(): res;
       });
 
   }
@@ -63,7 +63,7 @@ export class SettingsService {
     
     return context.http.get(context.DEVICE_DATA_URL + importDataUrl)
       .map((res) => {
-        return res.json();
+        return res.json ? res.json(): res;
       });
   }
 

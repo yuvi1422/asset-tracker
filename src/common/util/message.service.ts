@@ -79,7 +79,7 @@ export class MessageService {
 
      return context.http.get(context.DEVICE_DATA_URL + context.DATA_URL)
       .subscribe((res) => {
-         context.messageContainer = res.json ? res.json(): res.json;
+         context.messageContainer = res.json ? res.json(): res;
       });
   }
 
