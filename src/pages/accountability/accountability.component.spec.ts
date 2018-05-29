@@ -25,16 +25,15 @@ let fixture: ComponentFixture<AccountabilityComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
-let loggerSpy,
-    utilServiceSpy,
-    homeServiceSpy,
-    accountabilityServiceSpy;
 
 // Change default timeout of jasmine. It would be helpful to test AJAX.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Page: Accountability Page', () => {
-
+    let loggerSpy,
+      utilServiceSpy,
+      homeServiceSpy,
+      accountabilityServiceSpy;
     beforeEach(async(() => {
       // Used spy to mock services.
       NavParamsMock.setParams({
@@ -44,9 +43,9 @@ describe('Page: Accountability Page', () => {
           SEPARATOR: '-',
           categoryId: 'people'
       });
-      loggerSpy = jasmine.createSpyObj('Logger', ['error']),
-      utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']),
-      homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']),
+      loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
+      utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
+      homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']);
       accountabilityServiceSpy = jasmine.createSpyObj('AccountabilityService', ['getData', 'getThresholdLimit']);
 
       const expectedHomeServiceData = {
