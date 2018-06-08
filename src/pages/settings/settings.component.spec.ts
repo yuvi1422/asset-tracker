@@ -3,7 +3,7 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, NavController, ToastController, AlertController, ActionSheetController, Platform} from 'ionic-angular';
 
-import { NavMock, NavParamsMock } from '../../../test-config/mocks/mocks';
+import { NavMock, NavParamsMock, getStubPromise} from '../../../test-config/mocks/mocks';
 import {PlatformMock} from '../../../test-config/mocks/platform.mock';
 
 import { StorageMock } from '../../../test-config/mocks/storage.mock';
@@ -42,7 +42,20 @@ describe('Page: Settings Page', () => {
     urlServiceSpy,
     messageServiceSpy,
     settingsServiceSpy,
-    loggerSpy;
+    loggerSpy,
+    expectedData = {
+      title: 'Settings',
+      items: [
+        {
+          id: 'export',
+          title: 'Back Up'
+        },
+        {
+          id: 'import',
+          title: 'Restore'
+        }
+      ]
+    };
 
     beforeEach(async(() => {
       // Used spy to mock services.
@@ -67,6 +80,15 @@ describe('Page: Settings Page', () => {
 
       fileSpy = jasmine.createSpyObj('File', ['externalRootDirectory', 'listDir', 'createDir', 'writeFile']);
 
+      fileSpy.listDir.and.callFake(function () {
+        return getStubPromise();
+      });
+      fileSpy.createDir.and.callFake(function () {
+        return getStubPromise();
+      });
+      fileSpy.writeFile.and.callFake(function () {
+        return getStubPromise();
+      });
       urlServiceSpy = jasmine.createSpyObj('UrlService', 
                           ['getAppName', 'getAppKey', 'getPathSeparator', 'getStoreKey', 
                               'getCategoriesId', 'getCategoriesKey', 'getCategoriesTitleKey', 'getAccountabilityKey',
@@ -74,6 +96,9 @@ describe('Page: Settings Page', () => {
 
       messageServiceSpy = jasmine.createSpyObj('MessageService', ['displayToast', 'loadMessages', 'getMessages']);
       settingsServiceSpy = jasmine.createSpyObj('SettingsService', ['getData', 'importData', 'getBackupFileList']);
+      settingsServiceSpy.getData.and.callFake(function () {
+        return asyncData(expectedData);
+      });
       loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
 
       TestBed.configureTestingModule({
@@ -161,6 +186,8 @@ describe('Page: Settings Page', () => {
         expect(comp).toBeTruthy();
     });
 
+// TODO: Test promise response in method loadData()
+
     it('#changeSettings should change settings', () => {
       comp.changeSettings('export');
       expect(urlServiceSpy.getAppName).toHaveBeenCalled();
@@ -173,5 +200,10 @@ describe('Page: Settings Page', () => {
       expect(toastSpy.present).toHaveBeenCalled();
       comp.displayToast(null);
       expect(loggerSpy.error).toHaveBeenCalled();
+    }));
+
+    it('#writeToFile() should write to file', async(() => {
+      comp.writeToFile('rootPath', 'appDirectoryPath', 'dirName', 'fileName', 'storeData');
+      expect(fileSpy.createDir).toHaveBeenCalled();
     }));
 }); 

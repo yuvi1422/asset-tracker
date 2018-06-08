@@ -211,7 +211,7 @@ export class SettingsComponent {
     };
     actionSheetBtns.push(cancelBtn);
 
-    let actionSheet = this.actionSheetCtrl.create({
+    let actionSheet = context.actionSheetCtrl.create({
       title: 'Select File',
       buttons: actionSheetBtns
     });
@@ -239,12 +239,12 @@ export class SettingsComponent {
   writeToFile (rootPath: string, appDirectoryPath: string, dirName: string,
                    fileName: string, storeData: any, options?: any) {
 
-  let context = this;
+    let context = this;
 
-  // Create App Directory if not 
-  context.file.createDir(rootPath, dirName, options). then(function(result) {
+    // Create App Directory if not 
+    context.file.createDir(rootPath, dirName, options). then(function(result) {
 
-    // Write to file
+      // Write to file
       context.file.writeFile(appDirectoryPath, fileName, JSON.parse(storeData), options).then(function(result) {
       context.messageService.displayToast(context.messageContainer.exportSuccess, 2500, 'bottom');
       }, function(err) {
@@ -265,12 +265,10 @@ export class SettingsComponent {
       return;
     }
     let toast = this.toastCtrl.create({
-    message: message,
-    duration: 2500,
-    position: 'bottom'
-  });
-
-  toast.present();
-}
-
+      message: message,
+      duration: 2500,
+      position: 'bottom'
+    });
+    toast.present();
+  }
 }

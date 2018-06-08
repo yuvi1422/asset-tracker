@@ -49,7 +49,7 @@ export class SplashScreenMock extends SplashScreen {
   }
 }
 
-function getStubPromise() {
+export function getStubPromise() {
     return new Promise((resolve: Function) => {
       resolve();
     });

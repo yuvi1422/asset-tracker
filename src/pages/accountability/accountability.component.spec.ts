@@ -129,6 +129,7 @@ describe('Page: Accountability Page', () => {
     it('#loadData() should load data', () => {
 
       comp.loadData();
+      // TODO: Test promise response
       expect(comp.title).toEqual('Borrowers');
     });
 
