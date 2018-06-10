@@ -103,7 +103,7 @@ export class TransactionComponent {
     }
 
     context.storage.get(context.parentData.CATEGORIES_KEY).then((storeData) => {
-      if (storeData === null || typeof storeData === 'undefined') {  //  True: when no value is stored in storage
+      if (!storeData) {  //  True: when no value is stored in storage
         context.logger.error('TransactionComponent --> Error in retrieving storage data');
         return;
       } else {
@@ -131,13 +131,21 @@ export class TransactionComponent {
    * @description Function to load accountabilities related to selected category
    */
   loadAccountabilities() {
+    if(!this.parentData || !this.parentData.CATEGORIES_KEY || !this.parentData.SEPARATOR 
+        || !this.transaction || !this.transaction.category) {
+          this.logger.error('Insufficient Data for loading accountabilities');
+          return;
+    }
     let context = this,
         storeURL = context.parentData.CATEGORIES_KEY + 
                      context.parentData.SEPARATOR + 
                      context.transaction.category.id;
 
     context.storage.get(storeURL).then((accountabilityData) => {
-
+        if(!accountabilityData) {
+          context.logger.error('Error in loading accountabilities');
+          return;
+        } 
         accountabilityData = JSON.parse(accountabilityData);
         context.accountabilities = accountabilityData.accountabilities;
         if(context.parentData.isPristine !== true) {

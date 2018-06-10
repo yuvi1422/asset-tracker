@@ -54,3 +54,9 @@ export function getStubPromise() {
       resolve();
     });
  }
+
+ export function getPromise(value) {
+    return new Promise((resolve: Function) => {
+      resolve(value);
+    });
+ }

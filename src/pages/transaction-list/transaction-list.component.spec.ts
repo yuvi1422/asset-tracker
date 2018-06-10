@@ -31,7 +31,7 @@ let loggerSpy,
 // Change default timeout of jasmine. It would be helpful to test AJAX.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
-describe('Page: TransactionListComponent Page', () => {
+describe('Page: TransactionList', () => {
 
     beforeEach(async(() => {
       // Used spy to mock services.
