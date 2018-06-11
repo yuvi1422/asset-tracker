@@ -11,6 +11,7 @@ import { NavMock, NavParamsMock, getStubPromise, getPromise } from '../../../tes
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 import { PlatformMock } from '../../../test-config/mocks/platform.mock';
 
+import { platformSpy } from '../../../test-config/spies/platform.spie';
 import { MyApp } from '../../app/app.component';
 import { TransactionComponent } from './transaction.component';
 
@@ -35,7 +36,8 @@ let toastSpy,
   parentData,
   trasactionBean,
   categories,
-  accountabilities;
+  accountabilities,
+  isCordova = false;
 
 // Change default timeout of jasmine. It would be helpful to test AJAX.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -43,14 +45,9 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 describe('Page: Transaction', () => {
 
   parentData = {
-    title: 'Update Transaction',
-    transaction: {
-      id: "a4445",
-      title: "Marriage",
-      icon: "people",
-      price: 20000,
-    },
+    title: 'Add Transaction',
     theme: 'royal',
+    isPristine: true,
     transactionIndex: 0,
     CATEGORIES_KEY: 'asset-tracker-store-categories',
     SEPARATOR: '-'
@@ -115,18 +112,20 @@ describe('Page: Transaction', () => {
   });
   storageSpy.get.and.callFake(function (storeKey) {
     if(storeKey === 'asset-tracker-store-categories') {
-      return getStubPromise()
+      return getPromise(JSON.stringify(categories));
     }
     return getPromise(JSON.stringify(accountabilities));
-    /*return new Promise((resolve: Function) => {
-      resolve(JSON.stringify(accountabilities));
-    });*/
   });
   navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
-  loggerSpy = jasmine.createSpyObj('Logger', ['error']);
+
+
+  loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
   utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
   transactionServiceSpy = jasmine.createSpyObj('TransactionService', ['getBean']);
-
+  transactionServiceSpy.getBean.and.callFake(function () {
+    return trasactionBean;
+  });
+  
   beforeEach(async(() => {
 
     NavParamsMock.setParams(parentData);
@@ -161,7 +160,7 @@ describe('Page: Transaction', () => {
         Contacts,
         {
           provide: Platform,
-          useClass: PlatformMock
+          useValue: platformSpy
         },
         {
           provide: Logger,
@@ -208,8 +207,33 @@ describe('Page: Transaction', () => {
     expect(comp).toBeTruthy();
   });
 
+
   it('#loadAccountabilities should load accountabilities', async(() => {
     fixture.detectChanges(); // ngOnInit()
+    expect(comp.accountabilities).toBeUndefined();
+    
+    // Clone object to make sure fresh object is used all time
+    let tmpParentData = JSON.parse(JSON.stringify(comp.parentData)),
+        tmpTransaction = JSON.parse(JSON.stringify(comp.transaction));
+
+    comp.parentData = null;
+    comp.loadAccountabilities();
+    expect(loggerSpy.error).toHaveBeenCalled();
+
+    comp.parentData = {};
+    comp.loadAccountabilities();
+    expect(loggerSpy.error).toHaveBeenCalled();
+
+    comp.transaction = null;
+    comp.loadAccountabilities();
+    expect(loggerSpy.error).toHaveBeenCalled();
+
+    comp.transaction = {};
+    comp.loadAccountabilities();
+    expect(loggerSpy.error).toHaveBeenCalled();
+
+    comp.parentData = tmpParentData;
+    comp.transaction = tmpTransaction;
     comp.loadAccountabilities();
     fixture.whenStable().then(() => { // wait for async to get complete
       fixture.detectChanges();        // update view
@@ -223,4 +247,13 @@ describe('Page: Transaction', () => {
     comp.displayToast(null);
     expect(loggerSpy.error).toHaveBeenCalled();
   }));
+
+  it('#isRunningOnDevice() should check for weather app is running on device or not', () => {
+
+    expect(comp.isRunningOnDevice()).toBeFalsy();
+    platformSpy.set('cordova', true);
+    expect(comp.isRunningOnDevice()).toBeTruthy();
+    console.log('is called: ' );
+  });
+
 }); 

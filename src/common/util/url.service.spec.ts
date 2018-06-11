@@ -53,11 +53,11 @@ describe('Service: Url Service', () => {
     });
 
     it('#getDeviceDataUrl() should get device data url', () => {
-      expect(urlServiceSpy.getDeviceDataUrl()).toEqual('/android_asset/www/');
+      expect(urlServiceSpy.getDeviceDataUrl()).toEqual('');
     });
 
     it('#getAddBtnImageUrl() should get AddBtn image url', () => {
-      expect(urlServiceSpy.getAddBtnImageUrl()).toEqual('/android_asset/www/assets/images/add_btn_message.jpg');
+      expect(urlServiceSpy.getAddBtnImageUrl()).toEqual('assets/images/add_btn_message.jpg');
     });
 
     it('#getCategoriesFileName() should get categories file name', () => {
