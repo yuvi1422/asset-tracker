@@ -3,7 +3,7 @@ let isCordova;
 export let platformSpy = jasmine.createSpyObj('Platform',
   ['ready', 'getQueryParam', 'registerBackButtonAction', 'hasFocus', 'doc',
     'is', 'getElementComputedStyle', 'onResize', 'registerListener', 'win', 'raf',
-    'timeout', 'cancelTimeout', 'getActiveElement', 'set']);
+    'timeout', 'cancelTimeout', 'getActiveElement', '_set', '_reset']);
 
 platformSpy.ready.and.callFake(function () {
   return new Promise((resolve) => {
@@ -59,6 +59,10 @@ platformSpy.is.and.callFake(function (attr) {
   return isCordova ? true : false;
 });
 
-platformSpy.set.and.callFake(function (attr, value) {
+platformSpy._set.and.callFake(function (value) {
   isCordova = value;
+});
+
+platformSpy._reset.and.callFake(function () {
+  isCordova = false;
 });

@@ -11,7 +11,9 @@ import { NavMock, NavParamsMock, getStubPromise, getPromise } from '../../../tes
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 import { PlatformMock } from '../../../test-config/mocks/platform.mock';
 
+import { contactsSpy } from '../../../test-config/spies/other.spies';
 import { platformSpy } from '../../../test-config/spies/platform.spie';
+
 import { MyApp } from '../../app/app.component';
 import { TransactionComponent } from './transaction.component';
 
@@ -118,7 +120,6 @@ describe('Page: Transaction', () => {
   });
   navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
 
-
   loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
   utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
   transactionServiceSpy = jasmine.createSpyObj('TransactionService', ['getBean']);
@@ -157,7 +158,10 @@ describe('Page: Transaction', () => {
           provide: Storage,
           useValue: storageSpy
         },
-        Contacts,
+        {
+          provide: Contacts,
+          useValue: contactsSpy
+        },
         {
           provide: Platform,
           useValue: platformSpy
@@ -207,7 +211,6 @@ describe('Page: Transaction', () => {
     expect(comp).toBeTruthy();
   });
 
-
   it('#loadAccountabilities should load accountabilities', async(() => {
     fixture.detectChanges(); // ngOnInit()
     expect(comp.accountabilities).toBeUndefined();
@@ -249,11 +252,28 @@ describe('Page: Transaction', () => {
   }));
 
   it('#isRunningOnDevice() should check for weather app is running on device or not', () => {
-
+    platformSpy._reset();
     expect(comp.isRunningOnDevice()).toBeFalsy();
-    platformSpy.set('cordova', true);
+    platformSpy._set(true);
     expect(comp.isRunningOnDevice()).toBeTruthy();
-    console.log('is called: ' );
   });
 
+  it('#pickContact() should pick Contact', async(() => {
+
+    platformSpy._set(false);
+    comp.pickContact();
+    expect(comp.transaction.accountability.id).toBeUndefined();
+
+    platformSpy._set(true);
+    comp.pickContact();
+    fixture.whenStable().then(() => {
+      expect(comp.transaction.accountability.id).toEqual('2737');
+      platformSpy._set(true);
+      contactsSpy._set();
+      comp.pickContact();
+      fixture.whenStable().then(() => {
+        expect(comp.transaction.accountability.photos).toBeUndefined();
+      });
+    });
+  }));
 }); 
