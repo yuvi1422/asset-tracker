@@ -10,12 +10,19 @@ import { HomeComponent } from '../home/home.component';
 import { Logger } from "../../common/log/logger.service";
 import { TransactionService } from "./transaction.service";
 import { UtilService } from "../../common/util/util.service";
+import { MessageService } from "../../common/util/message.service";
 
 @Component({
   selector: 'page-home',
   templateUrl: 'transaction.component.html'
 })
 export class TransactionComponent {
+
+   /**
+   * @description Name of component
+   * @private
+   */
+    private name:string = 'transaction';
 
   /**
    * @description Data received from parent
@@ -64,6 +71,7 @@ export class TransactionComponent {
    * @param {Platform} platform - Platform service of ionic
    * @param {Logger} logger - Logger Service
    * @param {Utility} utilService - Utility Service
+   * @param {MessageService} messageService - Message Service used to show messages.
    * @param {Transaction} transactionService - Transaction Service
    */
 
@@ -76,6 +84,7 @@ export class TransactionComponent {
     private platform: Platform,
     private logger: Logger,
     private utilService: UtilService,
+    private messageService: MessageService,
     private transactionService: TransactionService) {
 
     var context = this;
@@ -148,7 +157,7 @@ export class TransactionComponent {
         } 
         accountabilityData = JSON.parse(accountabilityData);
         context.accountabilities = accountabilityData.accountabilities;
-        if(context.parentData.isPristine !== true) {
+        if(!context.parentData.isPristine) {
           context.selectedAccountabilityIndex = context.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
         }
         //  TODO: Use code below once other category support is added.
@@ -168,7 +177,7 @@ export class TransactionComponent {
     transaction.price = parseInt(transaction.price);
 
     if (isNaN(transaction.price) || transaction.price === 0 || transaction.title.trim() === '') {
-      context.displayToast('Please fill up all details');
+      context.displayToast(context.messageService.getMessage(context.name, 'fillupDetails'));
       return;
     }
 
@@ -176,12 +185,12 @@ export class TransactionComponent {
 
     if(this.isRunningOnDevice() && transaction.category.id === 'people' &&
           transaction.accountability.title === context.transactionService.getBean().accountability.title) {
-      context.displayToast('Please select a contact');
+      context.displayToast(context.messageService.getMessage(context.name, 'selectContact'));
       return;
     }
     let storeURL = context.parentData.CATEGORIES_KEY +
-      context.parentData.SEPARATOR +
-      this.transaction.category.id;
+                      context.parentData.SEPARATOR +
+                      this.transaction.category.id;
 
     context.storage.get(storeURL).then((store) => {
       try {
@@ -220,7 +229,7 @@ export class TransactionComponent {
         context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories));
 
         context.navCtrl.setRoot(HomeComponent);
-        context.displayToast('Transaction Saved Sucessfully');
+        context.displayToast(context.messageService.getMessage(context.name, 'transactionSuccess'));
       } catch (err) {
         context.displayToast('Error in Saving Transaction');
       }
@@ -302,12 +311,12 @@ export class TransactionComponent {
       return;
     }
     let toast = this.toastCtrl.create({
-    message: message,
-    duration: 2500,
-    position: 'bottom'
-  });
+      message: message,
+      duration: 2500,
+      position: 'bottom'
+    });
 
-  toast.present();
+    toast.present();
   }
 
   /**

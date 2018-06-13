@@ -8,5 +8,10 @@
         "backupNotFound": "No Backup File Found",
         "cordovaNotFound": "Cordova Not Found.",
         "backupListingFail": "Error while listing backup files"
+    },
+    "transaction": {
+      "fillupDetails": "Please fill up all details",
+      "selectContact": "Please select a contact",
+      "transactionSuccess": "Transaction Saved Sucessfully"
     }
 }

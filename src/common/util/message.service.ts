@@ -96,4 +96,18 @@ export class MessageService {
     return this.messageContainer[componentName];
   }
 
+    /**
+  * @description Function to get all messages from setting's component
+  * @param {string} componentName Name of the component.
+  * @param {string} messageCode   message code.
+  * @return {object} Selected Message
+  */
+  getMessage(componentName: string, messageCode: string) {
+    if(!this.messageContainer || !componentName
+        || !this.messageContainer[componentName] || !this.messageContainer[componentName][messageCode]) {
+      this.logger.error('Invalid message or component');
+      return null;
+    }
+    return this.messageContainer[componentName][messageCode];
+  }
 }

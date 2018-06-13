@@ -19,3 +19,6 @@ contactsSpy._reset.and.callFake(function () {
     value: "content://com.android.contacts/contacts/2737/photo"
   });
 });
+
+export let messageServiceSpy = jasmine.createSpyObj('MessageService',
+                                  ['displayToast', 'loadMessages', 'getMessages', 'getMessage']);

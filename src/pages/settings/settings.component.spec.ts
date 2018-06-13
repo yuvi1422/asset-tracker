@@ -94,7 +94,7 @@ describe('Page: Settings Page', () => {
                               'getCategoriesId', 'getCategoriesKey', 'getCategoriesTitleKey', 'getAccountabilityKey',
                               'getDeviceDataUrl', 'getAddBtnImageUrl', 'getCategoriesFileName']);
 
-      messageServiceSpy = jasmine.createSpyObj('MessageService', ['displayToast', 'loadMessages', 'getMessages']);
+      messageServiceSpy = jasmine.createSpyObj('MessageService', ['displayToast', 'loadMessages', 'getMessages', 'getMessage']);
       settingsServiceSpy = jasmine.createSpyObj('SettingsService', ['getData', 'importData', 'getBackupFileList']);
       settingsServiceSpy.getData.and.callFake(function () {
         return asyncData(expectedData);

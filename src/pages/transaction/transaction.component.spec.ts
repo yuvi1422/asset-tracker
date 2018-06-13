@@ -7,11 +7,12 @@ import { IonicModule, NavController, NavParams, Platform,
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
 
-import { NavMock, NavParamsMock, getStubPromise, getPromise } from '../../../test-config/mocks/mocks';
+import { NavMock, NavParamsMock, getStubPromise, getPromise, accountabilityStub }
+              from '../../../test-config/mocks/mocks';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 import { PlatformMock } from '../../../test-config/mocks/platform.mock';
 
-import { contactsSpy } from '../../../test-config/spies/other.spies';
+import { contactsSpy, messageServiceSpy } from '../../../test-config/spies/other.spies';
 import { platformSpy } from '../../../test-config/spies/platform.spie';
 
 import { MyApp } from '../../app/app.component';
@@ -20,6 +21,7 @@ import { TransactionComponent } from './transaction.component';
 import { Logger } from "../../common/log/logger.service";
 import { UtilService } from "../../common/util/util.service";
 import { TransactionService } from './transaction.service';
+import { MessageService } from "../../common/util/message.service";
 
 let comp: TransactionComponent;
 let fixture: ComponentFixture<TransactionComponent>;
@@ -116,7 +118,11 @@ describe('Page: Transaction', () => {
     if(storeKey === 'asset-tracker-store-categories') {
       return getPromise(JSON.stringify(categories));
     }
-    return getPromise(JSON.stringify(accountabilities));
+    if(storeKey === 'asset-tracker-store-categories-people') {
+      let storedValue = comp.parentData.isPristine ? accountabilityStub: accountabilities;
+      return getPromise(JSON.stringify(storedValue));
+    }
+    return getStubPromise();
   });
   navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
 
@@ -175,6 +181,10 @@ describe('Page: Transaction', () => {
           useValue: utilServiceSpy
         },
         {
+          provide: MessageService,
+          useValue: messageServiceSpy
+        },
+        {
           provide: TransactionService,
           useValue: transactionServiceSpy
         }
@@ -204,6 +214,7 @@ describe('Page: Transaction', () => {
     comp = null;
     de = null;
     el = null;
+    platformSpy._reset();
   });
 
   it('is created', () => {
@@ -240,7 +251,9 @@ describe('Page: Transaction', () => {
     comp.loadAccountabilities();
     fixture.whenStable().then(() => { // wait for async to get complete
       fixture.detectChanges();        // update view
-      expect(comp.accountabilities.length).toEqual(accountabilities.accountabilities.length);
+      if(comp.parentData.isPristine) {
+        expect(comp.accountabilities.length).toEqual(0);
+      }
     });
   }));
 
@@ -250,6 +263,29 @@ describe('Page: Transaction', () => {
     comp.displayToast(null);
     expect(loggerSpy.error).toHaveBeenCalled();
   }));
+
+  it('#save() should save transaction', async() => {
+    comp.save();
+    expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('fillupDetails');
+
+    // Clone the transaction bean object to avoid changes by reference.
+    comp.transaction = JSON.parse(JSON.stringify(trasactionBean));
+    comp.transaction.price = 10000;
+    comp.transaction.title = "Marriage";
+    platformSpy._set(true);
+    comp.save();
+
+    fixture.whenStable().then(()=> {
+      fixture.detectChanges();        // update view
+      expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('selectContact');
+
+      platformSpy._reset();
+      comp.save();
+      fixture.whenStable().then(()=> {
+        expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('transactionSuccess');
+      });
+    });
+  });
 
   it('#isRunningOnDevice() should check for weather app is running on device or not', () => {
     platformSpy._reset();

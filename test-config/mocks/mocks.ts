@@ -60,3 +60,8 @@ export function getStubPromise() {
       resolve(value);
     });
  }
+
+ export let accountabilityStub = {
+    title: "Accountability List",
+    accountabilities: []
+};
