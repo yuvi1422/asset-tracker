@@ -12,7 +12,7 @@ import { NavMock, NavParamsMock, getStubPromise, getPromise, accountabilityStub 
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 import { PlatformMock } from '../../../test-config/mocks/platform.mock';
 
-import { contactsSpy, messageServiceSpy } from '../../../test-config/spies/other.spies';
+import { contactsSpy, messageServiceSpy, utilServiceSpy} from '../../../test-config/spies/other.spies';
 import { platformSpy } from '../../../test-config/spies/platform.spie';
 
 import { MyApp } from '../../app/app.component';
@@ -34,11 +34,10 @@ let toastSpy,
   alertCtrlSpy,
   storageSpy,
   loggerSpy,
-  utilServiceSpy,
   navCtrlSpy,
   transactionServiceSpy,
   parentData,
-  trasactionBean,
+  transactionBean,
   categories,
   accountabilities,
   isCordova = false;
@@ -56,7 +55,7 @@ describe('Page: Transaction', () => {
     CATEGORIES_KEY: 'asset-tracker-store-categories',
     SEPARATOR: '-'
   };
-  trasactionBean = {
+  transactionBean = {
     titlePlaceholder: 'Note',
     pricePlaceholder: 'Price',
     id: '',
@@ -114,23 +113,28 @@ describe('Page: Transaction', () => {
   storageSpy.ready.and.callFake(function () {
     return getStubPromise();
   });
-  storageSpy.get.and.callFake(function (storeKey) {
-    if(storeKey === 'asset-tracker-store-categories') {
+
+  /**
+   * @description Function to get store value for transaction component.
+   * @param storeKey - key to retrieve store value from storage spy.
+   */
+  function getStoreForTransaction(storeKey) {
+    if (storeKey === 'asset-tracker-store-categories') {
       return getPromise(JSON.stringify(categories));
     }
-    if(storeKey === 'asset-tracker-store-categories-people') {
-      let storedValue = comp.parentData.isPristine ? accountabilityStub: accountabilities;
+    if (storeKey === 'asset-tracker-store-categories-people') {
+      let storedValue = comp.parentData.isPristine ? accountabilityStub : accountabilities;
       return getPromise(JSON.stringify(storedValue));
     }
     return getStubPromise();
-  });
+  }
+
   navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
 
   loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
-  utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
   transactionServiceSpy = jasmine.createSpyObj('TransactionService', ['getBean']);
   transactionServiceSpy.getBean.and.callFake(function () {
-    return trasactionBean;
+    return transactionBean;
   });
   
   beforeEach(async(() => {
@@ -202,10 +206,12 @@ describe('Page: Transaction', () => {
 
   beforeEach(() => {
 
+    storageSpy.get.and.callFake(getStoreForTransaction);
+
     fixture = TestBed.createComponent(TransactionComponent);
     comp = fixture.componentInstance;
     comp.categories = categories;
-    comp.transaction = trasactionBean;
+    comp.transaction = transactionBean;
     comp.transaction.category = categories[0];
   });
 
@@ -221,6 +227,32 @@ describe('Page: Transaction', () => {
     expect(fixture).toBeTruthy();
     expect(comp).toBeTruthy();
   });
+
+  it('#loadData should load data', fakeAsync(() => {
+
+    comp.parentData = null;
+    comp.loadData();
+    tick();
+    expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('parentDataError');
+
+    storageSpy.get.and.callFake(function () {
+      return getStubPromise();
+    });
+    comp.parentData = parentData;
+    comp.loadData();
+    tick();                         //  flushes all existing async calls.
+    fixture.detectChanges();        // update view
+    expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('storageDataError');
+
+    storageSpy.get.and.callFake(getStoreForTransaction);
+    comp.parentData.isPristine = false;
+    comp.parentData.transaction = transactionBean;
+    comp.parentData.transaction.category = categories[0];
+    comp.loadData();
+    tick();                         //  flushes all existing async calls.
+    fixture.detectChanges();        // update view
+    expect(comp.transaction.category).toEqual(categories[0]);
+  }));
 
   it('#loadAccountabilities should load accountabilities', async(() => {
     fixture.detectChanges(); // ngOnInit()
@@ -264,28 +296,29 @@ describe('Page: Transaction', () => {
     expect(loggerSpy.error).toHaveBeenCalled();
   }));
 
-  it('#save() should save transaction', async() => {
+  it('#save() should save transaction', fakeAsync(() => {
     comp.save();
     expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('fillupDetails');
 
     // Clone the transaction bean object to avoid changes by reference.
-    comp.transaction = JSON.parse(JSON.stringify(trasactionBean));
+    comp.transaction = JSON.parse(JSON.stringify(transactionBean));
     comp.transaction.price = 10000;
     comp.transaction.title = "Marriage";
     platformSpy._set(true);
     comp.save();
 
-    fixture.whenStable().then(()=> {
-      fixture.detectChanges();        // update view
-      expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('selectContact');
+    tick();
+    fixture.detectChanges();
+    expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('selectContact');
 
-      platformSpy._reset();
-      comp.save();
-      fixture.whenStable().then(()=> {
-        expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('transactionSuccess');
-      });
-    });
-  });
+    platformSpy._reset();
+    comp.parentData.isPristine = true;
+    comp.save();
+    tick();
+    fixture.detectChanges();
+    expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('transactionSuccess');
+
+  }));
 
   it('#isRunningOnDevice() should check for weather app is running on device or not', () => {
     platformSpy._reset();

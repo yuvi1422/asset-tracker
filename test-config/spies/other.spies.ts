@@ -22,3 +22,6 @@ contactsSpy._reset.and.callFake(function () {
 
 export let messageServiceSpy = jasmine.createSpyObj('MessageService',
                                   ['displayToast', 'loadMessages', 'getMessages', 'getMessage']);
+
+export let utilServiceSpy = jasmine.createSpyObj('UtilService', 
+                          ['getTotal', 'sort', 'getSanitizedUrl', 'loadThemes', 'getObjFromArray', 'getTheme']);

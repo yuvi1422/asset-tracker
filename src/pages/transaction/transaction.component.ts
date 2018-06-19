@@ -107,13 +107,13 @@ export class TransactionComponent {
       !context.parentData.theme ||
       !context.parentData.CATEGORIES_KEY ||
       !context.parentData.SEPARATOR) {
-        context.logger.error('TransactionComponent --> Error in retrieving parent data');
+        context.logger.error(context.messageService.getMessage(context.name, 'parentDataError'));
         return;
     }
 
     context.storage.get(context.parentData.CATEGORIES_KEY).then((storeData) => {
       if (!storeData) {  //  True: when no value is stored in storage
-        context.logger.error('TransactionComponent --> Error in retrieving storage data');
+        context.logger.error(context.messageService.getMessage(context.name, 'storageDataError'));
         return;
       } else {
         context.categories = JSON.parse(storeData);
@@ -197,8 +197,8 @@ export class TransactionComponent {
         store = JSON.parse(store);
 
         if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
-          typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
-          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+              typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
+          context.logger.error(context.messageService.getMessage(context.name, 'accountabilityRetrievalError'));
           return;
         }
         if (context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
