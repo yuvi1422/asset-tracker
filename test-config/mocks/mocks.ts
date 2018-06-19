@@ -61,7 +61,47 @@ export function getStubPromise() {
     });
  }
 
- export let accountabilityStub = {
-    title: "Accountability List",
-    accountabilities: []
+export let categories = [
+  { id: "people", title: "Borrowers", icon: "people", price: 0, thresholdLimit: 100000 },
+  { id: "fd", title: "FD", icon: "lock", price: 0, thresholdLimit: 100000 },
+  { id: "gold", title: "Gold", icon: "ios-star-half", price: 0, thresholdLimit: 50000 },
+  { id: "mf", title: "Mutual Fund", icon: "pulse", price: 0, thresholdLimit: 50000 }
+];
+
+export let accountabilities = {
+  accountabilities: [{
+    accountability: {
+      icon: {
+        changingThisBreaksApplicationSecurity: "content://com.android.contacts/contacts/2737/photo"
+      },
+      title: "Abhijit Kurane",
+      price: 0,
+      transactions: [],
+      id: "2737",
+      icon_uri: "content://com.android.contacts/contacts/2737/photo"
+    }
+  }]
+};
+
+export let accountabilityStub = {
+  title: "Accountability List",
+  accountabilities: []
+};
+
+export let transactionBean = {
+  titlePlaceholder: 'Note',
+  pricePlaceholder: 'Price',
+  id: '',
+  title: '',
+  icon: 'assets/avatar/people/person.ico',
+  price: '',
+  isActive: true,
+  date: new Date(),
+  category: null,
+  accountability: {
+    icon: 'assets/avatar/people/person.ico',
+    title: 'Select Contact',
+    price: 0,
+    transactions: []
+  }
 };

@@ -7,12 +7,14 @@ import { IonicModule, NavController, NavParams, Platform,
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
 
-import { NavMock, NavParamsMock, getStubPromise, getPromise, accountabilityStub }
+import { NavMock, NavParamsMock, getStubPromise, getPromise, 
+          categories, accountabilities, accountabilityStub, transactionBean }
               from '../../../test-config/mocks/mocks';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 import { PlatformMock } from '../../../test-config/mocks/platform.mock';
 
-import { contactsSpy, messageServiceSpy, utilServiceSpy} from '../../../test-config/spies/other.spies';
+import { navCtrlSpy, storageSpy, contactsSpy, toastCtrlSpy, alertCtrlSpy, 
+          loggerSpy, messageServiceSpy, utilServiceSpy, transactionServiceSpy } from '../../../test-config/spies/other.spies';
 import { platformSpy } from '../../../test-config/spies/platform.spie';
 
 import { MyApp } from '../../app/app.component';
@@ -28,18 +30,7 @@ let fixture: ComponentFixture<TransactionComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
-let toastSpy,
-  toastCtrlSpy,
-  alertSpy,
-  alertCtrlSpy,
-  storageSpy,
-  loggerSpy,
-  navCtrlSpy,
-  transactionServiceSpy,
-  parentData,
-  transactionBean,
-  categories,
-  accountabilities,
+let parentData,
   isCordova = false;
 
 // Change default timeout of jasmine. It would be helpful to test AJAX.
@@ -55,64 +46,6 @@ describe('Page: Transaction', () => {
     CATEGORIES_KEY: 'asset-tracker-store-categories',
     SEPARATOR: '-'
   };
-  transactionBean = {
-    titlePlaceholder: 'Note',
-    pricePlaceholder: 'Price',
-    id: '',
-    title: '',
-    icon: 'assets/avatar/people/person.ico',
-    price: '',
-    isActive: true,
-    date: new Date(),
-    category: null,
-    accountability: {
-      icon: 'assets/avatar/people/person.ico',
-      title: 'Select Contact',
-      price: 0,
-      transactions: []
-    }
-  };
-  categories = [
-    { id: "people", title: "Borrowers", icon: "people", price: 0, thresholdLimit: 100000 },
-    { id: "fd", title: "FD", icon: "lock", price: 0, thresholdLimit: 100000 },
-    { id: "gold", title: "Gold", icon: "ios-star-half", price: 0, thresholdLimit: 50000 },
-    { id: "mf", title: "Mutual Fund", icon: "pulse", price: 0, thresholdLimit: 50000 }
-  ];
-  accountabilities = {
-    accountabilities: [{
-      accountability: {
-        icon: {
-          changingThisBreaksApplicationSecurity: "content://com.android.contacts/contacts/2737/photo"
-        },
-        title: "Abhijit Kurane",
-        price: 0,
-        transactions: [],
-        id: "2737",
-        icon_uri: "content://com.android.contacts/contacts/2737/photo"
-      }
-    }]
-  };
-
-  // Used spy to mock services.
-
-  toastSpy = jasmine.createSpyObj('Toast', ['present']);
-  toastCtrlSpy = jasmine.createSpyObj('ToastController', ['create']);
-  toastCtrlSpy.create.and.callFake(function () {
-    return toastSpy;
-  });
-
-  alertSpy = jasmine.createSpyObj('Alert', ['present']);
-  alertCtrlSpy = jasmine.createSpyObj('AlertController', ['create']);
-  alertCtrlSpy.create.and.callFake(function () {
-    return alertSpy;
-  });
-
-  storageSpy = jasmine.createSpyObj('Storage', 
-                    ['get','set', 'driver', 'ready', 'remove', 'clear', 'length', 'keys', 'forEach']);
-
-  storageSpy.ready.and.callFake(function () {
-    return getStubPromise();
-  });
 
   /**
    * @description Function to get store value for transaction component.
@@ -129,14 +62,6 @@ describe('Page: Transaction', () => {
     return getStubPromise();
   }
 
-  navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
-
-  loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
-  transactionServiceSpy = jasmine.createSpyObj('TransactionService', ['getBean']);
-  transactionServiceSpy.getBean.and.callFake(function () {
-    return transactionBean;
-  });
-  
   beforeEach(async(() => {
 
     NavParamsMock.setParams(parentData);
@@ -291,7 +216,7 @@ describe('Page: Transaction', () => {
 
   it('#displayToast() should display toast', async(() => {
     comp.displayToast('Export fail');
-    expect(toastSpy.present).toHaveBeenCalled();
+    expect(toastCtrlSpy.create).toHaveBeenCalled();
     comp.displayToast(null);
     expect(loggerSpy.error).toHaveBeenCalled();
   }));
@@ -318,6 +243,11 @@ describe('Page: Transaction', () => {
     fixture.detectChanges();
     expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('transactionSuccess');
 
+  }));
+
+  it('#delete() should delete transaction', fakeAsync(() => {
+    comp.delete(null);
+    expect(alertCtrlSpy.create).toHaveBeenCalled();
   }));
 
   it('#isRunningOnDevice() should check for weather app is running on device or not', () => {
