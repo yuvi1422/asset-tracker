@@ -5,8 +5,8 @@ import { File } from '@ionic-native/file';
 
 import { UrlService } from "../../common/util/url.service";
 import { MessageService } from "../../common/util/message.service";
-
 import { SettingsService } from "./settings.service";
+import { Logger } from "../../common/log/logger.service";
 
 @Component({
   selector: 'page-home',
@@ -57,6 +57,7 @@ export class SettingsComponent {
    * @param {UrlService} urlService - Url Service used to get all application urls.
    * @param {MessageService} messageService - Message Service used to show messages.
    * @param {SettingsService} settingsService - Service of Settings module.
+   * @param {Logger} logger - Logger Service
    */
 
   constructor(public navCtrl: NavController,
@@ -68,7 +69,8 @@ export class SettingsComponent {
     private platform: Platform,
     private urlService: UrlService,
     private messageService: MessageService,
-    private settingsService: SettingsService) {
+    private settingsService: SettingsService,
+    private logger: Logger) {
 
     var context = this;
 
@@ -87,7 +89,7 @@ export class SettingsComponent {
     context.storage.get(context.SETTINGS_KEY).then((storeData) => {
 
       //  True: when no value is stored in storage
-      if (storeData === null || typeof storeData === 'undefined') {
+      if (!storeData) {
          context.settingsService.getData().subscribe(data => {
            context.title = data.title;
            context.items = data.items;
@@ -109,15 +111,14 @@ export class SettingsComponent {
    * @description Function to change settings. It is starting point of all setting changes.
    */
   changeSettings(settingId) {
-    let context = this;
 
     switch (settingId) {
       case 'export':
-        context.exportData();
+        this.exportData();
         break;
 
       case 'import':
-        context.importData();
+        this.importData();
         break;
     }
   }
@@ -210,7 +211,7 @@ export class SettingsComponent {
     };
     actionSheetBtns.push(cancelBtn);
 
-    let actionSheet = this.actionSheetCtrl.create({
+    let actionSheet = context.actionSheetCtrl.create({
       title: 'Select File',
       buttons: actionSheetBtns
     });
@@ -238,12 +239,12 @@ export class SettingsComponent {
   writeToFile (rootPath: string, appDirectoryPath: string, dirName: string,
                    fileName: string, storeData: any, options?: any) {
 
-  let context = this;
+    let context = this;
 
-  // Create App Directory if not 
-  context.file.createDir(rootPath, dirName, options). then(function(result) {
+    // Create App Directory if not 
+    context.file.createDir(rootPath, dirName, options). then(function(result) {
 
-    // Write to file
+      // Write to file
       context.file.writeFile(appDirectoryPath, fileName, JSON.parse(storeData), options).then(function(result) {
       context.messageService.displayToast(context.messageContainer.exportSuccess, 2500, 'bottom');
       }, function(err) {
@@ -259,13 +260,15 @@ export class SettingsComponent {
    * @param {string} message message to be displayed
    */
   displayToast(message) {
+    if(!message) {
+      this.logger.error('Invalid data submitted to toast message');
+      return;
+    }
     let toast = this.toastCtrl.create({
-    message: message,
-    duration: 2500,
-    position: 'bottom'
-  });
-
-  toast.present();
-}
-
+      message: message,
+      duration: 2500,
+      position: 'bottom'
+    });
+    toast.present();
+  }
 }

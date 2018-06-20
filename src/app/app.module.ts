@@ -31,6 +31,9 @@ import { TransactionService } from "../pages/transaction/transaction.service";
 
 import { SettingsService } from "../pages/settings/settings.service";
 
+/**
+ * @ignore
+ */
 @NgModule({
   declarations: [
     MyApp,

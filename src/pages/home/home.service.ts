@@ -49,8 +49,7 @@ export class HomeService {
 
     return context.http.get(context.DEVICE_DATA_URL + context.DATA_URL)
       .map((res) => {
-        return res.json()
+        return res.json ? res.json(): res;
       });
-
   }
 }

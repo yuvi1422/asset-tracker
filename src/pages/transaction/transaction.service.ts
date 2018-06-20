@@ -34,6 +34,6 @@ export class TransactionService {
         price: 0,
         transactions: []
       }
-    }
+    };
   }
 }

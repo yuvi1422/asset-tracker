@@ -8,5 +8,26 @@
         "backupNotFound": "No Backup File Found",
         "cordovaNotFound": "Cordova Not Found.",
         "backupListingFail": "Error while listing backup files"
+    },
+    "transaction": {
+      "fillupDetails": "Please fill up all details",
+      "selectContact": "Please select a contact",
+      "transactionSuccess": "Transaction Saved Sucessfully",
+      "accountabilityRetrievalError": "Error in retriving Accountability List.",
+
+      "parentDataError": "TransactionComponent --> Error in retrieving parent data",
+      "storageDataError": "TransactionComponent --> Error in retrieving storage data",
+
+      "insufficientDataError": "Insufficient Data for loading accountabilities",
+      "accountabilitiesLoadError": "Error in loading accountabilities",
+
+      "deleteConfirmationTitle": "Confirm Delete",
+      "deleteConfirmationMsg": "Are you sure you want to delete this transaction?",
+      "cancelBtnText": "Cancel",
+      "deleteBtnText": "Delete",
+      "deleteSuccessMsg": "Transaction Deleted Sucessfully",
+
+      "invalidToastDataError": "Invalid data submitted to toast message",
+      "cordova404Eror": "Cordova Not Found Error."
     }
 }

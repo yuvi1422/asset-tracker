@@ -83,8 +83,7 @@ export class CategoryService {
 
     return context.http.get(context.DEVICE_DATA_URL + context.DATA_URL)
       .map((res) => {
-        return res.json().categories;
+        return res.json ? res.json().categories: res;
       });
-
   }
 }
