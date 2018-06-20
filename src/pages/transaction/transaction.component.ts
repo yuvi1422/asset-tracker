@@ -10,12 +10,19 @@ import { HomeComponent } from '../home/home.component';
 import { Logger } from "../../common/log/logger.service";
 import { TransactionService } from "./transaction.service";
 import { UtilService } from "../../common/util/util.service";
+import { MessageService } from "../../common/util/message.service";
 
 @Component({
   selector: 'page-home',
   templateUrl: 'transaction.component.html'
 })
 export class TransactionComponent {
+
+   /**
+   * @description Name of component
+   * @private
+   */
+    private name:string = 'transaction';
 
   /**
    * @description Data received from parent
@@ -64,6 +71,7 @@ export class TransactionComponent {
    * @param {Platform} platform - Platform service of ionic
    * @param {Logger} logger - Logger Service
    * @param {Utility} utilService - Utility Service
+   * @param {MessageService} messageService - Message Service used to show messages.
    * @param {Transaction} transactionService - Transaction Service
    */
 
@@ -76,6 +84,7 @@ export class TransactionComponent {
     private platform: Platform,
     private logger: Logger,
     private utilService: UtilService,
+    private messageService: MessageService,
     private transactionService: TransactionService) {
 
     var context = this;
@@ -98,13 +107,13 @@ export class TransactionComponent {
       !context.parentData.theme ||
       !context.parentData.CATEGORIES_KEY ||
       !context.parentData.SEPARATOR) {
-        context.logger.error('TransactionComponent --> Error in retrieving parent data');
+        context.logger.error(context.messageService.getMessage(context.name, 'parentDataError'));
         return;
     }
 
     context.storage.get(context.parentData.CATEGORIES_KEY).then((storeData) => {
-      if (storeData === null || typeof storeData === 'undefined') {  //  True: when no value is stored in storage
-        context.logger.error('TransactionComponent --> Error in retrieving storage data');
+      if (!storeData) {  //  True: when no value is stored in storage
+        context.logger.error(context.messageService.getMessage(context.name, 'storageDataError'));
         return;
       } else {
         context.categories = JSON.parse(storeData);
@@ -131,16 +140,24 @@ export class TransactionComponent {
    * @description Function to load accountabilities related to selected category
    */
   loadAccountabilities() {
+    if(!this.parentData || !this.parentData.CATEGORIES_KEY || !this.parentData.SEPARATOR 
+        || !this.transaction || !this.transaction.category) {
+          this.logger.error('Insufficient Data for loading accountabilities');
+          return;
+    }
     let context = this,
         storeURL = context.parentData.CATEGORIES_KEY + 
                      context.parentData.SEPARATOR + 
                      context.transaction.category.id;
 
     context.storage.get(storeURL).then((accountabilityData) => {
-
+        if(!accountabilityData) {
+          context.logger.error('Error in loading accountabilities');
+          return;
+        } 
         accountabilityData = JSON.parse(accountabilityData);
         context.accountabilities = accountabilityData.accountabilities;
-        if(context.parentData.isPristine !== true) {
+        if(!context.parentData.isPristine) {
           context.selectedAccountabilityIndex = context.accountabilities.findIndex((obj => obj.id == context.parentData.transaction.accountability.id));
         }
         //  TODO: Use code below once other category support is added.
@@ -160,7 +177,7 @@ export class TransactionComponent {
     transaction.price = parseInt(transaction.price);
 
     if (isNaN(transaction.price) || transaction.price === 0 || transaction.title.trim() === '') {
-      context.displayToast('Please fill up all details');
+      context.displayToast(context.messageService.getMessage(context.name, 'fillupDetails'));
       return;
     }
 
@@ -168,20 +185,20 @@ export class TransactionComponent {
 
     if(this.isRunningOnDevice() && transaction.category.id === 'people' &&
           transaction.accountability.title === context.transactionService.getBean().accountability.title) {
-      context.displayToast('Please select a contact');
+      context.displayToast(context.messageService.getMessage(context.name, 'selectContact'));
       return;
     }
     let storeURL = context.parentData.CATEGORIES_KEY +
-      context.parentData.SEPARATOR +
-      this.transaction.category.id;
+                      context.parentData.SEPARATOR +
+                      this.transaction.category.id;
 
     context.storage.get(storeURL).then((store) => {
       try {
         store = JSON.parse(store);
 
         if (store === null || typeof store === 'undefined' ||   //  True: when account does not exist in store 
-          typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
-          context.logger.error('FATAL ERROR: Error in retriving Accountability List.');
+              typeof store.accountabilities === 'undefined') {  //  True: when no value is stored in storage
+          context.logger.error(context.messageService.getMessage(context.name, 'accountabilityRetrievalError'));
           return;
         }
         if (context.parentData.isPristine !== true) {  //  For update/delete tranasction --> Delete selected transaction first
@@ -212,7 +229,7 @@ export class TransactionComponent {
         context.storage.set(context.parentData.CATEGORIES_KEY, JSON.stringify(context.categories));
 
         context.navCtrl.setRoot(HomeComponent);
-        context.displayToast('Transaction Saved Sucessfully');
+        context.displayToast(context.messageService.getMessage(context.name, 'transactionSuccess'));
       } catch (err) {
         context.displayToast('Error in Saving Transaction');
       }
@@ -289,13 +306,17 @@ export class TransactionComponent {
    * @param {string} message message to be displayed
    */
   displayToast(message) {
+    if(!message) {
+      this.logger.error('Invalid data submitted to toast message');
+      return;
+    }
     let toast = this.toastCtrl.create({
-    message: message,
-    duration: 2500,
-    position: 'bottom'
-  });
+      message: message,
+      duration: 2500,
+      position: 'bottom'
+    });
 
-  toast.present();
+    toast.present();
   }
 
   /**
