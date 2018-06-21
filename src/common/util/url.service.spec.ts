@@ -2,19 +2,17 @@ import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 
 import 'rxjs/add/operator/map';
 
-import { PlatformMock} from '../../../test-config/mocks/platform.mock';
+import { platformSpy } from '../../../test-config/spies/platform.spie';
 
 import { UrlService } from "./url.service";
 
 describe('Service: Url Service', () => {
 
     let expectedData,
-        platformMock = new PlatformMock(),
         urlServiceSpy;
 
     beforeEach(async(() => {
-      // Used spy to mock services.
-      urlServiceSpy = new UrlService(<any> new PlatformMock());
+      urlServiceSpy = new UrlService(<any> platformSpy);
     }));
 
     it('#getAppName() should get app name', () => {

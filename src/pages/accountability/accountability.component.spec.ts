@@ -3,9 +3,10 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, NavController, NavParams, PopoverController} from 'ionic-angular';
 
-import { NavMock, NavParamsMock } from '../../../test-config/mocks/mocks';
+import { NavMock, NavParamsMock, categoriesMock } from '../../../test-config/mocks/mocks';
 import { StorageMock } from '../../../test-config/mocks/storage.mock';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
+import { loggerSpy, utilServiceSpy, homeServiceSpy, accountabilityServiceSpy} from '../../../test-config/spies/other.spies';
 
 import { Http, HttpModule} from '@angular/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
@@ -30,10 +31,7 @@ let el: HTMLElement;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Page: Accountability Page', () => {
-    let loggerSpy,
-      utilServiceSpy,
-      homeServiceSpy,
-      accountabilityServiceSpy;
+
     beforeEach(async(() => {
       // Used spy to mock services.
       NavParamsMock.setParams({
@@ -43,18 +41,9 @@ describe('Page: Accountability Page', () => {
           SEPARATOR: '-',
           categoryId: 'people'
       });
-      loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
-      utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
-      homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']);
-      accountabilityServiceSpy = jasmine.createSpyObj('AccountabilityService', ['getData', 'getThresholdLimit']);
 
       const expectedHomeServiceData = {
-            categories: [
-              { id: "people", title: "Borrowers", icon: "people", price: 0, thresholdLimit: 100000 },
-              { id: "fd", title: "FD", icon: "lock", price: 0, thresholdLimit: 100000 },
-              { id: "gold", title: "Gold", icon: "ios-star-half", price: 0, thresholdLimit: 50000 },
-              { id: "mf", title: "Mutual Fund", icon: "pulse", price: 0, thresholdLimit: 50000 }
-            ]
+            categories: categoriesMock
       };
       homeServiceSpy.getData.and.returnValue(asyncData(expectedHomeServiceData));
       utilServiceSpy.sort.and.returnValue(expectedHomeServiceData);
