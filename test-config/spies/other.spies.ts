@@ -7,6 +7,8 @@ storageSpy.ready.and.callFake(function () {
   return getStubPromise();
 });
 
+export let httpSpy = jasmine.createSpyObj('Http', ['get']);
+
 export let  navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
 
 export let contactsSpy = jasmine.createSpyObj('Contacts', ['pickContact', '_set', '_reset']);
@@ -41,11 +43,27 @@ alertCtrlSpy.create.and.callFake(function () {
   return alertSpy;
 });
 
+export let viewCtrlSpy = jasmine.createSpyObj('ViewController', 
+                              ['data', 'readReady', 'writeReady', 'dismiss', '_setHeader', '_setNavbar', '_setIONContent', '_setIONContentRef']);
+
+export let domSanitizerSpy = jasmine.createSpyObj('DomSanitizer', ['bypassSecurityTrustUrl']);
+
+
+export let homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']);
+
+export let accountabilityServiceSpy = jasmine.createSpyObj('AccountabilityService', 
+                                        ['getData', 'getThresholdLimit']);
+
+export let categoryServiceSpy = jasmine.createSpyObj('UtilService',
+                          ['getCategories', 'setCategories', 'getCategoryById', 'getCategoriesFromConfig']);
+
 export let messageServiceSpy = jasmine.createSpyObj('MessageService',
                                   ['displayToast', 'loadMessages', 'getMessages', 'getMessage']);
 
 export let utilServiceSpy = jasmine.createSpyObj('UtilService', 
                           ['getTotal', 'sort', 'getSanitizedUrl', 'loadThemes', 'getObjFromArray', 'getTheme']);
+
+export let urlServiceSpy = jasmine.createSpyObj('UrlService', ['getAddBtnImageUrl', 'getAppName']);
 
 export let loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
 

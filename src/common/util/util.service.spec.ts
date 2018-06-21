@@ -5,20 +5,17 @@ import 'rxjs/add/operator/map';
 import { UtilService } from "./util.service";
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { domSanitizerSpy, loggerSpy } from '../../../test-config/spies/other.spies';
 import { Logger } from "../log/logger.service";
 
 
 describe('Service: Util Service', () => {
 
     let items,
-        domSanitizerSpy,
-        loggerSpy,
         utilServiceSpy;
 
     beforeEach(async(() => {
-      // Used spy to mock services.
-      domSanitizerSpy = jasmine.createSpyObj('DomSanitizer', ['bypassSecurityTrustUrl']),
-      loggerSpy = jasmine.createSpyObj('Logger', ['error']),
+
       utilServiceSpy = new UtilService(domSanitizerSpy, loggerSpy);
 
       items = [

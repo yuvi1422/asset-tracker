@@ -4,6 +4,7 @@ import { DebugElement } from '@angular/core';
 import { IonicModule, NavController, NavParams, PopoverController, ViewController } from 'ionic-angular';
 
 import { NavMock, NavParamsMock } from '../../../test-config/mocks/mocks';
+import { viewCtrlSpy } from '../../../test-config/spies/other.spies';
 
 import { MyApp } from '../../app/app.component';
 import { PopoverListComponent } from './popover-list.component';
@@ -23,8 +24,6 @@ describe('PopoverList Component', () => {
     beforeEach(async(() => {
       // Used spy to mock services.
 
-      let viewCtrlSpy = jasmine.createSpyObj('ViewController', 
-                              ['data', 'readReady', 'writeReady', 'dismiss', '_setHeader', '_setNavbar', '_setIONContent', '_setIONContentRef']);
       viewCtrlSpy.data.items = [];
 
       TestBed.configureTestingModule({

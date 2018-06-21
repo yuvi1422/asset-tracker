@@ -8,7 +8,7 @@ import { Storage, IonicStorageModule } from '@ionic/storage';
 import { Contacts } from '@ionic-native/contacts';
 
 import { NavMock, NavParamsMock, getStubPromise, getPromise, 
-          categories, accountabilities, accountabilityStub, transactionBean }
+          categoriesMock, accountabilities, accountabilityStub, transactionBean }
               from '../../../test-config/mocks/mocks';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 import { PlatformMock } from '../../../test-config/mocks/platform.mock';
@@ -53,7 +53,7 @@ describe('Page: Transaction', () => {
    */
   function getStoreForTransaction(storeKey) {
     if (storeKey === 'asset-tracker-store-categories') {
-      return getPromise(JSON.stringify(categories));
+      return getPromise(JSON.stringify(categoriesMock));
     }
     if (storeKey === 'asset-tracker-store-categories-people') {
       let storedValue = comp.parentData.isPristine ? accountabilityStub : accountabilities;
@@ -135,9 +135,9 @@ describe('Page: Transaction', () => {
 
     fixture = TestBed.createComponent(TransactionComponent);
     comp = fixture.componentInstance;
-    comp.categories = categories;
+    comp.categories = categoriesMock;
     comp.transaction = transactionBean;
-    comp.transaction.category = categories[0];
+    comp.transaction.category = categoriesMock[0];
   });
 
   afterEach(() => {
@@ -172,11 +172,11 @@ describe('Page: Transaction', () => {
     storageSpy.get.and.callFake(getStoreForTransaction);
     comp.parentData.isPristine = false;
     comp.parentData.transaction = transactionBean;
-    comp.parentData.transaction.category = categories[0];
+    comp.parentData.transaction.category = categoriesMock[0];
     comp.loadData();
     tick();                         //  flushes all existing async calls.
     fixture.detectChanges();        // update view
-    expect(comp.transaction.category).toEqual(categories[0]);
+    expect(comp.transaction.category).toEqual(categoriesMock[0]);
   }));
 
   it('#loadAccountabilities should load accountabilities', async(() => {

@@ -61,7 +61,7 @@ export function getStubPromise() {
     });
  }
 
-export let categories = [
+export let categoriesMock = [
   { id: "people", title: "Borrowers", icon: "people", price: 0, thresholdLimit: 100000 },
   { id: "fd", title: "FD", icon: "lock", price: 0, thresholdLimit: 100000 },
   { id: "gold", title: "Gold", icon: "ios-star-half", price: 0, thresholdLimit: 50000 },
@@ -103,5 +103,18 @@ export let transactionBean = {
     title: 'Select Contact',
     price: 0,
     transactions: []
+  }
+};
+
+export let messagesMock = {
+  settings: {
+    exportSuccess: 'Backup Taken Sucessfully.',
+    exportFail: 'Error while writing data to backup file.',
+    appDirFail: 'Error while creating App directory.',
+    importSuccess: 'Data Restored Sucessfully.',
+    importFail: 'Data Restore Failed.',
+    backupNotFound: 'No Backup File Found',
+    cordovaNotFound: 'Cordova Not Found.',
+    backupListingFail: 'Error while listing backup files'
   }
 };

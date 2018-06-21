@@ -6,6 +6,9 @@ import { IonicModule, NavController, PopoverController} from 'ionic-angular';
 import { NavMock } from '../../../test-config/mocks/mocks';
 import { StorageMock } from '../../../test-config/mocks/storage.mock';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
+import { loggerSpy, utilServiceSpy, urlServiceSpy, categoryServiceSpy, homeServiceSpy, 
+          accountabilityServiceSpy } from '../../../test-config/spies/other.spies';
+import { categoriesMock }from '../../../test-config/mocks/mocks';
 
 import { Http, HttpModule} from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
@@ -37,117 +40,103 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Page: Home Page', () => {
 
-    beforeEach(async(() => {
-      // Used spy to mock services.
-      let loggerSpy = jasmine.createSpyObj('Logger', ['error']),
-          utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']),
-          urlServiceSpy = jasmine.createSpyObj('UrlService', ['getAddBtnImageUrl', 'getAppName']),
-          categoryServiceSpy = jasmine.createSpyObj('CategoryService', ['setCategories']),
-          homeServiceSpy = jasmine.createSpyObj('HomeService', ['getData']),
-          accountabilityServiceSpy = jasmine.createSpyObj('AccountabilityService', ['getData']);
+  beforeEach(async(() => {
 
-          urlServiceSpy.getAddBtnImageUrl.and.returnValue('assets/images/add_btn_message.jpg');
-          const expectedHomeServiceData = {
-            categories: [
-              { id: "people", title: "Borrowers", icon: "people", price: 0, thresholdLimit: 100000 },
-              { id: "fd", title: "FD", icon: "lock", price: 0, thresholdLimit: 100000 },
-              { id: "gold", title: "Gold", icon: "ios-star-half", price: 0, thresholdLimit: 50000 },
-              { id: "mf", title: "Mutual Fund", icon: "pulse", price: 0, thresholdLimit: 50000 }
-            ]
-          };
-          homeServiceSpy.getData.and.returnValue(asyncData(expectedHomeServiceData));
-          utilServiceSpy.sort.and.returnValue(expectedHomeServiceData);
-          accountabilityServiceSpy.getData.and.callFake(function(id) {
-            return asyncData({
-              title: "Accountability List",
-              accountabilities: []
-            });
-          });
-
-      TestBed.configureTestingModule({
-
-            declarations: [
-              MyApp, HomeComponent
-            ],
-
-            providers: [
-                {
-                    provide: NavController,
-                    useClass: NavMock
-                },
-                {
-                    provide: Storage,
-                    useFactory: () => StorageMock.instance()
-                },
-                {
-                    provide: Logger,
-                    useValue: loggerSpy
-                },
-                {
-                    provide: UtilService,
-                    useValue: utilServiceSpy
-                },
-                {
-                    provide: UrlService,
-                    useValue: urlServiceSpy
-                },
-                {
-                    provide: CategoryService,
-                    useValue: categoryServiceSpy
-                },
-                {
-                    provide: HomeService,
-                    useValue: homeServiceSpy
-                },
-                {
-                    provide: AccountabilityService,
-                    useValue: accountabilityServiceSpy
-                } 
-            ],
-
-            imports: [
-                HttpModule,
-                IonicModule.forRoot(MyApp),
-                IonicStorageModule.forRoot()
-            ]
-
-        }).compileComponents();
-
-    }));
-
-    beforeEach(() => {
-
-        fixture = TestBed.createComponent(HomeComponent);
-        comp    = fixture.componentInstance;
-
+    urlServiceSpy.getAddBtnImageUrl.and.returnValue('assets/images/add_btn_message.jpg');
+    const expectedHomeServiceData = {
+      categories: categoriesMock
+    };
+    homeServiceSpy.getData.and.returnValue(asyncData(expectedHomeServiceData));
+    utilServiceSpy.sort.and.returnValue(expectedHomeServiceData);
+    accountabilityServiceSpy.getData.and.callFake(function (id) {
+      return asyncData({
+        title: "Accountability List",
+        accountabilities: []
+      });
     });
 
-    afterEach(() => {
-        fixture.destroy();
-        comp = null;
-        de = null;
-        el = null;
+    TestBed.configureTestingModule({
+
+      declarations: [
+        MyApp, HomeComponent
+      ],
+
+      providers: [
+        {
+          provide: NavController,
+          useClass: NavMock
+        },
+        {
+          provide: Storage,
+          useFactory: () => StorageMock.instance()
+        },
+        {
+          provide: Logger,
+          useValue: loggerSpy
+        },
+        {
+          provide: UtilService,
+          useValue: utilServiceSpy
+        },
+        {
+          provide: UrlService,
+          useValue: urlServiceSpy
+        },
+        {
+          provide: CategoryService,
+          useValue: categoryServiceSpy
+        },
+        {
+          provide: HomeService,
+          useValue: homeServiceSpy
+        },
+        {
+          provide: AccountabilityService,
+          useValue: accountabilityServiceSpy
+        }
+      ],
+
+      imports: [
+        HttpModule,
+        IonicModule.forRoot(MyApp),
+        IonicStorageModule.forRoot()
+      ]
+
+    }).compileComponents();
+
+  }));
+
+  beforeEach(() => {
+
+    fixture = TestBed.createComponent(HomeComponent);
+    comp = fixture.componentInstance;
+
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    comp = null;
+    de = null;
+    el = null;
+  });
+
+  it('is created', () => {
+    expect(fixture).toBeTruthy();
+    expect(comp).toBeTruthy();
+  });
+
+  it('initialises home page properties', () => {
+    expect(comp['SEPARATOR']).toEqual('-');
+    expect(comp['STORE_KEY']).toEqual('asset-tracker-store');
+    expect(comp['theme']).toEqual({
+      name: 'primary',
+      color: 'primary'
     });
+  });
 
-    it('is created', () => {
-        expect(fixture).toBeTruthy();
-        expect(comp).toBeTruthy();
-    });
+  it('#loadData() should load data', () => {
 
-    it('initialises home page properties', () => {
-        expect(comp['SEPARATOR']).toEqual('-');
-        expect(comp['STORE_KEY']).toEqual('asset-tracker-store');
-        expect(comp['theme']).toEqual({
-                                name:  'primary',
-                                color: 'primary'
-            });
-    });
-
-    it('#loadData() should load data', () => {
-
-      comp.loadData();
-      expect(comp.addBtnImageUrl).toEqual('assets/images/add_btn_message.jpg');
-    });
-
-
+    comp.loadData();
+    expect(comp.addBtnImageUrl).toEqual('assets/images/add_btn_message.jpg');
+  });
 }); 
