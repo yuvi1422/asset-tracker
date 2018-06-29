@@ -7,6 +7,18 @@ storageSpy.ready.and.callFake(function () {
   return getStubPromise();
 });
 
+export let fileSpy = jasmine.createSpyObj('File', ['externalRootDirectory', 'listDir', 'createDir', 'writeFile']);
+
+fileSpy.listDir.and.callFake(function () {
+  return getStubPromise();
+});
+fileSpy.createDir.and.callFake(function () {
+  return getStubPromise();
+});
+fileSpy.writeFile.and.callFake(function () {
+  return getStubPromise();
+});
+
 export let httpSpy = jasmine.createSpyObj('Http', ['get']);
 
 export let  navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']);
@@ -43,6 +55,12 @@ alertCtrlSpy.create.and.callFake(function () {
   return alertSpy;
 });
 
+let actionSheetSpy = jasmine.createSpyObj('ActionSheet', ['present']);
+export let actionSheetCtrlSpy = jasmine.createSpyObj('ActionSheetController', ['create']);
+actionSheetCtrlSpy.create.and.callFake(function () {
+  return actionSheetSpy;
+});
+
 export let viewCtrlSpy = jasmine.createSpyObj('ViewController', 
                               ['data', 'readReady', 'writeReady', 'dismiss', '_setHeader', '_setNavbar', '_setIONContent', '_setIONContentRef']);
 
@@ -63,7 +81,10 @@ export let messageServiceSpy = jasmine.createSpyObj('MessageService',
 export let utilServiceSpy = jasmine.createSpyObj('UtilService', 
                           ['getTotal', 'sort', 'getSanitizedUrl', 'loadThemes', 'getObjFromArray', 'getTheme']);
 
-export let urlServiceSpy = jasmine.createSpyObj('UrlService', ['getAddBtnImageUrl', 'getAppName']);
+export let urlServiceSpy = jasmine.createSpyObj('UrlService', 
+                          ['getAppName', 'getAppKey', 'getPathSeparator', 'getStoreKey', 
+                              'getCategoriesId', 'getCategoriesKey', 'getCategoriesTitleKey', 'getAccountabilityKey',
+                              'getDeviceDataUrl', 'getAddBtnImageUrl', 'getCategoriesFileName']);
 
 export let loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
 
@@ -72,3 +93,7 @@ export let transactionServiceSpy = jasmine.createSpyObj('TransactionService', ['
 transactionServiceSpy.getBean.and.callFake(function () {
   return transactionBean;
 });
+
+export let settingsServiceSpy = jasmine.createSpyObj('SettingsService', ['getData', 'importData', 'getBackupFileList']);
+
+

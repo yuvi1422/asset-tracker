@@ -3,10 +3,13 @@ import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { IonicModule, NavController, ToastController, AlertController, ActionSheetController, Platform} from 'ionic-angular';
 
-import { NavMock, NavParamsMock, getStubPromise} from '../../../test-config/mocks/mocks';
-import {PlatformMock} from '../../../test-config/mocks/platform.mock';
+import { NavMock, NavParamsMock, getStubPromise, getPromise, settingsMock } from '../../../test-config/mocks/mocks';
+import { platformSpy } from '../../../test-config/spies/platform.spie';
 
-import { StorageMock } from '../../../test-config/mocks/storage.mock';
+import { storageSpy, toastCtrlSpy, alertCtrlSpy, actionSheetCtrlSpy,
+             fileSpy, urlServiceSpy, messageServiceSpy,
+             settingsServiceSpy, loggerSpy } 
+                            from '../../../test-config/spies/other.spies';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
 
 import { Http, HttpModule} from '@angular/http';
@@ -32,74 +35,17 @@ jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Page: Settings Page', () => {
 
-  let toastSpy,
-    toastCtrlSpy,
-    alertSpy,
-    alertCtrlSpy,
-    actionSheetSpy,
-    actionSheetCtrlSpy,
-    fileSpy,
-    urlServiceSpy,
-    messageServiceSpy,
-    settingsServiceSpy,
-    loggerSpy,
-    expectedData = {
-      title: 'Settings',
-      items: [
-        {
-          id: 'export',
-          title: 'Back Up'
-        },
-        {
-          id: 'import',
-          title: 'Restore'
-        }
-      ]
-    };
+  let expectedData = settingsMock;
 
     beforeEach(async(() => {
-      // Used spy to mock services.
 
-      toastSpy = jasmine.createSpyObj('Toast', ['present']);
-      toastCtrlSpy = jasmine.createSpyObj('ToastController', ['create']);
-      toastCtrlSpy.create.and.callFake(function () {
-        return toastSpy;
-      });
-
-      alertSpy = jasmine.createSpyObj('Alert', ['present']);
-      alertCtrlSpy = jasmine.createSpyObj('AlertController', ['create']);
-      alertCtrlSpy.create.and.callFake(function () {
-        return alertSpy;
-      });
-
-      actionSheetSpy = jasmine.createSpyObj('ActionSheet', ['present']);
-      actionSheetCtrlSpy = jasmine.createSpyObj('ActionSheetController', ['create']);
-      actionSheetCtrlSpy.create.and.callFake(function () {
-        return actionSheetSpy;
-      });
-
-      fileSpy = jasmine.createSpyObj('File', ['externalRootDirectory', 'listDir', 'createDir', 'writeFile']);
-
-      fileSpy.listDir.and.callFake(function () {
+      storageSpy.get.and.callFake(function () {
         return getStubPromise();
       });
-      fileSpy.createDir.and.callFake(function () {
-        return getStubPromise();
-      });
-      fileSpy.writeFile.and.callFake(function () {
-        return getStubPromise();
-      });
-      urlServiceSpy = jasmine.createSpyObj('UrlService', 
-                          ['getAppName', 'getAppKey', 'getPathSeparator', 'getStoreKey', 
-                              'getCategoriesId', 'getCategoriesKey', 'getCategoriesTitleKey', 'getAccountabilityKey',
-                              'getDeviceDataUrl', 'getAddBtnImageUrl', 'getCategoriesFileName']);
 
-      messageServiceSpy = jasmine.createSpyObj('MessageService', ['displayToast', 'loadMessages', 'getMessages', 'getMessage']);
-      settingsServiceSpy = jasmine.createSpyObj('SettingsService', ['getData', 'importData', 'getBackupFileList']);
       settingsServiceSpy.getData.and.callFake(function () {
         return asyncData(expectedData);
       });
-      loggerSpy = jasmine.createSpyObj('Logger', ['log', 'warn', 'error', 'info']);
 
       TestBed.configureTestingModule({
 
@@ -126,7 +72,7 @@ describe('Page: Settings Page', () => {
           },
           {
             provide: Storage,
-            useFactory: () => StorageMock.instance()
+            useValue: storageSpy
           },
           {
             provide: File,
@@ -134,11 +80,7 @@ describe('Page: Settings Page', () => {
           },
           {
             provide: Platform,
-            useClass: PlatformMock
-          },
-          {
-            provide: ToastController,
-            useValue: toastCtrlSpy
+            useValue: platformSpy
           },
           {
             provide: UrlService,
@@ -186,7 +128,23 @@ describe('Page: Settings Page', () => {
         expect(comp).toBeTruthy();
     });
 
-// TODO: Test promise response in method loadData()
+
+    it('#loadData should load data', fakeAsync(() => {
+      comp.title = null;
+      comp.loadData();
+      tick();
+      expect(comp.title).toEqual(expectedData.title);
+      
+      comp.title = null;
+      storageSpy.get.and.callFake(function () {
+        return getPromise(JSON.stringify(expectedData));
+      });
+      comp.loadData();
+      tick();
+      fixture.detectChanges();
+      expect(comp.title).toEqual(expectedData.title);
+    }));
+
 
     it('#changeSettings should change settings', () => {
       comp.changeSettings('export');
@@ -197,13 +155,17 @@ describe('Page: Settings Page', () => {
 
     it('#displayToast() should display toast', async(() => {
       comp.displayToast('Export fail');
-      expect(toastSpy.present).toHaveBeenCalled();
+      expect(toastCtrlSpy.create).toHaveBeenCalled();
       comp.displayToast(null);
       expect(loggerSpy.error).toHaveBeenCalled();
     }));
 
-    it('#writeToFile() should write to file', async(() => {
-      comp.writeToFile('rootPath', 'appDirectoryPath', 'dirName', 'fileName', 'storeData');
-      expect(fileSpy.createDir).toHaveBeenCalled();
-    }));
+
+      it('#writeToFile() should write to file', fakeAsync(() => {
+        comp.writeToFile('rootPath', 'appDirectoryPath', 
+                          'dirName', 'fileName', JSON.stringify(expectedData), 'options');        
+        tick();
+        fixture.detectChanges();
+        expect(messageServiceSpy.getMessage.calls.mostRecent().args[1]).toEqual('exportSuccess');
+      }));
 }); 
