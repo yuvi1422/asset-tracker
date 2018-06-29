@@ -21,13 +21,6 @@ export class SettingsComponent {
     private name:string = 'settings';
 
    /**
-   * @description An object containing all messages of this component.
-   * @private
-   */
-    private messageContainer:any;
-
-
-   /**
    * @description Title of component
    * @public
    */
@@ -98,12 +91,8 @@ export class SettingsComponent {
       } else {
         storeData = JSON.parse(storeData);
         context.title = storeData.title;
-      }
         context.items = storeData.items;
-
-      //  Load all messages
-      context.messageContainer = context.messageService.getMessages(context.name);
-
+      }
     });
   }
 
@@ -162,7 +151,8 @@ export class SettingsComponent {
                 try {
                   context.writeToFile(rootPath, appDirectoryPath, dirName, fileName + fileExtension, JSON.stringify(exportObj), true);
                 } catch (err) {
-                  context.messageService.displayToast(context.messageContainer.exportFail , 4000, 'bottom');
+                  context.messageService.displayToast(
+                      context.messageService.getMessage(context.name, 'exportFail'), 4000, 'bottom');
                 }
               });
 
@@ -220,7 +210,8 @@ export class SettingsComponent {
 
     }, function (err) {
       let msg = (err === 'cordova_not_available')?
-                    context.messageContainer.cordovaNotFound: context.messageContainer.backupListingFail
+                    context.messageService.getMessage(context.name, 'cordovaNotFound') : 
+                      context.messageService.getMessage(context.name, 'backupListingFail');
 
       context.messageService.displayToast(msg, 4000, 'bottom');
     });
@@ -246,12 +237,15 @@ export class SettingsComponent {
 
       // Write to file
       context.file.writeFile(appDirectoryPath, fileName, JSON.parse(storeData), options).then(function(result) {
-      context.messageService.displayToast(context.messageContainer.exportSuccess, 2500, 'bottom');
+        context.messageService.displayToast(
+                  context.messageService.getMessage(context.name, 'exportSuccess'), 2500, 'bottom');
       }, function(err) {
-        context.messageService.displayToast(context.messageContainer.exportFail, 4000, 'bottom');
+        context.messageService.displayToast(
+                  context.messageService.getMessage(context.name, 'exportFail'), 4000, 'bottom');
       });
     }, function(err) {
-      context.messageService.displayToast(context.messageContainer.appDirFail, 4000, 'bottom');
+      context.messageService.displayToast(
+                  context.messageService.getMessage(context.name, 'appDirFail'), 4000, 'bottom');
     });
   }
 

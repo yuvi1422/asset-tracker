@@ -118,3 +118,17 @@ export let messagesMock = {
     backupListingFail: 'Error while listing backup files'
   }
 };
+
+export let settingsMock = {
+  title: 'Settings',
+  items: [
+    {
+      id: 'export',
+      title: 'Back Up'
+    },
+    {
+      id: 'import',
+      title: 'Restore'
+    }
+  ]
+}
