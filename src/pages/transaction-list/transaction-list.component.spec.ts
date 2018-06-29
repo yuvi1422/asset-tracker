@@ -1,13 +1,14 @@
 import { TestBed, ComponentFixture, async, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { IonicModule, NavController, NavParams, PopoverController} from 'ionic-angular';
+import { IonicModule, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { NavMock, NavParamsMock } from '../../../test-config/mocks/mocks';
 import { StorageMock } from '../../../test-config/mocks/storage.mock';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
+import { navCtrlSpy, loggerSpy, utilServiceSpy } from '../../../test-config/spies/other.spies';
 
-import { Http, HttpModule} from '@angular/http';
+import { Http, HttpModule } from '@angular/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from '../../app/app.component';
@@ -24,17 +25,12 @@ let fixture: ComponentFixture<TransactionListComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
-let loggerSpy,
-    utilServiceSpy,
-    navCtrlSpy;
-
 // Change default timeout of jasmine. It would be helpful to test AJAX.
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 
 describe('Page: TransactionList', () => {
 
     beforeEach(async(() => {
-      // Used spy to mock services.
       NavParamsMock.setParams({
         item: { 
           id: "a4445",
@@ -48,10 +44,6 @@ describe('Page: TransactionList', () => {
         CATEGORIES_KEY: 'people',
         SEPARATOR: '-'
       });
-
-      loggerSpy = jasmine.createSpyObj('Logger', ['error']),
-      utilServiceSpy = jasmine.createSpyObj('UtilService', ['getTheme', 'getTotal', 'sort']);
-      navCtrlSpy = jasmine.createSpyObj('NavController', ['push', 'pop', 'getActive', 'setRoot']),
 
       TestBed.configureTestingModule({
 

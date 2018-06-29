@@ -1,4 +1,4 @@
-import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { TestBed, ComponentFixture, async, fakeAsync } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpResponse, HttpErrorResponse, HttpClientModule } from '@angular/common/http';
 
@@ -7,14 +7,13 @@ import { Http, HttpModule, BaseRequestOptions, Response, ResponseOptions } from 
 import { Platform } from 'ionic-angular';
 
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
-import { PlatformMock} from '../../../test-config/mocks/platform.mock';
+import { platformSpy } from '../../../test-config/spies/platform.spie';
+import { httpSpy } from '../../../test-config/spies/other.spies';
 
 import { SettingsService } from "./settings.service";
 
 describe('Service: Settings Service', () => {
-    let httpSpy: { get: jasmine.Spy },
-        platform = new PlatformMock(),
-        settingsServiceSpy,
+    let settingsServiceSpy,
         expectedData = {
           title: 'Settings',
           items: [
@@ -30,14 +29,11 @@ describe('Service: Settings Service', () => {
         };
 
     beforeEach(async(() => {
-      // Used spy to mock services.
-      httpSpy = jasmine.createSpyObj('Http', ['get']);
       // Use fake promise to get function so that it will work with subscribe.
-      
-      settingsServiceSpy = new SettingsService(<any> httpSpy, <any> platform);
+      settingsServiceSpy = new SettingsService(<any> httpSpy, <any>  platformSpy);
     }));
 
-    it('#getData() should get data', async(() => {
+    it('#getData() should get data', fakeAsync(() => {
       httpSpy.get.and.returnValue(asyncData(expectedData));
       settingsServiceSpy.getData().subscribe(
           data => {
@@ -45,7 +41,6 @@ describe('Service: Settings Service', () => {
           },
           fail
       );
-      expect(httpSpy.get.calls.count()).toBe(1, 'one call');
     }));
 
  
@@ -64,6 +59,5 @@ describe('Service: Settings Service', () => {
           },
           fail
       );
-      expect(httpSpy.get.calls.count()).toBe(1, 'one call');
     }));
 });

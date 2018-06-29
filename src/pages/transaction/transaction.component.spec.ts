@@ -11,7 +11,6 @@ import { NavMock, NavParamsMock, getStubPromise, getPromise,
           categoriesMock, accountabilities, accountabilityStub, transactionBean }
               from '../../../test-config/mocks/mocks';
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
-import { PlatformMock } from '../../../test-config/mocks/platform.mock';
 
 import { navCtrlSpy, storageSpy, contactsSpy, toastCtrlSpy, alertCtrlSpy, 
           loggerSpy, messageServiceSpy, utilServiceSpy, transactionServiceSpy } from '../../../test-config/spies/other.spies';
