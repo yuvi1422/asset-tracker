@@ -6,8 +6,9 @@ import 'rxjs/add/operator/map';
 import { Http, HttpModule, BaseRequestOptions, Response, ResponseOptions } from '@angular/http';
 
 import { asyncData, asyncError } from '../../../test-config/mocks/async-observable-helpers';
-import { PlatformMock} from '../../../test-config/mocks/platform.mock';
 import { Platform } from 'ionic-angular';
+import { httpSpy, accountabilityServiceSpy, categoryServiceSpy, utilServiceSpy} from '../../../test-config/spies/other.spies';
+import { platformSpy } from '../../../test-config/spies/platform.spie';
 
 import { AccountabilityService } from './accountability.service';
 import { CategoryService } from "../../common/category/category.service";
@@ -15,20 +16,10 @@ import { UtilService } from "../../common/util/util.service";
 
 describe('Service: Accountability Service', () => {
 
-    let httpSpy,
-      platform = new PlatformMock(),
-      accountabilityServiceSpy: AccountabilityService,
-      categoryServiceSpy: CategoryService,
-      utilServiceSpy: UtilService;
-
+    let accountabilityServiceSpy;
     beforeEach(async(() => {
       // Used spy to mock services.
-      httpSpy = jasmine.createSpyObj('Http', ['get']);
-      categoryServiceSpy = jasmine.createSpyObj('UtilService',
-                          ['getCategories', 'setCategories', 'getCategoryById', 'getCategoriesFromConfig']);
-      utilServiceSpy = jasmine.createSpyObj('UtilService', 
-                          ['getTotal', 'sort', 'getSanitizedUrl', 'loadThemes', 'getObjFromArray', 'getTheme']);
-      accountabilityServiceSpy = new AccountabilityService(<any> httpSpy, new Platform(), categoryServiceSpy);
+      accountabilityServiceSpy = new AccountabilityService(<any> httpSpy, platformSpy, categoryServiceSpy);
     }));
 
     it('#getData() should get data', () => {
@@ -45,11 +36,10 @@ describe('Service: Accountability Service', () => {
         },
         fail
       );
-      expect(httpSpy.get.calls.count()).toBe(1, 'one call');
     });
 
     it('#getThresholdLimit() should get Threshold Limit', () => {
       accountabilityServiceSpy.getThresholdLimit('people');
       expect(categoryServiceSpy.getCategoryById).toHaveBeenCalled();
     });
-}); 
+});   
