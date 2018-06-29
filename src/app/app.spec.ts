@@ -5,8 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { MyApp } from './app.component';
 import { HomeComponent } from '../pages/home/home.component';
 
-import {StatusBarMock, SplashScreenMock} from '../../test-config/mocks/mocks';
-import {PlatformMock} from '../../test-config/mocks/platform.mock';
+import { StatusBarMock, SplashScreenMock } from '../../test-config/mocks/mocks';
+import { platformSpy } from '../../test-config/spies/platform.spie';
 
 let comp: MyApp;
 let fixture: ComponentFixture<MyApp>;
@@ -21,7 +21,7 @@ describe('Component: Root Component', () => {
             providers: [
                 { provide: StatusBar, useClass: StatusBarMock },
                 { provide: SplashScreen, useClass: SplashScreenMock },
-                { provide: Platform, useClass: PlatformMock }
+                { provide: Platform, useValue: platformSpy }
             ],  
 
             imports: [
